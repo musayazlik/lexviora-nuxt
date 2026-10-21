@@ -3,7 +3,7 @@ import type { ContentRecord } from '#shared/types/content';
 definePageMeta({ middleware: 'auth', layout: 'admin' });
 const route = useRoute();
 const { text } = useAdmin();
-const localePath = useLocalePath();
+const localePath = useContentLocalePath();
 const id = String(route.params.id);
 const { data: records } = await useFetch<ContentRecord[]>('/api/admin/content/articles', {
   default: () => [],

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const route = useRoute();
-const { locale } = useI18n();
-const localePath = useLocalePath();
+const { locale } = useContentLanguage();
+const localePath = useContentLocalePath();
 const { data: items } = await usePublicContent('attorneys');
 const item = computed(() => items.value.find((i) => i.slug === route.params.slug));
 if (!item.value) throw createError({ statusCode: 404, statusMessage: 'Attorney not found' });

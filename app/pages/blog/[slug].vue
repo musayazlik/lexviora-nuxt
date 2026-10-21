@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const route = useRoute();
-const { locale } = useI18n();
-const localePath = useLocalePath();
+const { locale } = useContentLanguage();
+const localePath = useContentLocalePath();
 const { data: articles } = await usePublicContent('articles');
 const article = computed(() => articles.value.find((a) => a.slug === route.params.slug));
 if (!article.value) throw createError({ statusCode: 404, statusMessage: 'Article not found' });
@@ -78,9 +78,10 @@ async function share() {
           <h2>{{ locale === 'tr' ? 'Bu makalede' : 'In this article' }}</h2>
           <p v-for="heading in headings" :key="heading">{{ heading }}</p>
         </aside>
-        <article class="prose" v-html="article.body" />
+        <div><article class="prose" v-html="article.body" /><div v-if="article.tags?.length" class="article-tags"><span v-for="tag in article.tags" :key="tag.id">{{ tag.name }}</span></div></div>
       </div>
     </section>
+    <PublicComments :article-id="article.id" />
     <section class="section section-ivory">
       <div class="container">
         <div class="section-heading">

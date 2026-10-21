@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const { data: articles } = await usePublicContent('articles');
-const { locale } = useI18n();
-const localePath = useLocalePath();
+const { locale } = useContentLanguage();
+const copy = usePublicCopy();
+const localePath = useContentLocalePath();
 const ordered = computed(() =>
   [...articles.value].sort((a, b) => Number(b.featured) - Number(a.featured)),
 );
@@ -25,9 +26,7 @@ const formatDate = (value?: string | null) =>
           width="1536"
           height="1024"
           loading="lazy"
-        /><span class="image-tag">{{
-          locale === 'tr' ? 'Editörün seçimi' : 'Editor’s choice'
-        }}</span></NuxtLink
+        /><span class="image-tag">{{ copy.editorChoice }}</span></NuxtLink
       >
       <div class="article-meta">
         <NuxtLink
@@ -40,8 +39,7 @@ const formatDate = (value?: string | null) =>
       </h3>
       <p>{{ featured.excerpt }}</p>
       <NuxtLink class="text-link" :to="localePath('/blog/' + featured.slug)"
-        >{{ locale === 'tr' ? 'Makaleyi oku' : 'Read the article'
-        }}<UIcon name="i-lucide-arrow-right" class="icon"
+        >{{ copy.readMore }}<UIcon name="i-lucide-arrow-right" class="icon"
       /></NuxtLink>
     </article>
     <div class="featured-list">
@@ -55,10 +53,7 @@ const formatDate = (value?: string | null) =>
           </h3>
           <div class="small-meta">
             <time :datetime="article.publishedAt || ''">{{ formatDate(article.publishedAt) }}</time
-            ><span
-              >{{ article.readingMinutes || 5 }}
-              {{ locale === 'tr' ? 'dk okuma' : 'min read' }}</span
-            >
+            ><span>{{ article.readingMinutes || 5 }} {{ copy.minutes }}</span>
           </div>
         </div>
         <NuxtLink

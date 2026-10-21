@@ -1,0 +1,1 @@
+ALTER TABLE "email_outbox" ADD COLUMN "attempted_at" timestamp with time zone;

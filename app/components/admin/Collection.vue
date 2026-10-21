@@ -2,9 +2,10 @@
 import type { ContentRecord, Resource } from '#shared/types/content';
 import { contentDefinitions } from '~/utils/content-fields';
 const props = defineProps<{ resource: Resource }>();
-const { locale } = useI18n();
+const { locale } = useContentLanguage();
+const { languages } = useContentLanguages();
 const { text, statusText, date, canPublish, errorText } = useAdmin();
-const localePath = useLocalePath();
+const localePath = useContentLocalePath();
 const definition = computed(() => contentDefinitions[props.resource]);
 const {
   data: records,
@@ -21,7 +22,10 @@ const { data: categories } = await useFetch<ContentRecord[]>('/api/admin/content
 const categoryName = (record: ContentRecord) => {
   const category = categories.value.find((item) => item.id === record.categoryId);
   return String(
-    category?.translations[locale.value]?.name || category?.translations.en?.name || '—',
+    category?.translations[locale.value]?.name ||
+      category?.translations.en?.name ||
+      Object.values(category?.translations || {}).find((translation) => translation?.name)?.name ||
+      '—',
   );
 };
 const sortOptions = computed(() => [
@@ -41,7 +45,8 @@ function title(record: ContentRecord): string {
   const translated =
     record.translations[locale.value]?.[key] ||
     record.translations.en?.[key] ||
-    record.translations.tr?.[key];
+    record.translations.tr?.[key] ||
+    Object.values(record.translations).find((translation) => translation?.[key])?.[key];
   return record.name || String(translated || record.slug || '');
 }
 
@@ -268,7 +273,7 @@ async function remove() {
                     v-for="code in Object.keys(record.translations)"
                     :key="code"
                     class="language-badge"
-                    :title="code === 'en' ? 'English' : 'Türkçe'"
+                    :title="languages.find((item) => item.code === code)?.name || code"
                     >{{ code.toUpperCase() }}</span
                   >
                 </div>
@@ -276,36 +281,32 @@ async function remove() {
               <td v-if="resource === 'articles'" class="date-cell">{{ date(record.updatedAt) }}</td>
               <td class="actions-column">
                 <div class="table-actions">
-                  <UButton
-                    icon="i-lucide-pencil"
-                    variant="ghost"
-                    color="neutral"
-                    :aria-label="text('Düzenle: ', 'Edit: ') + title(record)"
-                    @click="openEditor(record)"
-                  /><UDropdownMenu
-                    v-if="canPublish"
+                  <AdminRowActions
+                    :label="text('Diğer işlemler: ', 'More actions: ') + title(record)"
                     :items="[
-                      {
-                        label: text('Düzenle', 'Edit'),
-                        icon: 'i-lucide-pencil',
-                        onSelect: () => openEditor(record),
-                      },
-                      {
-                        label: text('İçeriği sil', 'Delete content'),
-                        icon: 'i-lucide-trash-2',
-                        color: 'error',
-                        onSelect: () => {
-                          deleting = record;
+                      [
+                        {
+                          label: text('Düzenle', 'Edit'),
+                          icon: 'i-lucide-pencil',
+                          onSelect: () => openEditor(record),
                         },
-                      },
+                      ],
+                      ...(canPublish
+                        ? [
+                            [
+                              {
+                                label: text('İçeriği sil', 'Delete content'),
+                                icon: 'i-lucide-trash-2',
+                                color: 'error' as const,
+                                onSelect: () => {
+                                  deleting = record;
+                                },
+                              },
+                            ],
+                          ]
+                        : []),
                     ]"
-                    :content="{ align: 'end' }"
-                    ><UButton
-                      icon="i-lucide-ellipsis"
-                      variant="ghost"
-                      color="neutral"
-                      :aria-label="text('Diğer işlemler: ', 'More actions: ') + title(record)"
-                  /></UDropdownMenu>
+                  />
                 </div>
               </td>
             </tr>

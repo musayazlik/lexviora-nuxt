@@ -3,7 +3,12 @@ import reference from '#shared/data/reference.json';
 import { pageSeo, siteDescriptions } from '#shared/seo';
 import type { Component } from 'vue';
 const props = defineProps<{ name: string }>();
-const { locale } = useI18n();
+const { locale } = useContentLanguage();
+const copy = usePublicCopy();
+const { data: pages } = await usePublicContent('pages');
+const page = computed(() =>
+  pages.value.find((item) => item.slug === (props.name === 'index' ? 'home' : props.name)),
+);
 const modules = import.meta.glob('../reference/*/*.vue');
 const view = computed(() => {
   const loader = modules[`../reference/${locale.value}/${props.name}.vue`];
@@ -16,12 +21,33 @@ const meta = computed(
     ]?.[locale.value],
 );
 usePageSeo(() => {
-  const lang = locale.value === 'tr' ? 'tr' : 'en';
+  const lang = locale.value;
   const override = pageSeo[props.name]?.[lang];
+  const labels: Record<string, string> = {
+    index: copy.value.heroTitle,
+    about: copy.value.about,
+    'practice-areas': copy.value.practice,
+    attorneys: copy.value.team,
+    contact: copy.value.contact,
+    faq: copy.value.faq,
+    glossary: copy.value.glossary,
+  };
   return {
-    title: override?.title || meta.value?.title,
-    description: override?.description || siteDescriptions[lang],
+    title: page.value?.title
+      ? page.value.title + ' | Lexviora'
+      : override?.title || meta.value?.title || (labels[props.name] || props.name) + ' | Lexviora',
+    description:
+      page.value?.excerpt ||
+      override?.description ||
+      siteDescriptions[lang] ||
+      copy.value.aboutDescription,
   };
 });
 </script>
-<template><component :is="view" v-if="view" /></template>
+<template>
+  <component :is="view" v-if="view && !page" /><PublicLocalizedPage
+    v-else
+    :name="name"
+    :page="page"
+  />
+</template>

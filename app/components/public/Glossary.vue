@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const { locale } = useI18n();
+const { locale } = useContentLanguage();
+const copy = usePublicCopy();
 const { data: items } = await usePublicContent('glossary');
 const query = ref('');
 const filtered = computed(() =>
@@ -12,19 +13,15 @@ const filtered = computed(() =>
 </script>
 <template>
   <div>
-    <label class="sr-only" for="term-search">{{
-      locale === 'tr' ? 'Kavram ara' : 'Search terms'
-    }}</label
+    <label class="sr-only" for="term-search">{{ copy.searchTerms }}</label
     ><input
       id="term-search"
       v-model="query"
       class="public-search-input"
       type="search"
-      :placeholder="locale === 'tr' ? 'Hukuki kavram ara…' : 'Search legal terms…'"
+      :placeholder="copy.searchTerms"
     />
-    <p class="search-status" role="status">
-      {{ filtered.length }} {{ locale === 'tr' ? 'kavram' : 'terms' }}
-    </p>
+    <p class="search-status" role="status">{{ filtered.length }} {{ copy.terms }}</p>
     <dl class="glossary-list">
       <div v-for="item in filtered" :key="item.id" data-term>
         <dt>

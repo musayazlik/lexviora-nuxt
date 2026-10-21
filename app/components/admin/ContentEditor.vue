@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import type { ContentRecord, ContentLocale, Resource, Translation } from '#shared/types/content';
-import type { EditorToolbarItem } from '@nuxt/ui';
+import type { AiGenerateResult } from '#shared/ai';
+import type { MediaAsset } from '#shared/types/media';
 import { contentDefinitions } from '~/utils/content-fields';
 const props = defineProps<{ resource: Resource; record?: ContentRecord | null }>();
 const emit = defineEmits<{ saved: [value: ContentRecord] }>();
 const { text, canPublish, errorText, statusText } = useAdmin();
-const { locale } = useI18n();
-const localePath = useLocalePath();
+const { languages } = useContentLanguages();
+const localePath = useContentLocalePath();
 const toast = useToast();
 const definition = computed(() => contentDefinitions[props.resource]);
-const language = ref<ContentLocale>(locale.value);
+const language = ref<ContentLocale>('en');
 const draft = reactive<ContentRecord>({
   id: 0,
   slug: '',
@@ -24,9 +25,11 @@ const draft = reactive<ContentRecord>({
   categoryId: null,
   attorneyId: null,
   readingMinutes: 5,
+  commentsEnabled: true,
+  tagIds: [],
   sort: 0,
   icon: 'scale',
-  translations: { en: {}, tr: {} },
+  translations: {},
 });
 const snapshot = ref('');
 const saving = ref(false);
@@ -34,16 +37,33 @@ const error = ref('');
 const savedAt = ref('');
 function initialize() {
   if (props.record) Object.assign(draft, JSON.parse(JSON.stringify(props.record)));
-  for (const code of ['en', 'tr'] as const) {
+  for (const code of new Set([
+    ...languages.value.map((item) => item.code),
+    ...Object.keys(draft.translations),
+  ])) {
     draft.translations[code] ??= {};
     for (const field of definition.value.fields) draft.translations[code]![field.key] ??= '';
   }
   if (!draft.translations[language.value]?.[definition.value.fields[0]!.key] && draft.id)
-    language.value = draft.translations.en?.[definition.value.fields[0]!.key] ? 'en' : 'tr';
+    language.value =
+      Object.keys(draft.translations).find(
+        (code) => draft.translations[code]?.[definition.value.fields[0]!.key],
+      ) || 'en';
   snapshot.value = JSON.stringify(draft);
 }
 initialize();
 const active = computed(() => draft.translations[language.value]! as Record<string, string>);
+const languageOptions = computed(() =>
+  Object.keys(draft.translations).map((code) => ({
+    value: code,
+    label:
+      (languages.value.find((item) => item.code === code)?.name || code.toUpperCase()) +
+      (draft.translations[code]?.[definition.value.fields[0]!.key] ? ' · Translated' : ' · Empty'),
+  })),
+);
+const contentDirection = computed(
+  () => languages.value.find((item) => item.code === language.value)?.direction || 'ltr',
+);
 const dirty = computed(() => JSON.stringify(draft) !== snapshot.value);
 const locked = computed(
   () => props.resource === 'articles' && props.record?.status === 'published' && !canPublish.value,
@@ -53,6 +73,103 @@ const { data: categories } = await useFetch<ContentRecord[]>('/api/admin/content
 });
 const { data: attorneys } = await useFetch<ContentRecord[]>('/api/admin/content/attorneys', {
   default: () => [],
+});
+const { data: tags } = await useFetch<ContentRecord[]>('/api/admin/content/tags', {
+  default: () => [],
+});
+const tagOptions = computed(() =>
+  tags.value.map((t) => ({
+    value: t.id,
+    label: String(t.translations[language.value]?.name || t.translations.en?.name || t.slug),
+  })),
+);
+const taxonomyKind = ref<'categories' | 'tags' | null>(null),
+  taxonomyName = ref(''),
+  taxonomyBusy = ref(false),
+  taxonomyError = ref('');
+const taxonomyOpen = computed({
+  get: () => !!taxonomyKind.value,
+  set: (v: boolean) => {
+    if (!v) taxonomyKind.value = null;
+  },
+});
+const coverPicker = ref(false),
+  blogAiOpen = ref(false);
+const aiSaved = ref<ContentRecord | null>(null);
+const scheduleValue = computed({
+  get: () =>
+    draft.scheduledAt
+      ? new Date(new Date(draft.scheduledAt).getTime() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .slice(0, 16)
+      : '',
+  set: (v: string) => {
+    draft.scheduledAt = v ? new Date(v).toISOString() : null;
+  },
+});
+function selectCover(items: MediaAsset[]) {
+  if (items[0]) {
+    if (props.resource === 'articles') draft.coverImage = items[0].url;
+    else draft.photo = items[0].url;
+  }
+}
+async function resolveTaxonomy(resource: 'categories' | 'tags', name: string) {
+  const list = resource === 'categories' ? categories : tags;
+  const found = list.value.find((r) =>
+    Object.values(r.translations).some(
+      (t) => String(t?.name || '').toLocaleLowerCase() === name.toLocaleLowerCase(),
+    ),
+  );
+  if (found) return found.id;
+  const slug = slugify(name) || 'term-' + crypto.randomUUID().slice(0, 8);
+  const sameSlug = list.value.find((r) => r.slug === slug);
+  if (sameSlug) return sameSlug.id;
+  const row = await $fetch<ContentRecord>(`/api/admin/content/${resource}`, {
+    method: 'POST',
+    body: { slug, sort: 0, translations: { [language.value]: { name } } },
+  });
+  list.value.push(row);
+  return row.id;
+}
+async function createTaxonomy() {
+  if (!taxonomyKind.value || !taxonomyName.value.trim()) return;
+  taxonomyBusy.value = true;
+  taxonomyError.value = '';
+  try {
+    const id = await resolveTaxonomy(taxonomyKind.value, taxonomyName.value.trim());
+    if (taxonomyKind.value === 'categories') draft.categoryId = id;
+    else draft.tagIds = [...new Set([...(draft.tagIds || []), id])];
+    taxonomyKind.value = null;
+    taxonomyName.value = '';
+  } catch (e) {
+    taxonomyError.value = errorText(e);
+  } finally {
+    taxonomyBusy.value = false;
+  }
+}
+async function applyBlogAi(result: AiGenerateResult) {
+  if (locked.value) throw new Error('Only an administrator can edit published content.');
+  language.value = result.language || language.value;
+  draft.translations[language.value] ??= {};
+  if (result.title !== undefined) active.value.title = result.title;
+  if (result.description !== undefined) active.value.excerpt = result.description;
+  if (result.contentHtml !== undefined) active.value.body = result.contentHtml;
+  if (result.cover) draft.coverImage = result.cover.url;
+  if (result.category) draft.categoryId = await resolveTaxonomy('categories', result.category);
+  if (result.tags.length)
+    draft.tagIds = await Promise.all(result.tags.map((t) => resolveTaxonomy('tags', t)));
+  if (!draft.slug)
+    draft.slug = slugify(active.value.title || '') || 'article-' + crypto.randomUUID().slice(0, 8);
+  draft.scheduledAt = null;
+  const saved = await save('draft', true);
+  if (!saved) throw new Error(error.value || 'Draft could not be saved.');
+  aiSaved.value = saved;
+}
+watch(blogAiOpen, (value) => {
+  if (!value && aiSaved.value) {
+    emit('saved', aiSaved.value);
+    aiSaved.value = null;
+  }
 });
 const categoryOptions = computed(() => [
   { label: text('Kategori seçin', 'Choose a category'), value: 0 },
@@ -92,64 +209,7 @@ watch(
     if (!slugTouched.value && title && props.resource !== 'faqs') draft.slug = slugify(title);
   },
 );
-const toolbarItems: EditorToolbarItem[][] = [
-  [
-    { kind: 'undo', icon: 'i-lucide-undo', tooltip: { text: text('Geri al', 'Undo') } },
-    { kind: 'redo', icon: 'i-lucide-redo', tooltip: { text: text('Yinele', 'Redo') } },
-  ],
-  [
-    {
-      kind: 'heading',
-      level: 2,
-      icon: 'i-lucide-heading-2',
-      tooltip: { text: text('Başlık', 'Heading') },
-    },
-    {
-      kind: 'heading',
-      level: 3,
-      icon: 'i-lucide-heading-3',
-      tooltip: { text: text('Alt başlık', 'Subheading') },
-    },
-  ],
-  [
-    { kind: 'mark', mark: 'bold', icon: 'i-lucide-bold', tooltip: { text: text('Kalın', 'Bold') } },
-    {
-      kind: 'mark',
-      mark: 'italic',
-      icon: 'i-lucide-italic',
-      tooltip: { text: text('İtalik', 'Italic') },
-    },
-    {
-      kind: 'mark',
-      mark: 'underline',
-      icon: 'i-lucide-underline',
-      tooltip: { text: text('Altı çizili', 'Underline') },
-    },
-  ],
-  [
-    {
-      kind: 'bulletList',
-      icon: 'i-lucide-list',
-      tooltip: { text: text('Madde işaretli liste', 'Bullet list') },
-    },
-    {
-      kind: 'orderedList',
-      icon: 'i-lucide-list-ordered',
-      tooltip: { text: text('Numaralı liste', 'Numbered list') },
-    },
-    { kind: 'blockquote', icon: 'i-lucide-quote', tooltip: { text: text('Alıntı', 'Blockquote') } },
-    { kind: 'link', icon: 'i-lucide-link', tooltip: { text: text('Bağlantı', 'Link') } },
-  ],
-];
-const wordCount = computed(
-  () =>
-    (active.value.body || active.value.bio || active.value.answer || '')
-      .replace(/<[^>]*>/g, ' ')
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean).length,
-);
-async function save(status?: ContentRecord['status']) {
+async function save(status?: ContentRecord['status'], silent = false) {
   error.value = '';
   saving.value = true;
   const previous = draft.status;
@@ -161,13 +221,19 @@ async function save(status?: ContentRecord['status']) {
       body: draft,
     });
     Object.assign(draft, result);
+    // Blank languages have no database row, but remain selectable after a save.
+    for (const item of languages.value) {
+      draft.translations[item.code] ??= {};
+      for (const field of definition.value.fields) draft.translations[item.code]![field.key] ??= '';
+    }
     snapshot.value = JSON.stringify(draft);
-    savedAt.value = new Intl.DateTimeFormat(locale.value, {
+    savedAt.value = new Intl.DateTimeFormat('en', {
       hour: '2-digit',
       minute: '2-digit',
     }).format(new Date());
     toast.add({ title: text('Değişiklikler kaydedildi.', 'Changes saved.'), color: 'success' });
-    emit('saved', result);
+    if (!silent) emit('saved', result);
+    return result;
   } catch (e) {
     draft.status = previous;
     error.value = errorText(e);
@@ -184,6 +250,18 @@ const aiError = ref('');
 const richField = computed(
   () => definition.value.fields.find((f) => f.type === 'rich')?.key || 'body',
 );
+const aiSource = ref('en');
+const aiSourceOptions = computed(() =>
+  Object.keys(draft.translations)
+    .filter((code) => code !== language.value && draft.translations[code]?.[richField.value])
+    .map((code) => ({
+      value: code,
+      label: languages.value.find((item) => item.code === code)?.name || code,
+    })),
+);
+watch(aiSourceOptions, (items) => {
+  if (!items.some((item) => item.value === aiSource.value)) aiSource.value = items[0]?.value || '';
+});
 async function generate() {
   aiBusy.value = true;
   aiError.value = '';
@@ -194,7 +272,10 @@ async function generate() {
       body: {
         action: aiAction.value,
         prompt: aiPrompt.value,
-        content: active.value[richField.value] || '',
+        content:
+          aiAction.value === 'translate'
+            ? String(draft.translations[aiSource.value]?.[richField.value] || '')
+            : active.value[richField.value] || '',
         title: active.value.title || '',
         locale: language.value,
       },
@@ -213,13 +294,17 @@ function applyAi(mode: 'replace' | 'append') {
   aiResult.value = '';
 }
 const preview = computed(() =>
-  props.resource === 'articles'
-    ? '/blog/' + draft.slug
-    : props.resource === 'practice-areas'
-      ? '/practice-areas/' + draft.slug
-      : props.resource === 'attorneys'
-        ? '/attorneys/' + draft.slug
-        : null,
+  props.resource === 'pages'
+    ? draft.slug === 'home'
+      ? '/'
+      : '/' + draft.slug
+    : props.resource === 'articles'
+      ? '/blog/' + draft.slug
+      : props.resource === 'practice-areas'
+        ? '/practice-areas/' + draft.slug
+        : props.resource === 'attorneys'
+          ? '/attorneys/' + draft.slug
+          : null,
 );
 onBeforeRouteLeave(
   () =>
@@ -257,7 +342,7 @@ defineExpose({ dirty });
       <div class="flex flex-wrap gap-2">
         <UButton
           v-if="preview && draft.id && (resource !== 'articles' || record?.status === 'published')"
-          :to="localePath(preview)"
+          :to="localePath(preview, language)"
           target="_blank"
           variant="outline"
           color="neutral"
@@ -280,7 +365,15 @@ defineExpose({ dirty });
         >
       </div>
     </div>
-    <UAlert v-if="error" :title="error" color="error" class="mb-5" /><UAlert
+    <UAlert
+      v-if="error"
+      :title="error"
+      color="error"
+      variant="soft"
+      icon="i-lucide-circle-alert"
+      role="alert"
+      class="mb-5"
+    /><UAlert
       v-if="locked"
       :title="
         text(
@@ -300,24 +393,14 @@ defineExpose({ dirty });
                 text('İçerik dili', 'Content language')
               }}</span>
             </div>
-            <div class="language-tabs">
-              <button
-                v-for="code in ['en', 'tr'] as const"
-                :key="code"
-                type="button"
-                :class="{ active: language === code }"
-                :aria-pressed="language === code"
-                @click="language = code"
-              >
-                {{ code === 'en' ? 'English' : 'Türkçe'
-                }}<span
-                  v-if="draft.translations[code]?.[definition.fields[0]!.key]"
-                  class="translation-dot"
-                />
-              </button>
-            </div>
+            <USelect
+              v-model="language"
+              :items="languageOptions"
+              aria-label="Content language"
+              class="content-language-select"
+            />
           </div>
-          <div class="editor-fields">
+          <div class="editor-fields" :key="language" :lang="language">
             <UFormField
               v-if="resource === 'attorneys'"
               :label="text('Ad soyad', 'Full name')"
@@ -331,12 +414,14 @@ defineExpose({ dirty });
                 ><UTextarea
                   v-if="field.type === 'textarea'"
                   v-model="active[field.key]"
+                  :dir="contentDirection"
                   :rows="3"
                   :maxlength="field.key === 'excerpt' ? 500 : 5000"
                   class="w-full"
                   autoresize /><UInput
                   v-else
                   v-model="active[field.key]"
+                  :dir="contentDirection"
                   :size="field === definition.fields[0] ? 'xl' : 'md'"
                   class="w-full"
                   :maxlength="250"
@@ -353,41 +438,24 @@ defineExpose({ dirty });
                     icon="i-lucide-sparkles"
                     size="sm"
                     variant="soft"
-                    @click="aiOpen = true"
+                    :disabled="locked"
+                    @click="resource === 'articles' ? (blogAiOpen = true) : (aiOpen = true)"
                     >{{ text('AI asistanı', 'AI assistant') }}</UButton
                   >
                 </div>
                 <ClientOnly
-                  ><UEditor
+                  ><AdminRichTextEditor
                     :key="language + field.key"
-                    v-slot="{ editor }"
                     v-model="active[field.key]"
-                    content-type="html"
-                    :placeholder="
-                      text('Düşüncelerinizi yazıya dökün…', 'Give your thoughts a considered form…')
-                    "
-                    :editor-props="{
-                      attributes: {
-                        id: 'rich-' + field.key,
-                        'aria-label': text(field.tr, field.en),
-                        lang: language,
-                      },
-                    }"
+                    :id="'rich-' + field.key"
+                    :label="text(field.tr, field.en)"
+                    :language="language"
+                    :direction="contentDirection"
                     :editable="!locked"
-                    class="lexviora-editor"
-                    ><UEditorToolbar
-                      :editor="editor"
-                      :items="toolbarItems"
-                      class="editor-toolbar" /></UEditor
-                  ><template #fallback
-                    ><div class="editor-loading">
-                      {{ text('Editör hazırlanıyor…', 'Preparing your editor…') }}
-                    </div></template
+                  /><template #fallback
+                    ><div class="editor-loading">Preparing your editor…</div></template
                   ></ClientOnly
                 >
-                <div class="editor-word-count">
-                  {{ wordCount }} {{ text('kelime', 'words') }}<span>Tiptap</span>
-                </div>
               </div></template
             >
           </div>
@@ -396,6 +464,9 @@ defineExpose({ dirty });
       <aside class="editor-options">
         <section v-if="resource === 'articles'" class="admin-panel option-panel">
           <h2>{{ text('Yayın ayarları', 'Publication') }}</h2>
+          <UFormField v-if="canPublish" label="Publish at" hint="Leave empty to publish immediately"
+            ><UInput v-model="scheduleValue" type="datetime-local" class="w-full"
+          /></UFormField>
           <UFormField :label="text('Durum', 'Status')"
             ><USelect
               v-model="draft.status"
@@ -407,7 +478,30 @@ defineExpose({ dirty });
               class="w-full"
               :disabled="locked" /></UFormField
           ><UFormField :label="text('Kategori', 'Category')"
-            ><USelect v-model="categoryValue" :items="categoryOptions" class="w-full" /></UFormField
+            ><USelect v-model="categoryValue" :items="categoryOptions" class="w-full" /><UButton
+              size="xs"
+              variant="link"
+              class="mt-1"
+              icon="i-lucide-plus"
+              @click="taxonomyKind = 'categories'"
+              >Create category</UButton
+            ></UFormField
+          ><UFormField label="Tags"
+            ><USelectMenu
+              v-model="draft.tagIds"
+              multiple
+              :items="tagOptions"
+              value-key="value"
+              placeholder="Select tags"
+              class="w-full"
+            /><UButton
+              size="xs"
+              variant="link"
+              class="mt-1"
+              icon="i-lucide-plus"
+              @click="taxonomyKind = 'tags'"
+              >Create tag</UButton
+            ></UFormField
           ><UFormField :label="text('Yazar', 'Author')"
             ><USelect v-model="attorneyValue" :items="attorneyOptions" class="w-full" /></UFormField
           ><UFormField :label="text('Okuma süresi (dakika)', 'Reading time (minutes)')"
@@ -421,7 +515,7 @@ defineExpose({ dirty });
           ><USwitch
             v-model="draft.featured"
             :label="text('Öne çıkan makale', 'Featured article')"
-          />
+          /><USwitch v-model="draft.commentsEnabled" label="Allow comments" />
         </section>
         <section v-if="resource !== 'faqs'" class="admin-panel option-panel">
           <h2>{{ text('Sayfa adresi', 'Page address') }}</h2>
@@ -462,11 +556,12 @@ defineExpose({ dirty });
               :model-value="draft.photo ?? ''"
               @update:model-value="draft.photo = $event"
               class="w-full" /></UFormField
-          ><NuxtLink
-            :to="localePath('/admin/media')"
-            target="_blank"
-            class="text-sm text-gold-700 underline"
-            >{{ text('Medya kütüphanesini aç', 'Open media library') }}</NuxtLink
+          ><UButton
+            icon="i-lucide-images"
+            variant="outline"
+            color="neutral"
+            @click="coverPicker = true"
+            >Choose or upload image</UButton
           >
           <div class="cover-choices">
             <button
@@ -502,6 +597,12 @@ defineExpose({ dirty });
               class="w-full" /></UFormField
           ><USwitch v-model="draft.active" :label="text('Profil yayında', 'Profile visible')" />
         </section>
+        <section v-if="resource === 'pages'" class="admin-panel option-panel">
+          <h2>Page content</h2>
+          <p class="text-sm text-slate-500">
+            Translations appear on the website after saving. Use “home” for the homepage.
+          </p>
+        </section>
         <section v-if="resource === 'articles'" class="admin-panel option-panel seo-preview">
           <h2>{{ text('Arama önizlemesi', 'Search preview') }}</h2>
           <span>lexviora.com › blog › {{ draft.slug }}</span
@@ -516,6 +617,46 @@ defineExpose({ dirty });
       </aside>
     </div>
   </form>
+  <AdminMediaPicker
+    v-model:open="coverPicker"
+    kind="image"
+    @select="selectCover"
+  /><AdminBlogAiDialog
+    v-if="resource === 'articles'"
+    v-model:open="blogAiOpen"
+    :language="language"
+    :title="active.title || ''"
+    :excerpt="active.excerpt || ''"
+    :content="active.body || ''"
+    :categories="
+      categories.map((c) =>
+        String(c.translations[language]?.name || c.translations.en?.name || c.slug),
+      )
+    "
+    :tags="
+      tags.map((c) => String(c.translations[language]?.name || c.translations.en?.name || c.slug))
+    "
+    :apply="applyBlogAi"
+  /><UModal
+    v-model:open="taxonomyOpen"
+    :title="taxonomyKind === 'tags' ? 'Create tag' : 'Create category'"
+    description="This name is saved in the selected content language."
+    ><template #body
+      ><UFormField label="Name"
+        ><UInput
+          v-model="taxonomyName"
+          class="w-full"
+          :maxlength="200"
+          @keydown.enter.prevent="createTaxonomy" /></UFormField
+      ><UAlert v-if="taxonomyError" :title="taxonomyError" color="error" class="mt-3" /><UButton
+        class="mt-4"
+        :loading="taxonomyBusy"
+        :disabled="!taxonomyName.trim()"
+        @click="createTaxonomy"
+        >Create</UButton
+      ></template
+    ></UModal
+  >
   <UModal
     v-model:open="aiOpen"
     :title="text('Yazı asistanınız', 'Your writing assistant')"
@@ -541,6 +682,13 @@ defineExpose({ dirty });
               },
             ]"
             class="w-full" /></UFormField
+        ><UFormField v-if="aiAction === 'translate'" label="Translate from">
+          <USelect
+            v-model="aiSource"
+            :items="aiSourceOptions"
+            placeholder="Add content in another language first"
+            class="w-full"
+          /> </UFormField
         ><UFormField :label="text('Konu veya yönlendirme', 'Topic or instructions')"
           ><UTextarea
             v-model="aiPrompt"
@@ -551,12 +699,14 @@ defineExpose({ dirty });
         /></UFormField>
         <p class="text-xs text-slate-500">
           {{ text('Çıktı dili:', 'Output language:') }}
-          {{ language === 'tr' ? 'Türkçe' : 'English' }}
+          {{ languages.find((item) => item.code === language)?.name || language.toUpperCase() }}
         </p>
         <UAlert v-if="aiError" :title="aiError" color="error" /><UButton
           icon="i-lucide-sparkles"
           :loading="aiBusy"
-          :disabled="aiAction === 'draft' && !aiPrompt.trim()"
+          :disabled="
+            (aiAction === 'draft' && !aiPrompt.trim()) || (aiAction === 'translate' && !aiSource)
+          "
           @click="generate"
           >{{ text('Oluştur', 'Generate') }}</UButton
         >

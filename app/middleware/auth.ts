@@ -4,7 +4,7 @@
  */
 import type { SessionUser } from '~/composables/use-auth';
 export default defineNuxtRouteMiddleware(async (to) => {
-  const localePath = useLocalePath();
+  const localePath = useContentLocalePath();
   const requestFetch = useRequestFetch();
   let session;
   try {
@@ -12,7 +12,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   } catch {
     throw createError({
       statusCode: 503,
-      statusMessage: 'Oturum servisine ulaşılamıyor. Lütfen tekrar deneyin.',
+      statusMessage: 'The session service is unavailable. Please try again.',
     });
   }
   const staffUser = useState<SessionUser | null>('staff-user', () => null);
@@ -21,10 +21,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return navigateTo({ path: localePath('/admin/login'), query: { redirect: to.fullPath } });
   }
   if (!['admin', 'editor'].includes(session.user.role || ''))
-    throw createError({ statusCode: 403, statusMessage: 'Bu alana erişim yetkiniz yok.' });
-  if (/\/admin\/users(?:\/|$)/.test(to.path) && session.user.role !== 'admin')
+    throw createError({ statusCode: 403, statusMessage: 'You do not have access to this area.' });
+  if (/\/admin\/(?:users|languages|newsletter|integrations)(?:\/|$)/.test(to.path) && session.user.role !== 'admin')
     throw createError({
       statusCode: 403,
-      statusMessage: 'Bu alana yalnızca yöneticiler erişebilir.',
+      statusMessage: 'Only administrators can access this area.',
     });
 });

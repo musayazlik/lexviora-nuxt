@@ -1,13 +1,12 @@
 import type { ContentLocale } from '#shared/types/content';
 import type { MaybeRefOrGetter } from 'vue';
+import { languageTag } from '#shared/languages';
 import {
   absoluteImage,
   canonicalPath,
   isIndexablePath,
-  languageTags,
   localizedPath,
   seoDate,
-  seoLocales,
   seoText,
   siteDescriptions,
   socialImages,
@@ -29,26 +28,30 @@ interface PageSeoOptions {
 
 export function usePageSeo(input: MaybeRefOrGetter<PageSeoOptions>) {
   const route = useRoute();
-  const { locale } = useI18n();
+  const { locale, language, languages } = useContentLanguage();
   const config = useRuntimeConfig();
   const meta = computed(() => {
     const options = toValue(input);
-    const lang: ContentLocale = locale.value === 'tr' ? 'tr' : 'en';
+    const lang: ContentLocale = locale.value;
     const origin = config.public.siteUrl;
     const path = canonicalPath(route.path, lang);
     const url = new URL(path, origin).href;
     const title =
       options.title ||
       (lang === 'tr' ? 'Lexviora | Hukuk ve Danışmanlık' : 'Lexviora | Legal & Advisory');
-    const description = seoText(options.description) || siteDescriptions[lang];
+    const description =
+      seoText(options.description) || siteDescriptions[lang] || siteDescriptions.en!;
     const image = absoluteImage(options.image, origin, lang);
-    const brandImage = image === new URL(socialImages[lang], origin).href;
+    const brandImage = image === new URL(socialImages[lang] || socialImages.en!, origin).href;
     const imageAlt = brandImage
       ? lang === 'tr'
         ? 'Lexviora Hukuk ve Danışmanlık — Hukuka özen. Geleceğe güven.'
         : 'Lexviora Legal & Advisory — Care in law. Trust in tomorrow.'
       : options.imageAlt || title;
-    const locales = options.availableLocales || seoLocales;
+    const enabledLocales = languages.value.map((item) => item.code);
+    const locales = (options.availableLocales || enabledLocales).filter((code) =>
+      enabledLocales.includes(code),
+    );
     const indexable = isIndexablePath(route.path) && !route.query.q && !route.query.category;
     return {
       ...options,
@@ -64,6 +67,13 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeoOptions>) {
       locales,
       indexable,
     };
+  });
+  const pageLanguages = useState<{ path: string; locales: string[] } | null>(
+    'page-languages',
+    () => null,
+  );
+  watchEffect(() => {
+    pageLanguages.value = { path: route.path, locales: meta.value.locales };
   });
 
   useRobotsRule(
@@ -86,11 +96,11 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeoOptions>) {
     ogDescription: () => meta.value.description,
     ogType: () => meta.value.type || 'website',
     ogUrl: () => meta.value.url,
-    ogLocale: () => languageTags[meta.value.lang].replace('-', '_'),
+    ogLocale: () => languageTag(meta.value.lang).replace('-', '_'),
     ogLocaleAlternate: () =>
       meta.value.locales
         .filter((lang) => lang !== meta.value.lang)
-        .map((lang) => languageTags[lang].replace('-', '_')),
+        .map((lang) => languageTag(lang).replace('-', '_')),
     ogImage: () => meta.value.image,
     ogImageSecureUrl: () => (meta.value.image.startsWith('https:') ? meta.value.image : undefined),
     ogImageAlt: () => meta.value.imageAlt,
@@ -133,7 +143,7 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeoOptions>) {
         url: new URL('/', m.origin).href,
         name: 'Lexviora',
         publisher: { '@id': organizationId },
-        inLanguage: seoLocales.map((lang) => languageTags[lang]),
+        inLanguage: languages.value.map((item) => languageTag(item.code)),
       },
       {
         '@type': m.type === 'profile' ? 'ProfilePage' : 'WebPage',
@@ -141,7 +151,7 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeoOptions>) {
         url: m.url,
         name: m.title,
         description: m.description,
-        inLanguage: languageTags[m.lang],
+        inLanguage: languageTag(m.lang),
         isPartOf: { '@id': websiteId },
         about: { '@id': organizationId },
         primaryImageOfPage: {
@@ -184,7 +194,7 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeoOptions>) {
         description: m.description,
         image: [m.image],
         url: m.url,
-        inLanguage: languageTags[m.lang],
+        inLanguage: languageTag(m.lang),
         mainEntityOfPage: { '@id': webpageId },
         publisher: { '@id': organizationId },
         ...(m.author ? { author: { '@type': 'Person', name: m.author } } : {}),
@@ -203,12 +213,12 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeoOptions>) {
       });
       graph[2]!.mainEntity = { '@id': `${m.url}#person` };
     }
-    const languages: { locale: ContentLocale; hreflang: string }[] = m.locales.map((lang) => ({
+    const alternates: { locale: ContentLocale; hreflang: string }[] = m.locales.map((lang) => ({
       locale: lang,
-      hreflang: languageTags[lang],
+      hreflang: languageTag(lang),
     }));
-    if (m.locales.includes('en')) languages.push({ locale: 'en', hreflang: 'x-default' });
-    const alternate = languages.map((lang) => ({
+    if (m.locales.includes('en')) alternates.push({ locale: 'en', hreflang: 'x-default' });
+    const alternate = alternates.map((lang) => ({
       key: `alternate-${lang.hreflang}`,
       rel: 'alternate' as const,
       type: 'text/html',
@@ -216,7 +226,7 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeoOptions>) {
       href: new URL(canonicalPath(route.path, lang.locale), m.origin).href,
     }));
     return {
-      htmlAttrs: { lang: languageTags[m.lang] },
+      htmlAttrs: { lang: languageTag(m.lang), dir: language.value?.direction || 'ltr' },
       link: [{ key: 'canonical', rel: 'canonical', href: m.url }, ...alternate],
       script: m.indexable
         ? [

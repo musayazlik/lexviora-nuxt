@@ -4,6 +4,24 @@ export const contentDefinitions: Record<
   Resource,
   { tr: string; en: string; descriptionTr: string; descriptionEn: string; fields: ContentField[] }
 > = {
+  tags: {
+    tr: 'Etiketler',
+    en: 'Tags',
+    descriptionTr: '',
+    descriptionEn: 'Connect articles with meaningful topics.',
+    fields: [{ key: 'name', tr: 'Etiket adı', en: 'Tag name' }],
+  },
+  pages: {
+    tr: 'Sayfalar',
+    en: 'Pages',
+    descriptionTr: '',
+    descriptionEn: 'Edit website pages in each content language. Use “home” for the homepage.',
+    fields: [
+      { key: 'title', tr: 'Başlık', en: 'Page title' },
+      { key: 'excerpt', tr: 'Açıklama', en: 'Introduction', type: 'textarea' },
+      { key: 'body', tr: 'İçerik', en: 'Page content', type: 'rich' },
+    ],
+  },
   articles: {
     tr: 'Makaleler',
     en: 'Articles',

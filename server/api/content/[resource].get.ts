@@ -1,5 +1,5 @@
 import { publicContent } from '../../utils/content';
 export default defineEventHandler(async (event) => {
-  const locale = getQuery(event).locale === 'tr' ? 'tr' : 'en';
+  const { code: locale } = await requireContentLanguage(getQuery(event).locale || 'en');
   return publicContent(getRouterParam(event, 'resource')!, locale);
 });

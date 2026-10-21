@@ -135,6 +135,9 @@ for (const locale of ['en', 'tr']) {
       const footer = $('footer.site-footer').toString();
       for (const [name, html] of Object.entries({ header, footer })) {
         const fragment = load(html, {}, false);
+        fragment('.language-switch').replaceWith(
+          '<public-language-select></public-language-select>',
+        );
         fragment('[data-language]').each((_, el) =>
           fragment(el)
             .removeAttr('to')
@@ -142,7 +145,7 @@ for (const locale of ['en', 'tr']) {
         );
         await writeFile(
           resolve(root, `app/components/reference/${locale}/${name}.vue`),
-          `<script setup lang="ts">\nconst switchLocalePath = useSwitchLocalePath();\n</script>\n<template>\n<div>${fragment.html()}</div>\n</template>\n`,
+          `<script setup lang="ts">\nconst switchLocalePath = useContentSwitchLocalePath();\n</script>\n<template>\n<div>${fragment.html()}</div>\n</template>\n`,
         );
       }
     }

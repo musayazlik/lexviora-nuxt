@@ -7,8 +7,10 @@ import {
 } from '../../../shared/seo';
 import type { SeoSitemapUrl } from '../../../shared/seo';
 import { listContent } from '../../utils/content';
+import { listLanguages } from '../../utils/languages';
 
 export default defineSitemapEventHandler(async () => {
+  const enabled = (await listLanguages()).filter((item) => item.enabled).map((item) => item.code);
   const paths = new Set(
     Object.values(reference)
       .map((entry) => entry.en.route)
@@ -19,7 +21,7 @@ export default defineSitemapEventHandler(async () => {
           !/^\/(?:blog|attorneys|practice-areas)\//.test(path),
       ),
   );
-  const urls: SeoSitemapUrl[] = [...paths].flatMap((path) => sitemapEntries(path));
+  const urls: SeoSitemapUrl[] = [...paths].flatMap((path) => sitemapEntries(path, enabled));
   // Read live published records: removed pages and drafts must never be indexed.
   // Let database errors fail the request instead of caching a misleading partial sitemap.
   const resources = ['articles', 'practice-areas', 'attorneys'] as const;
@@ -30,12 +32,28 @@ export default defineSitemapEventHandler(async () => {
       if (
         !row.slug ||
         row.active === false ||
-        (resource === 'articles' && row.status !== 'published')
+        (resource === 'articles' && (row.status !== 'published' || (row.scheduledAt && new Date(row.scheduledAt).getTime() > Date.now())))
       )
         continue;
       const path = `/${resource === 'articles' ? 'blog' : resource}/${row.slug}`;
-      urls.push(...sitemapEntries(path, availableContentLocales(row), row.updatedAt));
+      urls.push(
+        ...sitemapEntries(
+          path,
+          availableContentLocales(row).filter((code) => enabled.includes(code)),
+          row.updatedAt,
+        ),
+      );
     }
+  }
+  for (const page of await listContent('pages')) {
+    const path = page.slug === 'home' ? '/' : '/' + page.slug;
+    if (page.active !== false && !paths.has(path) && isIndexablePath(path))
+      urls.push(
+        ...sitemapEntries(
+          path,
+          availableContentLocales(page).filter((code) => enabled.includes(code)),
+        ),
+      );
   }
   return urls;
 });

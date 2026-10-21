@@ -16,6 +16,7 @@ WORKDIR /app
 ENV NODE_ENV=production \
     HOST=0.0.0.0 \
     PORT=3000 \
+    MIGRATIONS_DIR=/app/migrations \
     NUXT_TELEMETRY_DISABLED=1
 
 COPY --from=build /app/.output ./.output

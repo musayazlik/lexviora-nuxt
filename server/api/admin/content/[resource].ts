@@ -10,15 +10,15 @@ export default defineEventHandler(async (event) => {
   const rawId = getQuery(event).id;
   const id = rawId === undefined ? undefined : Number(rawId);
   if (id !== undefined && (!Number.isSafeInteger(id) || id < 1))
-    throw createError({ statusCode: 400, statusMessage: 'Geçersiz kayıt.' });
+    throw createError({ statusCode: 400, statusMessage: 'Invalid record.' });
   if (event.method === 'DELETE') {
     await requireStaff(event, true);
-    if (!id) throw createError({ statusCode: 400, statusMessage: 'Kayıt seçin.' });
+    if (!id) throw createError({ statusCode: 400, statusMessage: 'Select a record.' });
     const result = await getPool().query(`DELETE FROM ${cfg.table} WHERE id = $1 RETURNING id`, [
       id,
     ]);
     if (!result.rowCount)
-      throw createError({ statusCode: 404, statusMessage: 'İçerik bulunamadı.' });
+      throw createError({ statusCode: 404, statusMessage: 'Content not found.' });
     return { success: true };
   }
   if (!['POST', 'PUT'].includes(event.method)) throw createError({ statusCode: 405 });
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
     if (input.status === 'published' || existing?.status === 'published')
       throw createError({
         statusCode: 403,
-        statusMessage: 'Yayınlanan içerikleri yalnızca yönetici değiştirebilir.',
+        statusMessage: 'Only administrators can change published content.',
       });
   }
   return saveContent(resource, input, id);

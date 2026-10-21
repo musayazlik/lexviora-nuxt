@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: false });
 const { text, errorText } = useAdmin();
-const localePath = useLocalePath();
+const localePath = useContentLocalePath();
 const route = useRoute();
 const email = ref('');
 const password = ref('');

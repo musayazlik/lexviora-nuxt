@@ -1,6 +1,3 @@
-<script setup lang="ts">
-const switchLocalePath = useSwitchLocalePath();
-</script>
 <template>
   <div>
     <div class="topbar" role="region" aria-label="Office contact information">
@@ -110,41 +107,7 @@ const switchLocalePath = useSwitchLocalePath();
             <path d="M6 18 18 6M6 6h12v12"></path>
           </svg>
         </nuxt-link>
-        <details class="language-switch">
-          <summary aria-label="Change language">
-            <svg
-              class="icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="9"></circle>
-              <path d="M3 12h18M12 3a18 18 0 0 1 0 18 18 18 0 0 1 0-18Z"></path>
-            </svg>
-            <span>EN</span>
-            <svg
-              class="language-chevron"
-              width="10"
-              height="10"
-              viewBox="0 0 12 12"
-              fill="none"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path d="m2 4 4 4 4-4"></path>
-            </svg>
-          </summary>
-          <div class="language-options">
-            <nuxt-link lang="en" hreflang="en" data-language="en" :to="switchLocalePath('en')"
-              >English<span aria-hidden="true">✓</span>
-            </nuxt-link>
-            <nuxt-link lang="tr" hreflang="tr" data-language="tr" :to="switchLocalePath('tr')"
-              >Türkçe<span aria-hidden="true"> </span>
-            </nuxt-link>
-          </div>
-        </details>
+        <PublicLanguageSelect />
       </div>
     </header>
   </div>

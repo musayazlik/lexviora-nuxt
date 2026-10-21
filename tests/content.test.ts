@@ -12,6 +12,9 @@ const suffix = randomUUID();
 const createdUsers: string[] = [];
 const articleSlug = 'integration-' + suffix;
 const contactEmail = `contact-${suffix}@example.test`;
+const customLocale = 'qaa-test' + suffix.slice(0, 4);
+const localeArticleSlug = 'language-' + suffix;
+const localePageSlug = 'language-page-' + suffix;
 let adminCookie = '',
   editorCookie = '',
   recordId = 0,
@@ -51,6 +54,9 @@ before(async () => {
 });
 after(async () => {
   await getPool().query('DELETE FROM articles WHERE slug = $1', [articleSlug]);
+  await getPool().query('DELETE FROM articles WHERE slug = $1', [localeArticleSlug]);
+  await getPool().query('DELETE FROM pages WHERE slug = $1', [localePageSlug]);
+  await getPool().query('DELETE FROM content_languages WHERE code = $1', [customLocale]);
   await getPool().query('DELETE FROM contact_messages WHERE email = $1', [contactEmail]);
   for (const id of createdUsers) await getPool().query('DELETE FROM "user" WHERE id = $1', [id]);
   if (uploadUrl)
@@ -73,6 +79,7 @@ test('all administration APIs reject unauthenticated requests', async () => {
     '/api/admin/messages',
     '/api/admin/users',
     '/api/admin/media',
+    '/api/admin/languages',
   ])
     assert.equal((await request(path)).response.status, 401, path);
 });
@@ -88,9 +95,138 @@ test('private registration is disabled and editor cannot manage users', async ()
   });
   assert.notEqual(result.response.status, 200);
 });
+
+test('administrators configure runtime languages and partial saves preserve other translations', async () => {
+  const catalogue = await request('/api/languages');
+  assert.equal(catalogue.response.status, 200);
+  for (const code of ['zh', 'es', 'en', 'hi', 'ar', 'ru', 'ja', 'de', 'tr'])
+    assert.ok(
+      catalogue.data.some((item: { code: string }) => item.code === code),
+      code,
+    );
+  const language = {
+    code: customLocale,
+    name: 'Integration language',
+    nativeName: 'Integration',
+    direction: 'rtl',
+    enabled: true,
+    sort: 999,
+  };
+  assert.equal(
+    (await request('/api/admin/languages', 'PUT', language, editorCookie)).response.status,
+    403,
+  );
+  assert.equal(
+    (await request('/api/admin/languages', 'PUT', { ...language, code: '../bad' }, adminCookie))
+      .response.status,
+    400,
+  );
+  assert.equal(
+    (await request('/api/admin/languages', 'PUT', language, adminCookie)).response.status,
+    200,
+  );
+  const created = await request(
+    '/api/admin/content/articles',
+    'POST',
+    {
+      slug: localeArticleSlug,
+      status: 'published',
+      translations: {
+        en: { title: 'English fixture' },
+        [customLocale]: { title: 'Custom language fixture', body: '<p>Translated content</p>' },
+        ja: { title: '法律について' },
+      },
+    },
+    adminCookie,
+  );
+  assert.equal(created.response.status, 200, JSON.stringify(created.data));
+  const updated = await request(
+    '/api/admin/content/articles?id=' + created.data.id,
+    'PUT',
+    { slug: localeArticleSlug, translations: { en: { title: 'Updated English fixture' } } },
+    adminCookie,
+  );
+  assert.equal(updated.response.status, 200);
+  assert.equal(updated.data.translations[customLocale].title, 'Custom language fixture');
+  assert.equal(updated.data.translations.ja.title, '法律について');
+  const publicRows = await request('/api/content/articles?locale=' + customLocale);
+  assert.equal(
+    publicRows.data.find((row: { slug: string }) => row.slug === localeArticleSlug).title,
+    'Custom language fixture',
+  );
+  const articlePage = await fetch(base + '/' + customLocale + '/blog/' + localeArticleSlug);
+  assert.equal(articlePage.status, 200);
+  assert.ok((await articlePage.text()).includes('Custom language fixture'));
+  const page = await request(
+    '/api/admin/content/pages',
+    'POST',
+    {
+      slug: localePageSlug,
+      active: true,
+      translations: {
+        [customLocale]: {
+          title: 'Custom public page',
+          body: '<p>Public page translation</p><script>bad()</script>',
+        },
+      },
+    },
+    adminCookie,
+  );
+  assert.equal(page.response.status, 200);
+  assert.equal(
+    (
+      await request(
+        '/api/admin/content/pages',
+        'POST',
+        { slug: 'law', translations: { en: { title: 'Reserved path' } } },
+        adminCookie,
+      )
+    ).response.status,
+    400,
+  );
+  const publicPage = await fetch(base + '/' + customLocale + '/' + localePageSlug);
+  assert.equal(publicPage.status, 200);
+  const html = await publicPage.text();
+  assert.ok(html.includes('Custom public page'));
+  assert.ok(html.includes('dir="rtl"'));
+  assert.ok(!html.includes('<script>bad()'));
+  assert.equal(
+    (await request('/api/admin/languages', 'PUT', { ...language, enabled: false }, adminCookie))
+      .response.status,
+    200,
+  );
+  assert.equal(
+    (await request('/api/content/articles?locale=' + customLocale)).response.status,
+    400,
+  );
+  assert.equal((await fetch(base + '/' + customLocale)).status, 404);
+  assert.equal(
+    (
+      await getPool().query(
+        'SELECT title FROM article_translations WHERE article_id = $1 AND locale = $2',
+        [created.data.id, customLocale],
+      )
+    ).rows[0].title,
+    'Custom language fixture',
+  );
+  const english = catalogue.data.find((item: { code: string }) => item.code === 'en');
+  assert.equal(
+    (await request('/api/admin/languages', 'PUT', { ...english, enabled: false }, adminCookie))
+      .response.status,
+    400,
+  );
+});
 test('admin creates bilingual draft, strips executable HTML, and keeps it private', async () => {
   article = {
     slug: articleSlug,
+    // These defaults are also sent by the shared content editor.
+    name: '',
+    email: '',
+    phone: '',
+    photo: '',
+    sort: 0,
+    icon: 'scale',
+    active: true,
     status: 'draft',
     featured: false,
     categoryId: null,
@@ -244,7 +380,9 @@ test('contact consent, persistence, rate limit and read status work end to end',
   ]);
   assert.ok(row.rows[0].read_at);
 });
-test('media upload validates file contents and serves uploaded images', async () => {
+test('media upload validates contents and requires configured remote storage', async (t) => {
+  if (process.env.UPLOADTHING_TOKEN || process.env.NUXT_UPLOADTHING_TOKEN)
+    return t.skip('Live uploads are excluded from integration tests.');
   const body = new FormData();
   body.append(
     'file',
@@ -257,11 +395,8 @@ test('media upload validates file contents and serves uploaded images', async ()
     body,
   });
   const data = await response.json();
-  assert.equal(response.status, 200, JSON.stringify(data));
-  uploadUrl = data.url;
-  const image = await fetch(base + uploadUrl);
-  assert.equal(image.status, 200);
-  assert.equal(image.headers.get('content-type'), 'image/webp');
+  assert.equal(response.status, 503, JSON.stringify(data));
+  assert.match(data.statusMessage, /UPLOADTHING_TOKEN/);
   const invalid = new FormData();
   invalid.append('file', new Blob(['<script>alert(1)</script>']), 'fake.png');
   assert.equal(

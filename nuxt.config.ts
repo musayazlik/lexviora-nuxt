@@ -10,7 +10,7 @@ export default defineNuxtConfig({
 
   modules: ['@nuxt/ui', '@nuxtjs/i18n', '@nuxt/image', '@nuxtjs/seo'],
 
-  css: ['~/assets/css/main.css', '~/assets/css/admin.css'],
+  css: ['~/assets/css/main.css', '~/assets/css/admin.css', '~/assets/css/content-languages.css', '~/assets/css/blog-editor.css'],
   ui: { fonts: false, colorMode: false },
 
   app: {
@@ -59,7 +59,8 @@ export default defineNuxtConfig({
   i18n: {
     baseUrl: siteUrl,
     defaultLocale: 'en',
-    strategy: 'prefix_except_default',
+    // Public routes use runtime content languages; the admin stays English.
+    strategy: 'no_prefix',
     locales: [
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
       { code: 'tr', language: 'tr-TR', name: 'Türkçe', file: 'tr.json' },

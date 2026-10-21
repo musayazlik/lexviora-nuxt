@@ -1,6 +1,6 @@
 export function usePublicInteractions() {
   const route = useRoute();
-  const { locale } = useI18n();
+  const { locale } = useContentLanguage();
   let controller: AbortController | undefined;
   function init() {
     controller?.abort();

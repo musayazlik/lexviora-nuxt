@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const { data: items } = await usePublicContent('attorneys');
-const { locale } = useI18n();
-const localePath = useLocalePath();
+const { locale } = useContentLanguage();
+const copy = usePublicCopy();
+const localePath = useContentLocalePath();
 </script>
 <template>
   <div class="team-grid">
@@ -29,10 +30,11 @@ const localePath = useLocalePath();
         <NuxtLink
           :to="localePath('/attorneys/' + item.slug)"
           class="round-link"
-          :aria-label="item.name + (locale === 'tr' ? ' profilini görüntüle' : ' view profile')"
+          :aria-label="copy.viewProfile + ': ' + item.name"
           ><UIcon name="i-lucide-arrow-up-right" class="icon"
         /></NuxtLink>
       </div>
     </article>
   </div>
+  <p v-if="!items.length" role="status" class="empty-state">{{ copy.empty }}</p>
 </template>

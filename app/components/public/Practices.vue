@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { data: items } = await usePublicContent('practice-areas');
-const localePath = useLocalePath();
+const copy = usePublicCopy();
+const localePath = useContentLocalePath();
 const icons: Record<string, string> = {
   family: 'users-round',
   commerce: 'briefcase-business',
@@ -24,4 +25,5 @@ const icons: Record<string, string> = {
       <UIcon name="i-lucide-arrow-up-right" class="icon practice-arrow"
     /></NuxtLink>
   </div>
+  <p v-if="!items.length" role="status" class="empty-state">{{ copy.empty }}</p>
 </template>

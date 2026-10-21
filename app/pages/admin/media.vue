@@ -5,10 +5,9 @@ const {
   data: files,
   refresh,
   error,
-} = await useFetch<Array<{ name: string; url: string; size: number; bundled: boolean }>>(
-  '/api/admin/media',
-  { default: () => [] },
-);
+} = await useFetch<
+  Array<{ name: string; url: string; size: number; bundled: boolean; mime?: string }>
+>('/api/admin/media', { default: () => [] });
 const upload = useTemplateRef<HTMLInputElement>('uploadInput');
 const uploading = ref(false);
 const toast = useToast();
@@ -19,8 +18,8 @@ async function onUpload(event: Event) {
   if (!file) return;
   uploading.value = true;
   try {
-    if (file.size > 5 * 1024 * 1024)
-      throw new Error(text('Görsel en fazla 5 MB olabilir.', 'Images must be 5 MB or smaller.'));
+    if (file.size > (file.type.startsWith('video/') ? 64 : 8) * 1024 * 1024)
+      throw new Error('Images must be 8 MB or smaller; videos must be 64 MB or smaller.');
     const body = new FormData();
     body.append('file', file);
     await $fetch('/api/admin/media', { method: 'POST', body });
@@ -66,12 +65,12 @@ async function copy(url: string) {
         </p>
       </div>
       <UButton icon="i-lucide-upload" :loading="uploading" size="lg" @click="upload?.click()">{{
-        text('Görsel yükle', 'Upload image')
+        text('Dosya yükle', 'Upload file')
       }}</UButton
       ><input
         ref="uploadInput"
         type="file"
-        accept="image/png,image/jpeg,image/webp,image/gif"
+        accept="image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm"
         class="hidden"
         @change="onUpload"
       />
@@ -84,15 +83,19 @@ async function copy(url: string) {
     />
     <div class="media-info">
       <UIcon name="i-lucide-image" /><span>{{ files.length }} {{ text('görsel', 'images') }}</span
-      ><small>PNG, JPEG, WebP, GIF · {{ text('En fazla 5 MB', 'Up to 5 MB') }}</small>
+      ><small>UploadThing · Images up to 8 MB · Videos up to 64 MB</small>
     </div>
     <div class="media-grid">
       <article v-for="file in files" :key="file.url" class="media-card">
         <a :href="file.url" target="_blank" rel="noopener"
-          ><img :src="file.url" :alt="file.name" loading="lazy"
+          ><video v-if="file.mime?.startsWith('video/')" :src="file.url" preload="metadata" /><img
+            v-else
+            :src="file.url"
+            :alt="file.name"
+            loading="lazy"
         /></a>
         <div>
-          <strong>{{ file.bundled ? file.name : text('Yüklenen görsel', 'Uploaded image') }}</strong
+          <strong>{{ file.name }}</strong
           ><small>{{
             file.bundled
               ? text('Marka koleksiyonu', 'Brand collection')

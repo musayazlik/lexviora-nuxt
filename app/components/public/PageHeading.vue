@@ -1,13 +1,14 @@
 <script setup lang="ts">
 defineProps<{ title: string; description?: string }>();
-const { locale } = useI18n();
-const localePath = useLocalePath();
+const { locale } = useContentLanguage();
+const copy = usePublicCopy();
+const localePath = useContentLocalePath();
 </script>
 <template>
   <section class="page-heading">
     <div class="container">
-      <nav class="breadcrumbs" :aria-label="locale === 'tr' ? 'Sayfa yolu' : 'Breadcrumb'">
-        <NuxtLink :to="localePath('/')">{{ locale === 'tr' ? 'Ana sayfa' : 'Home' }}</NuxtLink
+      <nav class="breadcrumbs" :aria-label="copy.breadcrumb">
+        <NuxtLink :to="localePath('/')">{{ copy.home }}</NuxtLink
         ><UIcon name="i-lucide-chevron-right" class="icon" /><span aria-current="page">{{
           title
         }}</span>

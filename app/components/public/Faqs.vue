@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { data: items } = await usePublicContent('faqs');
+const copy = usePublicCopy();
 </script>
 <template>
   <div class="faq-list">
@@ -10,4 +11,5 @@ const { data: items } = await usePublicContent('faqs');
       <div class="faq-answer" v-html="item.answer" />
     </details>
   </div>
+  <p v-if="!items.length" role="status" class="empty-state">{{ copy.empty }}</p>
 </template>

@@ -1,12 +1,23 @@
 import type { ContentLocale, ContentRecord } from './types/content';
+import { languageTag, localeCodePattern, reservedLocaleCodes } from './languages';
 
 export const seoLocales = ['en', 'tr'] as const;
-export const languageTags = { en: 'en-US', tr: 'tr-TR' } as const;
-export const socialImages = {
+export const languageTags: Record<string, string> = {
+  en: 'en-US',
+  tr: 'tr-TR',
+  zh: 'zh-CN',
+  es: 'es',
+  hi: 'hi',
+  ar: 'ar',
+  ru: 'ru',
+  ja: 'ja',
+  de: 'de',
+};
+export const socialImages: Record<string, string> = {
   en: '/assets/social/lexviora-share-en.jpg',
   tr: '/assets/social/lexviora-share-tr.jpg',
 } as const;
-export const siteDescriptions = {
+export const siteDescriptions: Record<string, string> & { en: string; tr: string } = {
   en: 'Lexviora offers legal and advisory services in Istanbul. Explore our practice areas, meet our lawyers and read practical legal insights.',
   tr: 'Lexviora, İstanbul merkezli hukuk ve danışmanlık hizmetleri sunar. Faaliyet alanlarımızı, avukatlarımızı ve güncel hukuk yazılarımızı keşfedin.',
 };
@@ -123,12 +134,19 @@ export const pageSeo: Record<
 };
 
 export function unlocalizedPath(path: string): string {
-  return (path.split(/[?#]/)[0] || '/').replace(/^\/tr(?=\/|$)/, '').replace(/\/+$/, '') || '/';
+  const clean = path.split(/[?#]/)[0] || '/';
+  const first = clean.split('/')[1] || '';
+  return (
+    (localeCodePattern.test(first) && !reservedLocaleCodes.includes(first)
+      ? clean.slice(first.length + 1)
+      : clean
+    ).replace(/\/+$/, '') || '/'
+  );
 }
 
 export function localizedPath(path: string, locale: ContentLocale): string {
   const clean = unlocalizedPath(path);
-  return locale === 'tr' ? `/tr${clean === '/' ? '' : clean}` : clean;
+  return locale !== 'en' ? `/${locale}${clean === '/' ? '' : clean}` : clean;
 }
 
 export function canonicalPath(path: string, locale: ContentLocale): string {
@@ -138,7 +156,9 @@ export function canonicalPath(path: string, locale: ContentLocale): string {
 }
 
 export function isIndexablePath(path: string): boolean {
-  return !/^\/(?:admin|api|search|documentation|404)(?:\/|$)/.test(unlocalizedPath(path));
+  return !/^\/(?:admin|api|search|documentation|newsletter|404)(?:\/|$)/.test(
+    unlocalizedPath(path),
+  );
 }
 
 export function seoText(value: string | undefined | null, limit = 170): string {
@@ -159,12 +179,12 @@ export function absoluteImage(
   locale: ContentLocale,
 ): string {
   try {
-    const image = new URL(value || socialImages[locale], siteUrl);
+    const image = new URL(value || socialImages[locale] || socialImages.en!, siteUrl);
     if (['https:', 'http:'].includes(image.protocol)) return image.href;
   } catch {
     /* Invalid media URLs use the public brand card. */
   }
-  return new URL(socialImages[locale], siteUrl).href;
+  return new URL(socialImages[locale] || socialImages.en!, siteUrl).href;
 }
 
 export function seoDate(value: string | null | undefined): string | undefined {
@@ -174,7 +194,7 @@ export function seoDate(value: string | null | undefined): string | undefined {
 }
 
 export function availableContentLocales(record: ContentRecord): ContentLocale[] {
-  return seoLocales.filter((locale) =>
+  return Object.keys(record.translations).filter((locale) =>
     Object.values(record.translations[locale] || {}).some(
       (value) => typeof value === 'string' && value.trim(),
     ),
@@ -193,7 +213,7 @@ export function sitemapEntries(
   modified?: string | null,
 ): SeoSitemapUrl[] {
   const alternatives: SeoSitemapUrl['alternatives'] = locales.map((locale) => ({
-    hreflang: languageTags[locale],
+    hreflang: languageTag(locale),
     href: localizedPath(path, locale),
   }));
   if (locales.includes('en'))

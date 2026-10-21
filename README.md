@@ -5,15 +5,15 @@ tasarımın uygulamaya dönüştürülmüş hali.
 
 ## Stack
 
-| Katman     | Teknoloji                                          |
-| ---------- | -------------------------------------------------- |
-| Framework  | Nuxt 4 (Vue 3, TypeScript)                         |
-| UI         | Nuxt UI v4 + Tailwind CSS v4 (Lexviora paleti ile) |
-| Auth       | Better Auth (admin / editor rolleri)               |
-| Veritabanı | PostgreSQL + Drizzle ORM                           |
-| i18n       | @nuxtjs/i18n (EN varsayılan, TR `/tr`)             |
-| SEO        | @nuxtjs/seo + @nuxt/image                          |
-| Deploy     | Docker image → Dokploy                             |
+| Katman      | Teknoloji                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Framework   | Nuxt 4 (Vue 3, TypeScript)                                             |
+| UI          | Nuxt UI v4 + Tailwind CSS v4 (Lexviora paleti ile)                     |
+| Auth        | Better Auth (admin / editor rolleri)                                   |
+| Veritabanı  | PostgreSQL + Drizzle ORM                                               |
+| İçerik dili | Veritabanından yönetilen diller; EN varsayılan, diğer diller `/{code}` |
+| SEO         | @nuxtjs/seo + @nuxt/image                                              |
+| Deploy      | Docker image → Dokploy                                                 |
 
 ## Geliştirme
 
@@ -37,6 +37,10 @@ pnpm run dev
 
 - Site: http://localhost:3000 (EN), http://localhost:3000/tr (TR)
 - Admin: http://localhost:3000/admin (giriş: `/admin/login`)
+
+Panel arayüzü İngilizcedir. **Languages** bölümünde Çince (`zh`), İspanyolca (`es`), İngilizce (`en`), Hintçe (`hi`), Arapça (`ar`), Rusça (`ru`), Japonca (`ja`), Almanca (`de`) ve Türkçe (`tr`) hazırdır. Yeni BCP 47 dil kodları panelden eklenebilir; public dil yolları için yeniden derleme gerekmez. Bir dili gizlemek çevirileri silmez. İngilizce varsayılan public dil olarak etkin kalır.
+
+İçerik editörü tüm çevirileri tek API yanıtıyla alır. **Content language** seçimi yalnızca yerel taslağı değiştirir; farklı dillerdeki kaydedilmemiş alanlar korunur. AI çevirisinde kaynak dil ayrıca seçilir. **Pages** bölümündeki `home` ana sayfayı, diğer slug değerleri ilgili public sayfayı düzenler. İngilizce/Türkçe referans şablonlar, ilgili sayfa için kaydedilmiş bir içerik yoksa kullanılmaya devam eder. Diğer hazır dillerin public gezinme metinleri yerelleştirilmiştir; yeni eklenen dillerde arayüz metinleri İngilizceye döner ve içerik seçilen dilde düzenlenir. Mevcut makaleler kendiliğinden çevrilmez; eksik çeviriler başka bir dilde içerik gibi sunulmaz. Arapça ve sağdan sola ayarlanmış ek diller RTL destekler.
 
 ## Komutlar
 
@@ -138,3 +142,81 @@ yayın kuralları production build üzerinde doğrulanmalıdır.
 Boş yerel test veritabanında `SEO_TEST_FIXTURES=true` ile entegrasyon kontrolü
 çalıştırılabilir; bu mod test makalesi, avukat ve faaliyet alanı oluşturup test
 sonunda siler. Bu değişkeni canlı ortamda kullanmayın.
+
+## Blog, medya ve e-posta
+
+`cmsmotive` blog oluşturma akışı Nuxt/Vue'ya uyarlandı. Articles menüsünde Posts,
+Categories, Tags ve Comments bulunur. Panel İngilizcedir; içerik dilini seçmek
+aynı kaydın bellekteki çevirisini değiştirir. Dil değişiminde tekrar API isteği
+yapılmaz. Etiketler ve kategoriler editör içinden de oluşturulabilir. Yayın
+tarihi gelecekte olan yazılar o tarihe kadar public API ve sitemap'te görünmez.
+
+Tiptap editörü tablo, görev listesi, hizalama, renk, alt/üst simge, Markdown
+yapıştırma, HTML kaynak görünümü, tam ekran, boyutlandırılabilir görseller,
+yerel video ve YouTube desteği içerir. Görsel/video yapıştırma ve sürükleme
+UploadThing'e yükler. Sunucu, dosya imzasını kontrol eder; görselleri en fazla
+2400 piksele indirip WebP'ye dönüştürür. Yeni yüklemeler için yerel disk yedeği
+yoktur; eski `/media` dosyaları okunmaya devam eder.
+
+Sunucunun `.env` / Dokploy runtime değişkenleri:
+
+```dotenv
+OPENROUTER_API_KEY=
+UPLOADTHING_TOKEN=
+PLUNK_SECRET_KEY=
+PLUNK_FROM_EMAIL=
+PLUNK_CONTACT_TO_EMAIL=
+PLUNK_WEBHOOK_SECRET=
+```
+
+Anahtarlar yalnızca sunucuda kullanılır. Admin → Integrations bağlantı durumunu,
+AI varsayılanlarını, bildirim alıcısını ve gönderen adını yönetir. Plunk'ta
+`PLUNK_FROM_EMAIL` alanının domaini doğrulanmış olmalıdır.
+
+AI, OpenRouter kataloğundan yazı/görsel modeli seçer. Web araştırması açıksa
+önce kaynaklı araştırma yapar, ardından metni ve kaynakçayı üretir. Kaynaksız
+araştırma yazıya dönüştürülmez. Başlık, özet, içerik, kategori, etiket, iki ara
+görsel ve kapak ayrı seçilebilir. Görseller UploadThing'e kaydedilir; görsel
+başarısızsa yazı sonucu ve uyarı korunur. Sonuç seçilen içerik diline uygulanır
+ve taslak olarak kaydedilir. Mevcut yazı yeniden yazılırken de durum taslağa
+döner. Yayına almak ayrı bir yönetici işlemidir.
+
+Bülten formu dokuz yerleşik dilde görünür. Açık onay alınır, 24 saat geçerli
+bir e-posta onay bağlantısı gönderilir. Link sayfasındaki düğme aboneliği
+doğrular; e-posta tarayıcılarının GET isteği aboneliği etkinleştirmez. Tokenlar
+abone tablosunda SHA-256 özeti olarak saklanır. Onaylanan okuyucular Plunk'a
+`subscribed: true`, diğerleri `false` olarak eşitlenir; `locale`, `name` ve
+`source` kişi alanları aktarılır. Kampanyaları Plunk'ta oluşturup `locale` ile
+hedefleyin. Gönderim günlüğü, hata ve yeniden deneme işlemleri Newsletter
+sayfasındadır. Yarım kalan gönderim beş dakika sonra yeniden denenebilir.
+
+Plunk'ta `contact.unsubscribed` olayına bir workflow oluşturun. Webhook adımı:
+
+- URL: `https://alanadiniz.com/api/webhooks/plunk`
+- Method: `POST`
+- Header: `Authorization: Bearer <PLUNK_WEBHOOK_SECRET ile aynı değer>`
+- Body: boş bırakın (Plunk'ın standart `contact` payload'ı kullanılır).
+
+Bu akış, Plunk üzerinden çıkışları ve bounce/complaint nedeniyle kapanan
+abonelikleri yerel tabloya yansıtır. Alıcı tekrar Plunk'a istek göndermez.
+İletişim formu da Plunk üzerinden ekip bildirimi ve ziyaretçi alındısı
+gönderebilir; mesaj veritabanına kaydedildikten sonra e-posta işlenir.
+
+Şema: `pnpm db:migrate`. Çalışan geliştirme sunucusuna karşı kontroller:
+
+```sh
+pnpm typecheck
+pnpm test:integration
+pnpm test:blog
+pnpm test:seo
+```
+
+`pnpm build` sonrasında `pnpm test:providers`, üretim sunucusunu boş bir yerel
+portta başlatıp AI üretim → taslak kaydı, bülten formu → Türkçe onay e-postası
+→ abonelikten çıkış ve Plunk webhook akışlarını taklit sağlayıcılarla doğrular.
+Canlı servis anahtarları bu test sürecinde yerel test değerleriyle değiştirilir.
+
+Blog testleri geçici kullanıcı/içerik oluşturup temizler. AI ve mail sağlayıcı
+testleri yerel taklit servislere gider; canlı AI çağrısı, e-posta ve UploadThing
+yüklemesi testlerde yapılmaz. Gerçek anahtarlar eksikken arayüz bağlantı
+durumunu ve yapılandırma hatasını gösterir.

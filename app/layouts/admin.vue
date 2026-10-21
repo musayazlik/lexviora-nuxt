@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { adminNavigation } from '~/utils/admin-navigation';
 const route = useRoute();
-const localePath = useLocalePath();
-const switchLocalePath = useSwitchLocalePath();
-const { locale } = useI18n();
+const localePath = useContentLocalePath();
 const { user, text, canPublish, errorText } = useAdmin();
 const open = ref(false);
 function handleSidebarKeys(event: KeyboardEvent) {
@@ -37,6 +35,7 @@ onMounted(() => document.addEventListener('keydown', handleSidebarKeys));
 onUnmounted(() => document.removeEventListener('keydown', handleSidebarKeys));
 const searchOpen = ref(false);
 const search = ref('');
+const articlesExpanded = ref(true);
 const toast = useToast();
 const groups = computed(() =>
   adminNavigation.map((group) => ({
@@ -46,7 +45,7 @@ const groups = computed(() =>
 );
 const current = computed(() =>
   groups.value
-    .flatMap((g) => g.items)
+    .flatMap((g) => g.items.flatMap((i) => i.children || [i]))
     .filter(
       (i) =>
         route.path === localePath(i.to) ||
@@ -56,7 +55,7 @@ const current = computed(() =>
 );
 const commands = computed(() =>
   groups.value
-    .flatMap((g) => g.items)
+    .flatMap((g) => g.items.flatMap((i) => i.children || [i]))
     .filter((i) => text(i.tr, i.en).toLocaleLowerCase().includes(search.value.toLocaleLowerCase())),
 );
 const active = (to: string) =>
@@ -68,7 +67,10 @@ watch(
     searchOpen.value = false;
   },
 );
-useHead({ htmlAttrs: { lang: locale }, meta: [{ name: 'robots', content: 'noindex, nofollow' }] });
+useHead({
+  htmlAttrs: { lang: 'en', dir: 'ltr' },
+  meta: [{ name: 'robots', content: 'noindex, nofollow' }],
+});
 async function signOut() {
   try {
     const result = await authClient.signOut();
@@ -117,15 +119,49 @@ async function signOut() {
       >
         <div v-for="group in groups" :key="group.en" class="admin-nav-group">
           <p>{{ text(group.tr, group.en) }}</p>
-          <NuxtLink
-            v-for="item in group.items"
-            :key="item.to"
-            :to="localePath(item.to)"
-            :class="{ active: active(item.to) }"
-            :aria-current="active(item.to) ? 'page' : undefined"
-            ><UIcon :name="'i-lucide-' + item.icon" /><span>{{ text(item.tr, item.en) }}</span
-            ><UIcon v-if="active(item.to)" name="i-lucide-chevron-right" class="nav-chevron"
-          /></NuxtLink>
+          <template v-for="item in group.items" :key="item.to">
+            <button
+              v-if="item.children"
+              class="admin-nav-parent"
+              type="button"
+              :aria-expanded="articlesExpanded"
+              aria-controls="articles-submenu"
+              :class="{ 'has-active-child': item.children.some((c) => active(c.to)) }"
+              @click="articlesExpanded = !articlesExpanded"
+            >
+              <UIcon :name="'i-lucide-' + item.icon" /><span>{{ item.en }}</span
+              ><UIcon
+                name="i-lucide-chevron-down"
+                class="nav-chevron"
+                :class="{ 'rotate-180': articlesExpanded }"
+              />
+            </button>
+            <div
+              v-if="item.children && articlesExpanded"
+              id="articles-submenu"
+              class="admin-submenu"
+            >
+              <NuxtLink
+                v-for="child in item.children"
+                :key="child.to"
+                :to="localePath(child.to)"
+                :class="{ active: active(child.to) }"
+                :aria-current="active(child.to) ? 'page' : undefined"
+                ><UIcon :name="'i-lucide-' + child.icon" /><span>{{ child.en }}</span></NuxtLink
+              >
+            </div>
+            <NuxtLink
+              v-else-if="!item.children"
+              :key="item.to"
+              :to="localePath(item.to)"
+              :class="{ active: active(item.to) }"
+              :aria-current="active(item.to) ? 'page' : undefined"
+              ><UIcon :name="'i-lucide-' + item.icon" /><span>{{ text(item.tr, item.en) }}</span
+              ><UIcon
+                v-if="active(item.to)"
+                name="i-lucide-chevron-right"
+                class="nav-chevron" /></NuxtLink
+          ></template>
         </div>
       </nav>
       <div class="sidebar-bottom">
@@ -178,13 +214,7 @@ async function signOut() {
             color="neutral"
             :aria-label="text('Menüde ara', 'Search navigation')"
             @click="searchOpen = true"
-          /><UButton
-            :to="switchLocalePath(locale === 'tr' ? 'en' : 'tr')"
-            variant="ghost"
-            color="neutral"
-            class="uppercase"
-            >{{ locale === 'tr' ? 'EN' : 'TR' }}</UButton
-          ><span class="topbar-divider" /><UAvatar :alt="user?.name || 'L'" size="sm" />
+          /><span class="topbar-divider" /><UAvatar :alt="user?.name || 'L'" size="sm" />
         </div>
       </header>
       <main id="admin-main" class="admin-main" tabindex="-1"><slot /></main>

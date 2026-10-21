@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const { locale } = useI18n();
+const { locale } = useContentLanguage();
+const copy = usePublicCopy();
+const { data: pages } = await usePublicContent('pages');
+const page = computed(() => pages.value.find((item) => item.slug === 'blog'));
 const route = useRoute();
 const { data: categories } = await usePublicContent('categories');
 const query = ref(String(route.query.q || ''));
@@ -16,43 +19,33 @@ const title = computed(() =>
     ? locale.value === 'tr'
       ? 'Arama sonuçları'
       : 'Search results'
-    : locale.value === 'tr'
-      ? 'Hukuk günlüğü'
-      : 'The legal journal',
+    : page.value?.title || copy.value.journal,
 );
 usePageSeo(() => ({
   title: title.value + ' | Lexviora',
   description:
-    locale.value === 'tr'
+    page.value?.excerpt ||
+    (locale.value === 'tr'
       ? 'Lexviora hukuk günlüğü: aile, ticaret, iş ve gayrimenkul hukuku üzerine makaleler, pratik rehberler ve güncel değerlendirmeler.'
-      : 'The Lexviora legal journal: articles, practical guides and considered perspectives on family, corporate, employment and real estate law.',
+      : copy.value.aboutDescription),
 }));
 </script>
 <template>
   <div>
-    <PublicPageHeading
-      :title="title"
-      :description="
-        locale === 'tr'
-          ? 'Bilgiyle başlayan, özenle şekillenen bir bakış.'
-          : 'Considered perspectives. A clearer understanding.'
-      "
-    />
+    <PublicPageHeading :title="title" :description="page?.excerpt || copy.aboutDescription" />
     <section class="section">
       <div class="container">
         <form
           class="search-form"
           @submit.prevent="navigateTo({ path: route.path, query: { q: query, category } })"
         >
-          <label class="sr-only" for="journal-search">{{
-            locale === 'tr' ? 'Yazılarda ara' : 'Search articles'
-          }}</label
+          <label class="sr-only" for="journal-search">{{ copy.search }}</label
           ><input
             id="journal-search"
             v-model="query"
             type="search"
-            :placeholder="locale === 'tr' ? 'Bir konu veya anahtar kelime…' : 'A topic or keyword…'"
-          /><button class="button" type="submit">{{ locale === 'tr' ? 'Ara' : 'Search' }}</button>
+            :placeholder="copy.searchPlaceholder"
+          /><button class="button" type="submit">{{ copy.search }}</button>
         </form>
         <div class="filter-bar">
           <button
@@ -62,7 +55,7 @@ usePageSeo(() => ({
             :aria-pressed="!category"
             @click="category = ''"
           >
-            {{ locale === 'tr' ? 'Tümü' : 'All' }}</button
+            {{ copy.all }}</button
           ><button
             v-for="item in categories"
             :key="item.id"

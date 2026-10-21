@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   if (!input.success)
     throw createError({
       statusCode: 400,
-      statusMessage: 'Ad, e-posta, en az 12 karakterli şifre ve rol girin.',
+      statusMessage: 'Enter a name, email, role and a password of at least 12 characters.',
     });
   try {
     const result = await auth.api.createUser({ headers: event.headers, body: input.data });
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
   } catch {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Hesap oluşturulamadı. E-posta adresini ve alanları kontrol edin.',
+      statusMessage: 'Unable to create the account. Check the email address and form fields.',
     });
   }
 });

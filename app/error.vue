@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{ error: { statusCode: number; statusMessage?: string } }>();
 useSeoMeta({ title: 'Page unavailable | Lexviora', robots: 'noindex, nofollow' });
-useRobotsRule(false);
+useRobotsRule('noindex, nofollow');
 </script>
 <template>
   <UApp

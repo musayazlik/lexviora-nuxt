@@ -9,8 +9,9 @@ const props = withDefaults(
   }>(),
   { limit: 100 },
 );
-const { locale } = useI18n();
-const localePath = useLocalePath();
+const { locale } = useContentLanguage();
+const copy = usePublicCopy();
+const localePath = useContentLocalePath();
 const { data: articles, error } = await usePublicContent('articles');
 const selection = ref('');
 const categories = computed(() => [
@@ -39,19 +40,14 @@ const formatDate = (value?: string | null) =>
     : '';
 </script>
 <template>
-  <div
-    v-if="filterable"
-    class="filter-row"
-    role="group"
-    :aria-label="locale === 'tr' ? 'Kategori filtresi' : 'Filter articles by category'"
-  >
+  <div v-if="filterable" class="filter-row" role="group" :aria-label="copy.journal">
     <button
       class="filter-chip"
       :class="{ active: !selection }"
       :aria-pressed="!selection"
       @click="selection = ''"
     >
-      {{ locale === 'tr' ? 'Tümü' : 'All' }}</button
+      {{ copy.all }}</button
     ><button
       v-for="categoryName in categories"
       :key="categoryName"
@@ -81,9 +77,7 @@ const formatDate = (value?: string | null) =>
         <NuxtLink
           :to="{ path: localePath('/blog-category'), query: { category: article.categoryName } }"
           >{{ article.categoryName }}</NuxtLink
-        ><span
-          >{{ article.readingMinutes || 5 }} {{ locale === 'tr' ? 'dk okuma' : 'min read' }}</span
-        >
+        ><span>{{ article.readingMinutes || 5 }} {{ copy.minutes }}</span>
       </div>
       <h3>
         <NuxtLink :to="localePath('/blog/' + article.slug)">{{ article.title }}</NuxtLink>
@@ -95,15 +89,7 @@ const formatDate = (value?: string | null) =>
       </div>
     </article>
     <p v-if="!filtered.length" role="status" class="empty-state">
-      {{
-        error
-          ? locale === 'tr'
-            ? 'Yazılar yüklenemedi. Lütfen tekrar deneyin.'
-            : 'Articles could not be loaded. Please try again.'
-          : locale === 'tr'
-            ? 'Bu aramaya uygun yazı bulunamadı.'
-            : 'No articles match your search.'
-      }}
+      {{ error ? copy.loadError : copy.empty }}
     </p>
   </div>
 </template>

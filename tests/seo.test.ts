@@ -8,7 +8,9 @@ import {
   seoDate,
   seoText,
   sitemapEntries,
+  unlocalizedPath,
 } from '../shared/seo';
+import { defaultLanguages } from '../shared/languages';
 
 test('canonical paths consolidate journal layouts and discard tracking parameters', () => {
   assert.equal(canonicalPath('/tr/blog-list/?utm_source=linkedin#latest', 'tr'), '/tr/blog');
@@ -71,4 +73,23 @@ test('HTML descriptions become readable snippets with bounded length', () => {
   const excerpt = seoText('A considered perspective on legal questions. '.repeat(15));
   assert.ok(excerpt.length <= 170);
   assert.ok(excerpt.endsWith('…'));
+});
+
+test('configured and custom languages keep their public URL and SEO identity', () => {
+  for (const language of [...defaultLanguages, { code: 'fr-ca' }]) {
+    const path = language.code === 'en' ? '/about' : '/' + language.code + '/about';
+    assert.equal(canonicalPath(path, language.code), path);
+    assert.equal(unlocalizedPath(path), '/about');
+    assert.equal(isIndexablePath('/' + language.code + '/admin'), false);
+    assert.ok(absoluteImage(null, 'https://lexviora.example', language.code).endsWith('.jpg'));
+  }
+  assert.equal(unlocalizedPath('/faq'), '/faq');
+  assert.equal(unlocalizedPath('/api/languages'), '/api/languages');
+  assert.deepEqual(
+    availableContentLocales({
+      id: 1,
+      translations: { ja: { title: '法律' }, 'fr-ca': { title: 'Droit' } },
+    }),
+    ['ja', 'fr-ca'],
+  );
 });

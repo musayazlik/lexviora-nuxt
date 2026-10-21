@@ -1,4 +1,12 @@
-export const adminNavigation = [
+export type AdminNavItem = {
+  tr: string;
+  en: string;
+  to: string;
+  icon: string;
+  adminOnly?: boolean;
+  children?: AdminNavItem[];
+};
+export const adminNavigation: { tr: string; en: string; items: AdminNavItem[] }[] = [
   {
     tr: 'Çalışma alanı',
     en: 'Workspace',
@@ -11,8 +19,19 @@ export const adminNavigation = [
     tr: 'İçerik yönetimi',
     en: 'Content',
     items: [
-      { tr: 'Makaleler', en: 'Articles', to: '/admin/articles', icon: 'file-text' },
-      { tr: 'Kategoriler', en: 'Categories', to: '/admin/categories', icon: 'folder-open' },
+      { tr: 'Sayfalar', en: 'Pages', to: '/admin/pages', icon: 'panels-top-left' },
+      {
+        tr: 'Makaleler',
+        en: 'Articles',
+        to: '/admin/articles',
+        icon: 'file-text',
+        children: [
+          { tr: 'Yazılar', en: 'Posts', to: '/admin/articles', icon: 'files' },
+          { tr: 'Kategoriler', en: 'Categories', to: '/admin/categories', icon: 'folder-open' },
+          { tr: 'Etiketler', en: 'Tags', to: '/admin/tags', icon: 'tags' },
+          { tr: 'Yorumlar', en: 'Comments', to: '/admin/comments', icon: 'messages-square' },
+        ],
+      },
       { tr: 'Faaliyet alanları', en: 'Practice areas', to: '/admin/practice-areas', icon: 'scale' },
       { tr: 'Avukatlar', en: 'Attorneys', to: '/admin/attorneys', icon: 'users-round' },
       {
@@ -29,6 +48,15 @@ export const adminNavigation = [
     tr: 'Yönetim',
     en: 'Administration',
     items: [
+      { tr: 'Bülten', en: 'Newsletter', to: '/admin/newsletter', icon: 'mails', adminOnly: true },
+      {
+        tr: 'Entegrasyonlar',
+        en: 'Integrations',
+        to: '/admin/integrations',
+        icon: 'plug',
+        adminOnly: true,
+      },
+      { tr: 'Diller', en: 'Languages', to: '/admin/languages', icon: 'languages', adminOnly: true },
       {
         tr: 'Kullanıcılar',
         en: 'Users',

@@ -1,61 +1,45 @@
-import { readdir, mkdir, writeFile, stat } from 'node:fs/promises';
+import { readdir, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { randomUUID } from 'node:crypto';
 import { requireStaff } from '../../utils/admin';
+import { getPool } from '../../utils/db';
+import { uploadMedia } from '../../utils/uploadthing';
 export const mediaDirectory = () => resolve(process.env.MEDIA_DIR || '.data/media');
 export default defineEventHandler(async (event) => {
-  await requireStaff(event);
-  const dir = mediaDirectory();
-  await mkdir(dir, { recursive: true });
+  const session = await requireStaff(event);
   if (event.method === 'GET') {
-    const files = await readdir(dir);
-    const uploads = await Promise.all(
+    const { rows } = await getPool().query(
+      'SELECT id,key,url,name,mime,size,alt,created_at AS "createdAt" FROM media_assets ORDER BY created_at DESC LIMIT 1000',
+    );
+    const files = await readdir(mediaDirectory()).catch(() => []);
+    const legacy = await Promise.all(
       files
-        .filter((name) => /\.(png|jpg|webp|gif)$/.test(name))
+        .filter((name) => /^[\w-]+\.(png|jpg|webp|gif)$/.test(name))
         .map(async (name) => ({
           name,
           url: '/media/' + name,
-          size: (await stat(resolve(dir, name))).size,
+          mime: 'image/' + name.split('.').pop(),
+          size: (await stat(resolve(mediaDirectory(), name))).size,
           bundled: false,
         })),
     );
     return [
-      ...uploads,
+      ...rows,
+      ...legacy,
       ...['hero', 'office', 'article', 'deniz', 'selin', 'emre'].map((name) => ({
         name: name + '.webp',
         url: '/assets/images/' + name + '.webp',
+        mime: 'image/webp',
         size: 0,
         bundled: true,
       })),
     ];
   }
   if (event.method !== 'POST') throw createError({ statusCode: 405 });
-  if (Number(getHeader(event, 'content-length') || 0) > 6 * 1024 * 1024)
-    throw createError({ statusCode: 413, statusMessage: 'Görsel en fazla 5 MB olabilir.' });
+  if (Number(getHeader(event, 'content-length') || 0) > 65 * 1024 * 1024)
+    throw createError({ statusCode: 413, statusMessage: 'Upload request is too large.' });
   const parts = await readMultipartFormData(event);
   const file = parts?.find((part) => part.name === 'file');
-  if (!file || file.data.length > 5 * 1024 * 1024)
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'En fazla 5 MB boyutunda bir görsel seçin.',
-    });
-  const hex = file.data.subarray(0, 12).toString('hex');
-  const ext = hex.startsWith('89504e470d0a1a0a')
-    ? 'png'
-    : hex.startsWith('ffd8ff')
-      ? 'jpg'
-      : hex.startsWith('474946383761') || hex.startsWith('474946383961')
-        ? 'gif'
-        : file.data.subarray(0, 4).toString() === 'RIFF' &&
-            file.data.subarray(8, 12).toString() === 'WEBP'
-          ? 'webp'
-          : null;
-  if (!ext)
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'PNG, JPEG, WebP veya GIF görseli yükleyin.',
-    });
-  const name = randomUUID() + '.' + ext;
-  await writeFile(resolve(dir, name), file.data, { flag: 'wx' });
-  return { name, url: '/media/' + name, size: file.data.length, bundled: false };
+  if (!file || !file.filename)
+    throw createError({ statusCode: 400, statusMessage: 'Choose a file to upload.' });
+  return uploadMedia(file.data, file.filename, session.user.id);
 });

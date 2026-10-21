@@ -1,7 +1,6 @@
 export function useAdmin() {
-  const { locale } = useI18n();
   const { user } = useAuthSession();
-  const text = (tr: string, en: string) => (locale.value === 'tr' ? tr : en);
+  const text = (_tr: string, en: string) => en;
   const canPublish = computed(() => user.value?.role === 'admin');
   const errorText = (error: unknown) =>
     (error as { data?: { statusMessage?: string; message?: string }; message?: string })?.data
@@ -10,7 +9,7 @@ export function useAdmin() {
     text('İşlem tamamlanamadı.', 'Unable to complete the action.');
   const date = (value?: string | null) =>
     value
-      ? new Intl.DateTimeFormat(locale.value, {
+      ? new Intl.DateTimeFormat('en', {
           day: 'numeric',
           month: 'short',
           year: 'numeric',

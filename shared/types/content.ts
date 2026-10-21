@@ -1,6 +1,13 @@
-export type ContentLocale = 'en' | 'tr';
+export type ContentLocale = string;
 export type Resource =
-  'articles' | 'categories' | 'practice-areas' | 'attorneys' | 'faqs' | 'glossary';
+  | 'articles'
+  | 'categories'
+  | 'practice-areas'
+  | 'attorneys'
+  | 'faqs'
+  | 'glossary'
+  | 'pages'
+  | 'tags';
 export type Translation = Record<string, string | string[] | null>;
 export interface ContentRecord {
   id: number;
@@ -8,6 +15,9 @@ export interface ContentRecord {
   name?: string;
   status?: 'draft' | 'review' | 'published';
   featured?: boolean;
+  commentsEnabled?: boolean;
+  scheduledAt?: string | null;
+  tagIds?: number[];
   active?: boolean;
   coverImage?: string | null;
   photo?: string | null;
@@ -38,4 +48,5 @@ export interface PublicRecord extends Omit<ContentRecord, 'translations'> {
   categoryName?: string;
   attorneyName?: string;
   topics?: string[];
+  tags?: { id: number; slug: string; name: string }[];
 }

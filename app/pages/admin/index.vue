@@ -2,8 +2,8 @@
 import type { ContentRecord } from '#shared/types/content';
 definePageMeta({ middleware: 'auth', layout: 'admin' });
 const { text, user, date, statusText } = useAdmin();
-const localePath = useLocalePath();
-const { locale } = useI18n();
+const localePath = useContentLocalePath();
+const { locale } = useContentLanguage();
 useSeoMeta({ title: () => text('Genel bakış | Lexviora', 'Overview | Lexviora') });
 const [{ data: stats, error, refresh }, { data: articles }, { data: messages }] = await Promise.all(
   [
@@ -61,6 +61,7 @@ const articleTitle = (a: ContentRecord) =>
     a.translations[locale.value]?.title ||
       a.translations.en?.title ||
       a.translations.tr?.title ||
+      Object.values(a.translations).find((translation) => translation?.title)?.title ||
       a.slug,
   );
 </script>
