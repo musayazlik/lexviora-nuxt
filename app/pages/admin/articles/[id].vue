@@ -32,9 +32,9 @@ async function saved(value: ContentRecord) {
         >
         <h1>
           {{
-          id === 'new'
-            ? text('Yeni makale', 'New article')
-            : text('Makaleyi düzenle', 'Edit article')
+            id === 'new'
+              ? text('Yeni makale', 'New article')
+              : text('Makaleyi düzenle', 'Edit article')
           }}
         </h1>
         <p>

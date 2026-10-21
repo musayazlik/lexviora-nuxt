@@ -15,7 +15,11 @@ export default defineAppConfig({
       slots: { label: 'text-[13px] font-medium text-slate-700', hint: 'text-xs text-slate-500' },
     },
     modal: {
-      slots: { content: 'bg-white text-slate-800 ring-1 ring-slate-200 rounded-xl', header: 'bg-white', footer: 'bg-slate-50' },
+      slots: {
+        content: 'bg-white text-slate-800 ring-1 ring-slate-200 rounded-xl',
+        header: 'bg-white',
+        footer: 'bg-slate-50',
+      },
     },
   },
 });

@@ -8,14 +8,31 @@ const { user, text, canPublish, errorText } = useAdmin();
 const open = ref(false);
 function handleSidebarKeys(event: KeyboardEvent) {
   if (!open.value) return;
-  if (event.key === 'Escape') { open.value = false; return; }
+  if (event.key === 'Escape') {
+    open.value = false;
+    return;
+  }
   if (event.key !== 'Tab') return;
-  const targets = [...document.querySelectorAll<HTMLElement>('.admin-sidebar a[href], .admin-sidebar button:not([disabled])')].filter(el => el.offsetParent !== null);
-  const first = targets[0], last = targets.at(-1);
-  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
-  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+  const targets = [
+    ...document.querySelectorAll<HTMLElement>(
+      '.admin-sidebar a[href], .admin-sidebar button:not([disabled])',
+    ),
+  ].filter((el) => el.offsetParent !== null);
+  const first = targets[0],
+    last = targets.at(-1);
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last?.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first?.focus();
+  }
 }
-watch(open, async value => { await nextTick(); if (value) document.querySelector<HTMLElement>('.admin-sidebar a')?.focus(); else document.querySelector<HTMLElement>('.mobile-menu')?.focus(); });
+watch(open, async (value) => {
+  await nextTick();
+  if (value) document.querySelector<HTMLElement>('.admin-sidebar a')?.focus();
+  else document.querySelector<HTMLElement>('.mobile-menu')?.focus();
+});
 onMounted(() => document.addEventListener('keydown', handleSidebarKeys));
 onUnmounted(() => document.removeEventListener('keydown', handleSidebarKeys));
 const searchOpen = ref(false);
@@ -72,8 +89,21 @@ async function signOut() {
       :aria-label="text('Menüyü kapat', 'Close menu')"
       @click="open = false"
     />
-    <aside class="admin-sidebar" :class="{ 'is-open': open }" :role="open ? 'dialog' : undefined" :aria-modal="open ? true : undefined" :aria-label="text('Çalışma alanı menüsü', 'Workspace menu')">
-      <UButton class="mobile-sidebar-close" icon="i-lucide-x" color="neutral" variant="ghost" :aria-label="text('Menüyü kapat', 'Close menu')" @click="open = false" />
+    <aside
+      class="admin-sidebar"
+      :class="{ 'is-open': open }"
+      :role="open ? 'dialog' : undefined"
+      :aria-modal="open ? true : undefined"
+      :aria-label="text('Çalışma alanı menüsü', 'Workspace menu')"
+    >
+      <UButton
+        class="mobile-sidebar-close"
+        icon="i-lucide-x"
+        color="neutral"
+        variant="ghost"
+        :aria-label="text('Menüyü kapat', 'Close menu')"
+        @click="open = false"
+      />
       <NuxtLink :to="localePath('/admin')" class="admin-brand"
         ><span class="admin-brand-mark"><UIcon name="i-lucide-scale" /></span
         ><span><strong>Lexviora</strong><small>Legal &amp; Advisory</small></span></NuxtLink
