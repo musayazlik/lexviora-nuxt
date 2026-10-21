@@ -87,7 +87,7 @@ export default defineNuxtConfig({
     // resolves from node_modules at runtime — required for pnpm layouts and
     // keeps the Docker runtime image dependency-free.
     externals: {
-      externalizeDependencies: false,
+      inline: [/.*/],
     },
     // Auto-run Drizzle migrations on server start (used by the Docker image).
     // Set RUN_MIGRATIONS=false to manage migrations manually.

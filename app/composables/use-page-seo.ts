@@ -66,11 +66,11 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeoOptions>) {
     };
   });
 
-  useRobotsRule(() =>
+  useRobotsRule(computed(() =>
     meta.value.indexable
       ? 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
       : 'noindex, follow',
-  );
+  ));
 
   useSeoMeta({
     title: () => meta.value.title,
