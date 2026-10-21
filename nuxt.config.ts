@@ -83,12 +83,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    // Bundle ALL dependencies into .output so the node-server preset never
-    // resolves from node_modules at runtime — required for pnpm layouts and
-    // keeps the Docker runtime image dependency-free.
-    externals: {
-      inline: [/.*/],
-    },
+    // The node-server preset traces runtime dependencies into .output/server.
     // Auto-run Drizzle migrations on server start (used by the Docker image).
     // Set RUN_MIGRATIONS=false to manage migrations manually.
   },
