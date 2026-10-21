@@ -19,20 +19,20 @@ tasarımın uygulamaya dönüştürülmüş hali.
 
 ```sh
 # 1. Bağımlılıklar
-npm install
+pnpm install
 
 # 2. PostgreSQL (docker compose ile)
 docker compose up db -d
 
 # 3. Migration oluştur ve uygula
-npm run db:generate   # şema değişince
-npm run db:migrate
+pnpm run db:generate   # şema değişince
+pnpm run db:migrate
 
 # 4. İlk admin kullanıcısı
-npm run admin:create -- admin@lexviora.com "GucluBirSifre" "Ad Soyad"
+pnpm run admin:create -- admin@lexviora.com "GucluBirSifre" "Ad Soyad"
 
 # 5. Çalıştır
-npm run dev
+pnpm run dev
 ```
 
 - Site: http://localhost:3000 (EN), http://localhost:3000/tr (TR)
@@ -42,12 +42,12 @@ npm run dev
 
 | Komut | Açıklama |
 |---|---|
-| `npm run dev` | Geliştirme sunucusu |
-| `npm run build` | Production build (`.output/`) |
-| `npm run db:generate` | Şemadan SQL migration üretir |
-| `npm run db:migrate` | Migration'ları uygular |
-| `npm run db:studio` | Drizzle Studio (DB görsel arayüz) |
-| `npm run admin:create` | Admin kullanıcı oluşturur |
+| `pnpm run dev` | Geliştirme sunucusu |
+| `pnpm run build` | Production build (`.output/`) |
+| `pnpm run db:generate` | Şemadan SQL migration üretir |
+| `pnpm run db:migrate` | Migration'ları uygular |
+| `pnpm run db:studio` | Drizzle Studio (DB görsel arayüz) |
+| `pnpm run admin:create` | Admin kullanıcı oluşturur |
 
 ## Yapı
 
@@ -90,7 +90,7 @@ kullanır. Yeni korumalı API'ler için bkz. `server/api/admin/stats.get.ts`.
 Docker image migration'ları `MIGRATIONS_DIR=/app/migrations` altında taşır;
 `server/plugins/migrate.ts` açılışta uygular.
 
-> Not: Şema değişikliklerinde `npm run db:generate` ile migration üretilip
+> Not: Şema değişikliklerinde `pnpm run db:generate` ile migration üretilip
 > repoya commit edilmeli — image build sırasında migration üretimi yapılmaz.
 
 ## KVKK notları

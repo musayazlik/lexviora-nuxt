@@ -9,7 +9,7 @@
   --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
 
-  /* Brand colors (from static-site DESIGN.md) */
+  /* Brand colors (from lexviora-html-template DESIGN.md) */
   --color-navy: #131d2c;
   --color-navy-dark: #0b121d;
   --color-ivory: #f7f5f0;
@@ -30,7 +30,7 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Local fonts (carried over from static-site/assets/fonts)            */
+/* Local fonts (carried over from lexviora-html-template/assets/fonts)            */
 /* ------------------------------------------------------------------ */
 
 @font-face {

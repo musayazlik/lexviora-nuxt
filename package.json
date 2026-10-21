@@ -13,7 +13,11 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:studio": "drizzle-kit studio",
-    "admin:create": "tsx scripts/create-admin.ts"
+    "admin:create": "tsx scripts/create-admin.ts",
+    "templates:import": "node scripts/import-static.mjs",
+    "db:seed": "tsx scripts/seed.ts",
+    "typecheck": "nuxt typecheck",
+    "test:integration": "tsx --test tests/content.test.ts"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.146",

@@ -6,7 +6,9 @@ export default defineNuxtConfig({
 
   modules: ['@nuxt/ui', '@nuxtjs/i18n', '@nuxt/image', '@nuxtjs/seo'],
 
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/main.css', '~/assets/css/admin.css'],
+  ui: { fonts: false },
+  colorMode: { preference: 'light' },
 
   app: {
     head: {
@@ -39,12 +41,10 @@ export default defineNuxtConfig({
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
       { code: 'tr', language: 'tr-TR', name: 'Türkçe', file: 'tr.json' },
     ],
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: 'i18n_redirected',
-      redirectOn: 'root',
-    },
+    detectBrowserLanguage: false,
   },
+
+  routeRules: { '/admin/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow', 'Cache-Control': 'no-store' } }, '/api/admin/**': { headers: { 'Cache-Control': 'no-store' } } },
 
   nitro: {
     // Auto-run Drizzle migrations on server start (used by the Docker image).
