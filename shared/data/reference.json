@@ -1,0 +1,478 @@
+{
+  "404": {
+    "en": {
+      "title": "Page Not Found | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/404",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Sayfa Bulunamadı | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/404",
+      "bodyClass": ""
+    }
+  },
+  "about": {
+    "en": {
+      "title": "About Us | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/about",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Hakkımızda | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/about",
+      "bodyClass": ""
+    }
+  },
+  "article-aile": {
+    "en": {
+      "title": "Preparing for your first family law consultation | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/blog/aile",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Aile hukukunda ilk görüşmeye nasıl hazırlanabilirsiniz? | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/blog/aile",
+      "bodyClass": ""
+    }
+  },
+  "article-arabuluculuk": {
+    "en": {
+      "title": "Preparing for mediation: questions and documents | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/blog/arabuluculuk",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Arabuluculuk görüşmesine hazırlık: sorular ve belgeler | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/blog/arabuluculuk",
+      "bodyClass": ""
+    }
+  },
+  "article-ceza": {
+    "en": {
+      "title": "Finding reliable information during a legal process | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/blog/ceza",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Hukuki bir süreçte doğru bilgiye ulaşmak | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/blog/ceza",
+      "bodyClass": ""
+    }
+  },
+  "article-dijital": {
+    "en": {
+      "title": "A practical starting point for organising digital records | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/blog/dijital",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Dijital belgelerinizi düzenlemek için bir başlangıç | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/blog/dijital",
+      "bodyClass": ""
+    }
+  },
+  "article-is": {
+    "en": {
+      "title": "The value of keeping clear workplace records | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/blog/is",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "İş ilişkilerinde yazılı kayıt tutmanın önemi | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/blog/is",
+      "bodyClass": ""
+    }
+  },
+  "article-kira": {
+    "en": {
+      "title": "Why clarity matters in a tenancy agreement | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/blog/kira",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Kira sözleşmelerinde açık ve anlaşılır bir dilin önemi | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/blog/kira",
+      "bodyClass": ""
+    }
+  },
+  "article-miras": {
+    "en": {
+      "title": "Starting the conversation about estate planning | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/blog/miras",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Miras planlaması hakkında konuşmaya nereden başlamalı? | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/blog/miras",
+      "bodyClass": ""
+    }
+  },
+  "attorney-detail": {
+    "en": {
+      "title": "Daniel Arden | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/attorneys/deniz",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Av. Deniz Arslan | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/attorneys/deniz",
+      "bodyClass": ""
+    }
+  },
+  "attorney-emre": {
+    "en": {
+      "title": "Ethan Reed | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/attorneys/emre",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Av. Emre Aydın | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/attorneys/emre",
+      "bodyClass": ""
+    }
+  },
+  "attorney-selin": {
+    "en": {
+      "title": "Sophie Laurent | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/attorneys/selin",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Av. Selin Yılmaz | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/attorneys/selin",
+      "bodyClass": ""
+    }
+  },
+  "attorneys": {
+    "en": {
+      "title": "Our Lawyers | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/attorneys",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Avukatlarımız | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/attorneys",
+      "bodyClass": ""
+    }
+  },
+  "blog-category": {
+    "en": {
+      "title": "Journal Category | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/blog-category",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Blog Kategorisi | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/blog-category",
+      "bodyClass": ""
+    }
+  },
+  "blog-detail": {
+    "en": {
+      "title": "What should you consider before signing a contract? | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/blog/sozlesme",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Bir sözleşmeyi imzalamadan önce nelere dikkat etmelisiniz? | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/blog/sozlesme",
+      "bodyClass": ""
+    }
+  },
+  "blog-list": {
+    "en": {
+      "title": "Journal — List | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/blog-list",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Makaleler — Liste | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/blog-list",
+      "bodyClass": ""
+    }
+  },
+  "blog": {
+    "en": {
+      "title": "Journal | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/blog",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Makaleler | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/blog",
+      "bodyClass": ""
+    }
+  },
+  "contact": {
+    "en": {
+      "title": "Contact | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/contact",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "İletişim | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/contact",
+      "bodyClass": ""
+    }
+  },
+  "cookies": {
+    "en": {
+      "title": "Cookie Policy | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/cookies",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Çerez Politikası | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/cookies",
+      "bodyClass": ""
+    }
+  },
+  "documentation": {
+    "en": {
+      "title": "Template Documentation | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/documentation",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Şablon Dokümantasyonu | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/documentation",
+      "bodyClass": ""
+    }
+  },
+  "faq": {
+    "en": {
+      "title": "Frequently Asked Questions | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/faq",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Sık Sorulan Sorular | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/faq",
+      "bodyClass": ""
+    }
+  },
+  "glossary": {
+    "en": {
+      "title": "Legal Glossary | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/glossary",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Hukuk Sözlüğü | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/glossary",
+      "bodyClass": ""
+    }
+  },
+  "home-editorial": {
+    "en": {
+      "title": "The Legal Journal | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/home-editorial",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Hukuk Günlüğü | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/home-editorial",
+      "bodyClass": ""
+    }
+  },
+  "index": {
+    "en": {
+      "title": "Home | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/",
+      "bodyClass": "home-page"
+    },
+    "tr": {
+      "title": "Ana Sayfa | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/",
+      "bodyClass": "home-page"
+    }
+  },
+  "legal-guides": {
+    "en": {
+      "title": "Legal Resources | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/legal-guides",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Hukuk Rehberi | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/legal-guides",
+      "bodyClass": ""
+    }
+  },
+  "practice-areas": {
+    "en": {
+      "title": "Practice Areas | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/practice-areas",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Faaliyet Alanları | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/practice-areas",
+      "bodyClass": ""
+    }
+  },
+  "practice-ceza": {
+    "en": {
+      "title": "Criminal Law | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/practice-areas/criminal",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Ceza Hukuku | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/practice-areas/criminal",
+      "bodyClass": ""
+    }
+  },
+  "practice-detail": {
+    "en": {
+      "title": "Family Law | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/practice-areas/family",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Aile Hukuku | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/practice-areas/family",
+      "bodyClass": ""
+    }
+  },
+  "practice-gayrimenkul": {
+    "en": {
+      "title": "Real Estate Law | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/practice-areas/realestate",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Gayrimenkul Hukuku | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/practice-areas/realestate",
+      "bodyClass": ""
+    }
+  },
+  "practice-is": {
+    "en": {
+      "title": "Employment Law | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/practice-areas/employment",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "İş Hukuku | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/practice-areas/employment",
+      "bodyClass": ""
+    }
+  },
+  "practice-miras": {
+    "en": {
+      "title": "Inheritance Law | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/practice-areas/inheritance",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Miras Hukuku | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/practice-areas/inheritance",
+      "bodyClass": ""
+    }
+  },
+  "practice-ticaret": {
+    "en": {
+      "title": "Corporate Law | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/practice-areas/commerce",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Ticaret Hukuku | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/practice-areas/commerce",
+      "bodyClass": ""
+    }
+  },
+  "privacy": {
+    "en": {
+      "title": "Privacy Policy | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/privacy",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Gizlilik Politikası | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/privacy",
+      "bodyClass": ""
+    }
+  },
+  "search": {
+    "en": {
+      "title": "Search Results | Lexviora Legal & Advisory",
+      "description": "Lexviora — a modern law firm website template with practice areas, lawyer profiles, a legal journal and practical resources.",
+      "route": "/search",
+      "bodyClass": ""
+    },
+    "tr": {
+      "title": "Arama Sonuçları | Lexviora Hukuk & Danışmanlık",
+      "description": "Lexviora: faaliyet alanları, avukat profilleri, hukuk yazıları ve rehberleri içeren modern avukatlık HTML şablonu.",
+      "route": "/search",
+      "bodyClass": ""
+    }
+  }
+}

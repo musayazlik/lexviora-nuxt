@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "home": "Home",
+    "practice": "Practice Areas",
+    "contact": "Contact"
+  },
+  "footer": {
+    "tagline": "A modern law firm providing clear and careful counsel across a range of legal matters.",
+    "rights": "All rights reserved."
+  },
+  "home": {
+    "heroTag": "Legal & Advisory",
+    "heroTitle": "Clear counsel for complex matters",
+    "heroSubtitle": "We approach every file with attention, discretion and plain language — from the first meeting to the final step.",
+    "heroPrimary": "Schedule a consultation",
+    "heroSecondary": "Explore practice areas",
+    "practiceTag": "What we do",
+    "practiceTitle": "Practice areas",
+    "practiceSubtitle": "Focused expertise across six fields of law, guided by careful review and open communication.",
+    "articlesTag": "Insights",
+    "articlesTitle": "Latest articles",
+    "articlesSubtitle": "Short, practical readings to help you prepare for legal processes with confidence."
+  },
+  "areas": {
+    "family": {
+      "title": "Family Law",
+      "desc": "A considerate and meticulous approach to disputes arising from family relationships."
+    },
+    "commerce": {
+      "title": "Commercial Law",
+      "desc": "A solid legal framework for the present and future of your company."
+    },
+    "employment": {
+      "title": "Employment Law",
+      "desc": "Protecting rights, obligations and balance in employee and employer relations."
+    },
+    "criminal": {
+      "title": "Criminal Law",
+      "desc": "Legal support focused on the right of defence in investigation and prosecution processes."
+    },
+    "inheritance": {
+      "title": "Inheritance Law",
+      "desc": "Clear, careful and comprehensive evaluation in estate planning and distribution."
+    },
+    "realestate": {
+      "title": "Real Estate Law",
+      "desc": "Counsel that weighs every detail in property, lease and ownership relations."
+    }
+  },
+  "articles": {
+    "sozlesme": {
+      "title": "What should you pay attention to before signing a contract?",
+      "desc": "A reading on the parties' obligations, the scope of the contract and the importance of clear language.",
+      "date": "Oct 16, 2026",
+      "minutes": "6 min"
+    },
+    "kira": {
+      "title": "The importance of clear and understandable language in lease agreements",
+      "desc": "Why is keeping records organized and putting terms in writing essential in a lease relationship?",
+      "date": "Oct 12, 2026",
+      "minutes": "5 min"
+    },
+    "aile": {
+      "title": "How to prepare for your first family law consultation?",
+      "desc": "Suggestions for organizing your documents and questions so you can present your matter more clearly.",
+      "date": "Oct 8, 2026",
+      "minutes": "4 min"
+    }
+  }
+}

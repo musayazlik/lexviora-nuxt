@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "home": "Anasayfa",
+    "practice": "Faaliyet Alanları",
+    "contact": "İletişim"
+  },
+  "footer": {
+    "tagline": "Farklı hukuki konularda net ve özenli danışmanlık sunan modern bir hukuk bürosu.",
+    "rights": "Tüm hakları saklıdır."
+  },
+  "home": {
+    "heroTag": "Hukuk & Danışmanlık",
+    "heroTitle": "Karmaşık süreçlerde net hukuki danışmanlık",
+    "heroSubtitle": "Her dosyaya ilk görüşmeden son aşamaya kadar dikkatle, mahremiyete önem vererek ve anlaşılır bir dille yaklaşırız.",
+    "heroPrimary": "Görüşme planlayın",
+    "heroSecondary": "Faaliyet alanlarını inceleyin",
+    "practiceTag": "Ne yapıyoruz",
+    "practiceTitle": "Faaliyet alanları",
+    "practiceSubtitle": "Dikkatli inceleme ve açık iletişimle yönlendirilen altı hukuk alanında odaklı uzmanlık.",
+    "articlesTag": "Yazılar",
+    "articlesTitle": "Güncel makaleler",
+    "articlesSubtitle": "Hukuki süreçlere güvenle hazırlanmanız için kısa ve pratik okumalar."
+  },
+  "areas": {
+    "family": {
+      "title": "Aile Hukuku",
+      "desc": "Aile ilişkilerinden doğan uyuşmazlıklarda duyarlı ve özenli bir yaklaşım."
+    },
+    "commerce": {
+      "title": "Ticaret Hukuku",
+      "desc": "Şirketinizin bugünü ve geleceği için sağlam bir hukuki çerçeve."
+    },
+    "employment": {
+      "title": "İş Hukuku",
+      "desc": "Çalışan ve işveren ilişkilerinde hakların, yükümlülüklerin ve dengenin korunması."
+    },
+    "criminal": {
+      "title": "Ceza Hukuku",
+      "desc": "Soruşturma ve yargılama süreçlerinde savunma hakkına odaklanan hukuki destek."
+    },
+    "inheritance": {
+      "title": "Miras Hukuku",
+      "desc": "Mirasın planlanması ve paylaşımında açık, dikkatli ve kapsamlı değerlendirme."
+    },
+    "realestate": {
+      "title": "Gayrimenkul Hukuku",
+      "desc": "Taşınmaz, kira ve mülkiyet ilişkilerinde her ayrıntıyı gözeten danışmanlık."
+    }
+  },
+  "articles": {
+    "sozlesme": {
+      "title": "Bir sözleşmeyi imzalamadan önce nelere dikkat etmelisiniz?",
+      "desc": "Tarafların yükümlülükleri, sözleşmenin kapsamı ve açık bir dilin önemi üzerine bir okuma.",
+      "date": "16 Ekim 2026",
+      "minutes": "6 dk"
+    },
+    "kira": {
+      "title": "Kira sözleşmelerinde açık ve anlaşılır bir dilin önemi",
+      "desc": "Bir kira ilişkisinde belgelerin düzenli tutulması ve koşulların açıkça yazılması neden önemlidir?",
+      "date": "12 Ekim 2026",
+      "minutes": "5 dk"
+    },
+    "aile": {
+      "title": "Aile hukukunda ilk görüşmeye nasıl hazırlanabilirsiniz?",
+      "desc": "İlk görüşmede konuyu daha açık aktarabilmek için belgeleri ve soruları düzenlemeye yönelik öneriler.",
+      "date": "8 Ekim 2026",
+      "minutes": "4 dk"
+    }
+  }
+}
