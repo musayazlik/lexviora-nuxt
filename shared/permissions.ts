@@ -1,8 +1,5 @@
 import { createAccessControl } from 'better-auth/plugins/access';
-import {
-  adminAc,
-  defaultStatements,
-} from 'better-auth/plugins/admin/access';
+import { adminAc, defaultStatements } from 'better-auth/plugins/admin/access';
 
 /**
  * Shared between the server (authorization checks) and the client
@@ -18,7 +15,7 @@ export const ac = createAccessControl(statement);
 
 /** Full access: everything adminAc grants + all content permissions. */
 export const adminRole = ac.newRole({
-  ...adminAc,
+  ...adminAc.statements,
   content: ['create', 'update', 'delete', 'publish'],
 });
 

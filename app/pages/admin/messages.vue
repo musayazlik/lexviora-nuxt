@@ -1,16 +1,146 @@
 <script setup lang="ts">
 definePageMeta({ middleware: 'auth', layout: 'admin' });
 const { text, date, errorText } = useAdmin();
-interface Message { id: number; name: string; email: string; subject: string; message: string; read_at: string | null; created_at: string }
-const { data: messages, error, refresh } = await useFetch<Message[]>('/api/admin/messages', { default: () => [] });
+interface Message {
+  id: number;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  read_at: string | null;
+  created_at: string;
+}
+const {
+  data: messages,
+  error,
+  refresh,
+} = await useFetch<Message[]>('/api/admin/messages', { default: () => [] });
 const selected = ref<number | null>(null);
 const query = ref('');
 const unreadOnly = ref(false);
 const toast = useToast();
-const filtered = computed(() => messages.value.filter(m => (!unreadOnly.value || !m.read_at) && `${m.name} ${m.email} ${m.subject} ${m.message}`.toLocaleLowerCase().includes(query.value.toLocaleLowerCase())));
-const current = computed(() => messages.value.find(m => m.id === selected.value));
+const filtered = computed(() =>
+  messages.value.filter(
+    (m) =>
+      (!unreadOnly.value || !m.read_at) &&
+      `${m.name} ${m.email} ${m.subject} ${m.message}`
+        .toLocaleLowerCase()
+        .includes(query.value.toLocaleLowerCase()),
+  ),
+);
+const current = computed(() => messages.value.find((m) => m.id === selected.value));
 useSeoMeta({ title: () => text('Gelen kutusu | Lexviora', 'Inbox | Lexviora') });
-async function mark(message: Message, read: boolean) { try { await $fetch('/api/admin/messages', { method: 'PATCH', body: { id: message.id, read } }); await refresh(); } catch (e) { toast.add({ title: errorText(e), color: 'error' }); } }
-async function select(message: Message) { selected.value = message.id; if (!message.read_at) await mark(message, true); }
+async function mark(message: Message, read: boolean) {
+  try {
+    await $fetch('/api/admin/messages', { method: 'PATCH', body: { id: message.id, read } });
+    await refresh();
+  } catch (e) {
+    toast.add({ title: errorText(e), color: 'error' });
+  }
+}
+async function select(message: Message) {
+  selected.value = message.id;
+  if (!message.read_at) await mark(message, true);
+}
 </script>
-<template><div><header class="admin-page-heading"><div><p class="admin-eyebrow">{{ text('İlk görüşme burada başlar', 'Every conversation starts here') }}</p><h1>{{ text('Gelen kutusu', 'Inbox') }}</h1><p>{{ text('İletişim formundan gelen talepler ve sorular.', 'Enquiries and questions from your contact form.') }}</p></div><UBadge variant="soft" color="primary">{{ messages.filter(m => !m.read_at).length }} {{ text('okunmamış', 'unread') }}</UBadge></header><UAlert v-if="error" :title="text('Mesajlar yüklenemedi.', 'Unable to load messages.')" color="error" class="mb-5" /><div class="inbox-layout admin-panel"><section class="inbox-list"><div class="inbox-tools"><UInput v-model="query" icon="i-lucide-search" :placeholder="text('Mesajlarda ara…', 'Search messages…')" :aria-label="text('Mesajlarda ara', 'Search messages')" class="w-full" /><UCheckbox v-model="unreadOnly" :label="text('Yalnızca okunmamış', 'Unread only')" /></div><button v-for="message in filtered" :key="message.id" class="inbox-item" :class="{ selected: selected === message.id, unread: !message.read_at }" @click="select(message)"><div><strong>{{ message.name }}</strong><small>{{ date(message.created_at) }}</small></div><span>{{ message.subject }}</span><p>{{ message.message.slice(0,100) }}</p></button><div v-if="!filtered.length" class="collection-empty"><UIcon name="i-lucide-mail-check" /><h2>{{ text('Mesaj bulunamadı.', 'No messages here.') }}</h2></div></section><article class="inbox-detail"><template v-if="current"><div class="flex items-start justify-between gap-4"><UAvatar :alt="current.name" size="lg" /><UButton variant="outline" color="neutral" size="sm" :icon="current.read_at ? 'i-lucide-mail' : 'i-lucide-mail-open'" @click="mark(current, !current.read_at)">{{ current.read_at ? text('Okunmadı işaretle', 'Mark unread') : text('Okundu işaretle', 'Mark read') }}</UButton></div><h2>{{ current.subject || text('Genel talep', 'General enquiry') }}</h2><p class="inbox-sender">{{ current.name }} &lt;{{ current.email }}&gt;</p><small class="text-slate-500">{{ date(current.created_at) }}</small><p class="message-body">{{ current.message }}</p><UButton :href="'mailto:' + current.email" icon="i-lucide-reply" variant="outline" color="neutral">{{ text('E-posta uygulamasında yanıtla', 'Reply in email app') }}</UButton></template><div v-else class="inbox-placeholder"><UIcon name="i-lucide-mails" /><h2>{{ text('Bir mesaj seçin.', 'Choose a conversation.') }}</h2><p>{{ text('Talebin ayrıntıları burada görünecek.', 'The details of your enquiry will appear here.') }}</p></div></article></div></div></template>
+<template>
+  <div>
+    <header class="admin-page-heading">
+      <div>
+        <p class="admin-eyebrow">
+          {{ text('İlk görüşme burada başlar', 'Every conversation starts here') }}
+        </p>
+        <h1>{{ text('Gelen kutusu', 'Inbox') }}</h1>
+        <p>
+          {{
+            text(
+              'İletişim formundan gelen talepler ve sorular.',
+              'Enquiries and questions from your contact form.',
+            )
+          }}
+        </p>
+      </div>
+      <UBadge variant="soft" color="primary"
+        >{{ messages.filter((m) => !m.read_at).length }} {{ text('okunmamış', 'unread') }}</UBadge
+      >
+    </header>
+    <UAlert
+      v-if="error"
+      :title="text('Mesajlar yüklenemedi.', 'Unable to load messages.')"
+      color="error"
+      class="mb-5"
+    />
+    <div class="inbox-layout admin-panel">
+      <section class="inbox-list">
+        <div class="inbox-tools">
+          <UInput
+            v-model="query"
+            icon="i-lucide-search"
+            :placeholder="text('Mesajlarda ara…', 'Search messages…')"
+            :aria-label="text('Mesajlarda ara', 'Search messages')"
+            class="w-full"
+          /><UCheckbox v-model="unreadOnly" :label="text('Yalnızca okunmamış', 'Unread only')" />
+        </div>
+        <button
+          v-for="message in filtered"
+          :key="message.id"
+          class="inbox-item"
+          :class="{ selected: selected === message.id, unread: !message.read_at }"
+          @click="select(message)"
+        >
+          <div>
+            <strong>{{ message.name }}</strong
+            ><small>{{ date(message.created_at) }}</small>
+          </div>
+          <span>{{ message.subject }}</span>
+          <p>{{ message.message.slice(0, 100) }}</p>
+        </button>
+        <div v-if="!filtered.length" class="collection-empty">
+          <UIcon name="i-lucide-mail-check" />
+          <h2>{{ text('Mesaj bulunamadı.', 'No messages here.') }}</h2>
+        </div>
+      </section>
+      <article class="inbox-detail">
+        <template v-if="current"
+          ><div class="flex items-start justify-between gap-4">
+            <UAvatar :alt="current.name" size="lg" /><UButton
+              variant="outline"
+              color="neutral"
+              size="sm"
+              :icon="current.read_at ? 'i-lucide-mail' : 'i-lucide-mail-open'"
+              @click="mark(current, !current.read_at)"
+              >{{
+                current.read_at
+                  ? text('Okunmadı işaretle', 'Mark unread')
+                  : text('Okundu işaretle', 'Mark read')
+              }}</UButton
+            >
+          </div>
+          <h2>{{ current.subject || text('Genel talep', 'General enquiry') }}</h2>
+          <p class="inbox-sender">{{ current.name }} &lt;{{ current.email }}&gt;</p>
+          <small class="text-slate-500">{{ date(current.created_at) }}</small>
+          <p class="message-body">{{ current.message }}</p>
+          <UButton
+            :href="'mailto:' + current.email"
+            icon="i-lucide-reply"
+            variant="outline"
+            color="neutral"
+            >{{ text('E-posta uygulamasında yanıtla', 'Reply in email app') }}</UButton
+          ></template
+        >
+        <div v-else class="inbox-placeholder">
+          <UIcon name="i-lucide-mails" />
+          <h2>{{ text('Bir mesaj seçin.', 'Choose a conversation.') }}</h2>
+          <p>
+            {{
+              text(
+                'Talebin ayrıntıları burada görünecek.',
+                'The details of your enquiry will appear here.',
+              )
+            }}
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+</template>

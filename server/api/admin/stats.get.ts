@@ -1,10 +1,5 @@
 import { count, eq, isNull } from 'drizzle-orm';
-import {
-  articles,
-  attorneys,
-  contactMessages,
-  practiceAreas,
-} from '../../database/schema';
+import { articles, attorneys, contactMessages, practiceAreas } from '../../database/schema';
 import { auth } from '../../utils/auth';
 import { db } from '../../utils/db';
 
@@ -35,10 +30,10 @@ export default defineEventHandler(async (event) => {
     .where(isNull(contactMessages.readAt));
 
   return {
-    articles: totalArticles.value,
-    publishedArticles: publishedArticles.value,
-    attorneys: totalAttorneys.value,
-    practiceAreas: totalPracticeAreas.value,
-    unreadMessages: unreadMessages.value,
+    articles: totalArticles?.value ?? 0,
+    publishedArticles: publishedArticles?.value ?? 0,
+    attorneys: totalAttorneys?.value ?? 0,
+    practiceAreas: totalPracticeAreas?.value ?? 0,
+    unreadMessages: unreadMessages?.value ?? 0,
   };
 });

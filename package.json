@@ -2,6 +2,7 @@
   "name": "lexviora-nuxt",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@12.11.2",
   "imports": {
     "#shared/*": "./shared/*"
   },
@@ -16,12 +17,16 @@
     "admin:create": "tsx scripts/create-admin.ts",
     "templates:import": "node scripts/import-static.mjs",
     "db:seed": "tsx scripts/seed.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "typecheck": "nuxt typecheck",
-    "test:integration": "tsx --test tests/content.test.ts"
+    "test:integration": "tsx --test tests/content.test.ts",
+    "test:seo": "tsx --test tests/seo.test.ts",
+    "test:seo:integration": "tsx --test tests/seo.integration.test.ts"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.146",
-    "@nuxt/image": "^1.10.0",
+    "@nuxt/image": "^2.2.0",
     "@nuxt/ui": "^4.0.0",
     "@nuxtjs/i18n": "^10.0.0",
     "@nuxtjs/seo": "^3.0.0",
@@ -39,6 +44,7 @@
     "@types/sanitize-html": "^2.16.2",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.31.0",
+    "prettier": "^3.9.10",
     "tailwindcss": "^4.1.0",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0",

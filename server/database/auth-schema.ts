@@ -1,9 +1,4 @@
-import {
-  boolean,
-  pgTable,
-  text,
-  timestamp,
-} from 'drizzle-orm/pg-core';
+import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 /**
  * Better Auth tables. Keep column names in sync with the Better Auth

@@ -95,12 +95,8 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -178,12 +174,8 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -193,9 +185,7 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
+          "columns": ["token"]
         }
       },
       "policies": {},
@@ -283,9 +273,7 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -413,12 +401,8 @@
           "name": "article_translations_article_id_articles_id_fk",
           "tableFrom": "article_translations",
           "tableTo": "articles",
-          "columnsFrom": [
-            "article_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["article_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -517,12 +501,8 @@
           "name": "articles_category_id_categories_id_fk",
           "tableFrom": "articles",
           "tableTo": "categories",
-          "columnsFrom": [
-            "category_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["category_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         },
@@ -530,12 +510,8 @@
           "name": "articles_attorney_id_attorneys_id_fk",
           "tableFrom": "articles",
           "tableTo": "attorneys",
-          "columnsFrom": [
-            "attorney_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["attorney_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         },
@@ -543,12 +519,8 @@
           "name": "articles_created_by_user_id_fk",
           "tableFrom": "articles",
           "tableTo": "user",
-          "columnsFrom": [
-            "created_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["created_by"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -558,9 +530,7 @@
         "articles_slug_unique": {
           "name": "articles_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -637,12 +607,8 @@
           "name": "attorney_translations_attorney_id_attorneys_id_fk",
           "tableFrom": "attorney_translations",
           "tableTo": "attorneys",
-          "columnsFrom": [
-            "attorney_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["attorney_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -722,9 +688,7 @@
         "attorneys_slug_unique": {
           "name": "attorneys_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -769,9 +733,7 @@
         "categories_slug_unique": {
           "name": "categories_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -836,12 +798,8 @@
           "name": "category_translations_category_id_categories_id_fk",
           "tableFrom": "category_translations",
           "tableTo": "categories",
-          "columnsFrom": [
-            "category_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["category_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -985,12 +943,8 @@
           "name": "faq_translations_faq_id_faqs_id_fk",
           "tableFrom": "faq_translations",
           "tableTo": "faqs",
-          "columnsFrom": [
-            "faq_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["faq_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1098,12 +1052,8 @@
           "name": "glossary_term_translations_term_id_glossary_terms_id_fk",
           "tableFrom": "glossary_term_translations",
           "tableTo": "glossary_terms",
-          "columnsFrom": [
-            "term_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["term_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1152,9 +1102,7 @@
         "glossary_terms_slug_unique": {
           "name": "glossary_terms_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -1238,12 +1186,8 @@
           "name": "practice_area_translations_area_id_practice_areas_id_fk",
           "tableFrom": "practice_area_translations",
           "tableTo": "practice_areas",
-          "columnsFrom": [
-            "area_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["area_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1299,9 +1243,7 @@
         "practice_areas_slug_unique": {
           "name": "practice_areas_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -1313,19 +1255,12 @@
     "public.content_status": {
       "name": "content_status",
       "schema": "public",
-      "values": [
-        "draft",
-        "review",
-        "published"
-      ]
+      "values": ["draft", "review", "published"]
     },
     "public.locale": {
       "name": "locale",
       "schema": "public",
-      "values": [
-        "en",
-        "tr"
-      ]
+      "values": ["en", "tr"]
     }
   },
   "schemas": {},

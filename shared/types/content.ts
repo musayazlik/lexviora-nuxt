@@ -1,5 +1,6 @@
 export type ContentLocale = 'en' | 'tr';
-export type Resource = 'articles' | 'categories' | 'practice-areas' | 'attorneys' | 'faqs' | 'glossary';
+export type Resource =
+  'articles' | 'categories' | 'practice-areas' | 'attorneys' | 'faqs' | 'glossary';
 export type Translation = Record<string, string | string[] | null>;
 export interface ContentRecord {
   id: number;
@@ -23,6 +24,7 @@ export interface ContentRecord {
   translations: Partial<Record<ContentLocale, Translation>>;
 }
 export interface PublicRecord extends Omit<ContentRecord, 'translations'> {
+  availableLocales?: ContentLocale[];
   title: string;
   excerpt: string;
   body: string;

@@ -5,16 +5,280 @@ const { text, user, date, statusText } = useAdmin();
 const localePath = useLocalePath();
 const { locale } = useI18n();
 useSeoMeta({ title: () => text('Genel bakış | Lexviora', 'Overview | Lexviora') });
-const [{ data: stats, error, refresh }, { data: articles }, { data: messages }] = await Promise.all([
-  useFetch('/api/admin/stats'), useFetch<ContentRecord[]>('/api/admin/content/articles', { default: () => [] }), useFetch<Array<{ id: number; name: string; subject: string; created_at: string; read_at: string | null }>>('/api/admin/messages', { default: () => [] }),
-]);
+const [{ data: stats, error, refresh }, { data: articles }, { data: messages }] = await Promise.all(
+  [
+    useFetch('/api/admin/stats'),
+    useFetch<ContentRecord[]>('/api/admin/content/articles', { default: () => [] }),
+    useFetch<
+      Array<{
+        id: number;
+        name: string;
+        subject: string;
+        created_at: string;
+        read_at: string | null;
+      }>
+    >('/api/admin/messages', { default: () => [] }),
+  ],
+);
 const cards = computed(() => [
-  { label: text('Toplam makale', 'Total articles'), value: stats.value?.articles || 0, icon: 'file-text', caption: text('Hukuk günlüğünüz', 'Your legal journal'), to: '/admin/articles' },
-  { label: text('Yayındaki içerik', 'Published articles'), value: stats.value?.publishedArticles || 0, icon: 'globe-2', caption: text('Okuyucularınızla buluşuyor', 'Available to your readers'), to: '/admin/articles' },
-  { label: text('Faaliyet alanları', 'Practice areas'), value: stats.value?.practiceAreas || 0, icon: 'scale', caption: text('Uzmanlığınızı yansıtır', 'Reflecting your expertise'), to: '/admin/practice-areas' },
-  { label: text('Yeni mesaj', 'Unread messages'), value: stats.value?.unreadMessages || 0, icon: 'inbox', caption: text('İlginizi bekleyen talepler', 'Enquiries awaiting attention'), to: '/admin/messages' },
+  {
+    label: text('Toplam makale', 'Total articles'),
+    value: stats.value?.articles || 0,
+    icon: 'file-text',
+    caption: text('Hukuk günlüğünüz', 'Your legal journal'),
+    to: '/admin/articles',
+  },
+  {
+    label: text('Yayındaki içerik', 'Published articles'),
+    value: stats.value?.publishedArticles || 0,
+    icon: 'globe-2',
+    caption: text('Okuyucularınızla buluşuyor', 'Available to your readers'),
+    to: '/admin/articles',
+  },
+  {
+    label: text('Faaliyet alanları', 'Practice areas'),
+    value: stats.value?.practiceAreas || 0,
+    icon: 'scale',
+    caption: text('Uzmanlığınızı yansıtır', 'Reflecting your expertise'),
+    to: '/admin/practice-areas',
+  },
+  {
+    label: text('Yeni mesaj', 'Unread messages'),
+    value: stats.value?.unreadMessages || 0,
+    icon: 'inbox',
+    caption: text('İlginizi bekleyen talepler', 'Enquiries awaiting attention'),
+    to: '/admin/messages',
+  },
 ]);
-const pipeline = computed(() => ['draft', 'review', 'published'].map(status => ({ status, count: articles.value.filter(a => a.status === status).length })));
-const articleTitle = (a: ContentRecord) => String(a.translations[locale.value]?.title || a.translations.en?.title || a.translations.tr?.title || a.slug);
+const pipeline = computed(() =>
+  ['draft', 'review', 'published'].map((status) => ({
+    status,
+    count: articles.value.filter((a) => a.status === status).length,
+  })),
+);
+const articleTitle = (a: ContentRecord) =>
+  String(
+    a.translations[locale.value]?.title ||
+      a.translations.en?.title ||
+      a.translations.tr?.title ||
+      a.slug,
+  );
 </script>
-<template><div><header class="admin-page-heading"><div><p class="admin-eyebrow">{{ text('Çalışma alanınız', 'Your workspace') }}</p><h1>{{ text('Merhaba', 'Welcome back') }}{{ user?.name ? ', ' + user.name.split(' ')[0] : '' }}.</h1><p>{{ text('İçeriklerinize ve yeni taleplere birlikte göz atalım.', 'A considered view of your content and latest enquiries.') }}</p></div><UButton :to="localePath('/admin/articles/new')" icon="i-lucide-plus" size="lg">{{ text('Yeni makale', 'New article') }}</UButton></header><UAlert v-if="error" color="error" :title="text('Veriler yüklenemedi.', 'Unable to load dashboard.')" class="mb-6" :actions="[{ label: text('Tekrar dene', 'Try again'), onClick: () => refresh() }]" /><div class="overview-stats"><NuxtLink v-for="card in cards" :key="card.icon" :to="localePath(card.to)" class="overview-stat"><div><span>{{ card.label }}</span><UIcon :name="'i-lucide-' + card.icon" /></div><strong>{{ card.value }}</strong><p>{{ card.caption }}</p></NuxtLink></div><section class="editorial-band"><div><span class="editorial-mark"><UIcon name="i-lucide-feather" /></span><div><h2>{{ text('Bir fikirden, yayınlanan bir yazıya.', 'From a thought to a published perspective.') }}</h2><p>{{ text('Yayın sürecinizin her adımı bir arada.', 'Every step of your editorial process, in one place.') }}</p></div></div><div class="pipeline-counts"><div v-for="step in pipeline" :key="step.status"><strong>{{ step.count }}</strong><span><i :class="'status-dot ' + step.status" />{{ statusText(step.status) }}</span></div></div></section><div class="dashboard-columns"><section class="admin-panel"><header class="panel-heading"><div><h2>{{ text('Son düzenlenen yazılar', 'Recently edited articles') }}</h2><p>{{ text('Hukuk günlüğünüzdeki son çalışmalar.', 'The latest work in your legal journal.') }}</p></div><UButton :to="localePath('/admin/articles')" variant="ghost" color="neutral" trailing-icon="i-lucide-arrow-up-right">{{ text('Tümü', 'View all') }}</UButton></header><div class="admin-table-scroll"><table class="admin-table"><thead><tr><th>{{ text('Makale', 'Article') }}</th><th>{{ text('Durum', 'Status') }}</th><th>{{ text('Güncelleme', 'Updated') }}</th></tr></thead><tbody><tr v-for="article in articles.slice(0, 5)" :key="article.id"><td><NuxtLink :to="localePath('/admin/articles/' + article.id)" class="article-table-title"><span class="table-doc-icon"><UIcon name="i-lucide-file-text" /></span><span>{{ articleTitle(article) }}<small>{{ Object.keys(article.translations).join(' / ').toUpperCase() }}</small></span></NuxtLink></td><td><span :class="'content-status ' + article.status"><i />{{ statusText(article.status) }}</span></td><td class="whitespace-nowrap">{{ date(article.updatedAt) }}</td></tr><tr v-if="!articles.length"><td colspan="3" class="py-10 text-center">{{ text('İlk makalenizi oluşturarak başlayın.', 'Start by creating your first article.') }}</td></tr></tbody></table></div></section><div class="dashboard-aside"><section class="admin-panel"><header class="panel-heading"><h2>{{ text('Hızlı işlemler', 'Quick actions') }}</h2><UIcon name="i-lucide-zap" class="text-gold-600" /></header><div class="quick-actions"><NuxtLink v-for="action in [{ tr: 'Makale yaz', en: 'Write an article', subTr: 'Tiptap ve AI asistanı ile', subEn: 'With Tiptap and AI assistance', to: '/admin/articles/new', icon: 'square-pen' }, { tr: 'Ekibi düzenle', en: 'Manage your team', subTr: 'Avukat profilleri ve uzmanlıklar', subEn: 'Profiles and areas of expertise', to: '/admin/attorneys', icon: 'users-round' }, { tr: 'Medyaya göz at', en: 'Browse media', subTr: 'Marka ve içerik görselleri', subEn: 'Brand and editorial imagery', to: '/admin/media', icon: 'images' }]" :key="action.to" :to="localePath(action.to)"><span><UIcon :name="'i-lucide-' + action.icon" /></span><div><strong>{{ text(action.tr, action.en) }}</strong><small>{{ text(action.subTr, action.subEn) }}</small></div><UIcon name="i-lucide-chevron-right" /></NuxtLink></div></section><section class="admin-panel"><header class="panel-heading"><h2>{{ text('Son talepler', 'Latest enquiries') }}</h2><UButton :to="localePath('/admin/messages')" icon="i-lucide-arrow-up-right" variant="ghost" color="neutral" :aria-label="text('Gelen kutusunu aç', 'Open inbox')" /></header><div class="inbox-preview"><NuxtLink v-for="message in messages.slice(0,3)" :key="message.id" :to="localePath('/admin/messages')"><UAvatar :alt="message.name" size="sm" /><span><strong>{{ message.name }}</strong><small>{{ message.subject }}</small></span><i v-if="!message.read_at" class="unread-dot" /></NuxtLink><div v-if="!messages.length" class="inbox-empty"><UIcon name="i-lucide-mail-check" /><p>{{ text('Gelen kutunuz güncel.', 'Your inbox is up to date.') }}</p><small>{{ text('Yeni talepler burada görünecek.', 'New enquiries will appear here.') }}</small></div></div></section></div></div></div></template>
+<template>
+  <div>
+    <header class="admin-page-heading">
+      <div>
+        <p class="admin-eyebrow">{{ text('Çalışma alanınız', 'Your workspace') }}</p>
+        <h1>
+          {{ text('Merhaba', 'Welcome back')
+          }}{{ user?.name ? ', ' + user.name.split(' ')[0] : '' }}.
+        </h1>
+        <p>
+          {{
+            text(
+              'İçeriklerinize ve yeni taleplere birlikte göz atalım.',
+              'A considered view of your content and latest enquiries.',
+            )
+          }}
+        </p>
+      </div>
+      <UButton :to="localePath('/admin/articles/new')" icon="i-lucide-plus" size="lg">{{
+        text('Yeni makale', 'New article')
+      }}</UButton>
+    </header>
+    <UAlert
+      v-if="error"
+      color="error"
+      :title="text('Veriler yüklenemedi.', 'Unable to load dashboard.')"
+      class="mb-6"
+      :actions="[{ label: text('Tekrar dene', 'Try again'), onClick: () => refresh() }]"
+    />
+    <div class="overview-stats">
+      <NuxtLink
+        v-for="card in cards"
+        :key="card.icon"
+        :to="localePath(card.to)"
+        class="overview-stat"
+        ><div>
+          <span>{{ card.label }}</span
+          ><UIcon :name="'i-lucide-' + card.icon" />
+        </div>
+        <strong>{{ card.value }}</strong>
+        <p>{{ card.caption }}</p></NuxtLink
+      >
+    </div>
+    <section class="editorial-band">
+      <div>
+        <span class="editorial-mark"><UIcon name="i-lucide-feather" /></span>
+        <div>
+          <h2>
+            {{
+              text(
+                'Bir fikirden, yayınlanan bir yazıya.',
+                'From a thought to a published perspective.',
+              )
+            }}
+          </h2>
+          <p>
+            {{
+              text(
+                'Yayın sürecinizin her adımı bir arada.',
+                'Every step of your editorial process, in one place.',
+              )
+            }}
+          </p>
+        </div>
+      </div>
+      <div class="pipeline-counts">
+        <div v-for="step in pipeline" :key="step.status">
+          <strong>{{ step.count }}</strong
+          ><span><i :class="'status-dot ' + step.status" />{{ statusText(step.status) }}</span>
+        </div>
+      </div>
+    </section>
+    <div class="dashboard-columns">
+      <section class="admin-panel">
+        <header class="panel-heading">
+          <div>
+            <h2>{{ text('Son düzenlenen yazılar', 'Recently edited articles') }}</h2>
+            <p>
+              {{
+                text(
+                  'Hukuk günlüğünüzdeki son çalışmalar.',
+                  'The latest work in your legal journal.',
+                )
+              }}
+            </p>
+          </div>
+          <UButton
+            :to="localePath('/admin/articles')"
+            variant="ghost"
+            color="neutral"
+            trailing-icon="i-lucide-arrow-up-right"
+            >{{ text('Tümü', 'View all') }}</UButton
+          >
+        </header>
+        <div class="admin-table-scroll">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>{{ text('Makale', 'Article') }}</th>
+                <th>{{ text('Durum', 'Status') }}</th>
+                <th>{{ text('Güncelleme', 'Updated') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="article in articles.slice(0, 5)" :key="article.id">
+                <td>
+                  <NuxtLink
+                    :to="localePath('/admin/articles/' + article.id)"
+                    class="article-table-title"
+                    ><span class="table-doc-icon"><UIcon name="i-lucide-file-text" /></span
+                    ><span
+                      >{{ articleTitle(article)
+                      }}<small>{{
+                        Object.keys(article.translations).join(' / ').toUpperCase()
+                      }}</small></span
+                    ></NuxtLink
+                  >
+                </td>
+                <td>
+                  <span :class="'content-status ' + article.status"
+                    ><i />{{ statusText(article.status) }}</span
+                  >
+                </td>
+                <td class="whitespace-nowrap">{{ date(article.updatedAt) }}</td>
+              </tr>
+              <tr v-if="!articles.length">
+                <td colspan="3" class="py-10 text-center">
+                  {{
+                    text(
+                      'İlk makalenizi oluşturarak başlayın.',
+                      'Start by creating your first article.',
+                    )
+                  }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <div class="dashboard-aside">
+        <section class="admin-panel">
+          <header class="panel-heading">
+            <h2>{{ text('Hızlı işlemler', 'Quick actions') }}</h2>
+            <UIcon name="i-lucide-zap" class="text-gold-600" />
+          </header>
+          <div class="quick-actions">
+            <NuxtLink
+              v-for="action in [
+                {
+                  tr: 'Makale yaz',
+                  en: 'Write an article',
+                  subTr: 'Tiptap ve AI asistanı ile',
+                  subEn: 'With Tiptap and AI assistance',
+                  to: '/admin/articles/new',
+                  icon: 'square-pen',
+                },
+                {
+                  tr: 'Ekibi düzenle',
+                  en: 'Manage your team',
+                  subTr: 'Avukat profilleri ve uzmanlıklar',
+                  subEn: 'Profiles and areas of expertise',
+                  to: '/admin/attorneys',
+                  icon: 'users-round',
+                },
+                {
+                  tr: 'Medyaya göz at',
+                  en: 'Browse media',
+                  subTr: 'Marka ve içerik görselleri',
+                  subEn: 'Brand and editorial imagery',
+                  to: '/admin/media',
+                  icon: 'images',
+                },
+              ]"
+              :key="action.to"
+              :to="localePath(action.to)"
+              ><span><UIcon :name="'i-lucide-' + action.icon" /></span>
+              <div>
+                <strong>{{ text(action.tr, action.en) }}</strong
+                ><small>{{ text(action.subTr, action.subEn) }}</small>
+              </div>
+              <UIcon name="i-lucide-chevron-right"
+            /></NuxtLink>
+          </div>
+        </section>
+        <section class="admin-panel">
+          <header class="panel-heading">
+            <h2>{{ text('Son talepler', 'Latest enquiries') }}</h2>
+            <UButton
+              :to="localePath('/admin/messages')"
+              icon="i-lucide-arrow-up-right"
+              variant="ghost"
+              color="neutral"
+              :aria-label="text('Gelen kutusunu aç', 'Open inbox')"
+            />
+          </header>
+          <div class="inbox-preview">
+            <NuxtLink
+              v-for="message in messages.slice(0, 3)"
+              :key="message.id"
+              :to="localePath('/admin/messages')"
+              ><UAvatar :alt="message.name" size="sm" /><span
+                ><strong>{{ message.name }}</strong
+                ><small>{{ message.subject }}</small></span
+              ><i v-if="!message.read_at" class="unread-dot"
+            /></NuxtLink>
+            <div v-if="!messages.length" class="inbox-empty">
+              <UIcon name="i-lucide-mail-check" />
+              <p>{{ text('Gelen kutunuz güncel.', 'Your inbox is up to date.') }}</p>
+              <small>{{
+                text('Yeni talepler burada görünecek.', 'New enquiries will appear here.')
+              }}</small>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</template>

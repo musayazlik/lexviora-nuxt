@@ -1,14 +1,170 @@
 <script setup lang="ts">
 definePageMeta({ middleware: 'auth', layout: 'admin' });
 const { text, date, canPublish, errorText } = useAdmin();
-if (!canPublish.value && import.meta.client) { /* The API independently enforces administrator access. */ }
-const { data: result, error, refresh } = await useFetch('/api/admin/users');
+const {
+  data: result,
+  error,
+  refresh,
+} = await useFetch<{
+  users: Array<{
+    id: string;
+    name: string;
+    email: string;
+    role?: string | null;
+    createdAt: string;
+  }>;
+}>('/api/admin/users');
 const open = ref(false);
 const busy = ref(false);
 const notice = ref('');
 const form = reactive({ name: '', email: '', password: '', role: 'editor' });
 const toast = useToast();
 useSeoMeta({ title: () => text('Kullanıcılar | Lexviora', 'Users | Lexviora') });
-async function create() { busy.value = true; notice.value = ''; try { await $fetch('/api/admin/users', { method: 'POST', body: form }); open.value = false; Object.assign(form, { name: '', email: '', password: '', role: 'editor' }); await refresh(); toast.add({ title: text('Hesap oluşturuldu.', 'Account created.'), color: 'success' }); } catch (e) { notice.value = errorText(e); } finally { busy.value = false; } }
+async function create() {
+  busy.value = true;
+  notice.value = '';
+  try {
+    await $fetch('/api/admin/users', { method: 'POST', body: form });
+    open.value = false;
+    Object.assign(form, { name: '', email: '', password: '', role: 'editor' });
+    await refresh();
+    toast.add({ title: text('Hesap oluşturuldu.', 'Account created.'), color: 'success' });
+  } catch (e) {
+    notice.value = errorText(e);
+  } finally {
+    busy.value = false;
+  }
+}
 </script>
-<template><div><header class="admin-page-heading"><div><p class="admin-eyebrow">{{ text('Birlikte, özenle', 'A considered collaboration') }}</p><h1>{{ text('Kullanıcılar', 'Users') }}</h1><p>{{ text('Ekip üyeleri ve içerik yönetimi yetkileri.', 'Team members and their content permissions.') }}</p></div><UButton v-if="canPublish" icon="i-lucide-user-plus" size="lg" @click="open = true">{{ text('Kullanıcı ekle', 'Add user') }}</UButton></header><UAlert v-if="error" color="error" :title="text('Kullanıcı yönetimi yalnızca yöneticilere açıktır.', 'User management is restricted to administrators.')" /><section v-else class="admin-panel"><div class="admin-table-scroll"><table class="admin-table"><thead><tr><th>{{ text('Ekip üyesi', 'Team member') }}</th><th>{{ text('E-posta', 'Email') }}</th><th>{{ text('Rol', 'Role') }}</th><th>{{ text('Katılım', 'Joined') }}</th></tr></thead><tbody><tr v-for="member in result?.users" :key="member.id"><td><div class="flex items-center gap-3"><UAvatar :alt="member.name" size="sm" /><strong>{{ member.name }}</strong></div></td><td>{{ member.email }}</td><td><UBadge :color="member.role === 'admin' ? 'primary' : 'neutral'" variant="soft">{{ member.role === 'admin' ? text('Yönetici', 'Administrator') : text('Editör', 'Editor') }}</UBadge></td><td>{{ date(String(member.createdAt)) }}</td></tr></tbody></table></div></section><div class="role-explainer"><p><UIcon name="i-lucide-shield-check" /><strong>{{ text('Yönetici', 'Administrator') }}</strong>{{ text('Tüm içerikleri yayınlar, siler ve kullanıcı ekler.', 'Publishes, deletes content and creates team accounts.') }}</p><p><UIcon name="i-lucide-square-pen" /><strong>{{ text('Editör', 'Editor') }}</strong>{{ text('Taslak oluşturur ve düzenler; yayındaki makaleleri değiştiremez.', 'Creates and edits drafts; cannot modify published articles.') }}</p></div><UModal v-model:open="open" :title="text('Yeni ekip üyesi', 'New team member')" :description="text('Hesap bilgilerini oluşturun ve bir rol seçin.', 'Create account credentials and choose a role.')"><template #body><form class="space-y-4" @submit.prevent="create"><UAlert v-if="notice" color="error" :title="notice" /><UFormField :label="text('Ad soyad', 'Full name')" required><UInput v-model="form.name" required autocomplete="name" class="w-full" /></UFormField><UFormField :label="text('E-posta', 'Email address')" required><UInput v-model="form.email" type="email" required autocomplete="email" class="w-full" /></UFormField><UFormField :label="text('Başlangıç şifresi', 'Initial password')" :hint="text('En az 12 karakter', 'At least 12 characters')" required><UInput v-model="form.password" type="password" required :minlength="12" autocomplete="new-password" class="w-full" /></UFormField><UFormField :label="text('Rol', 'Role')"><USelect v-model="form.role" :items="[{ label: text('Editör', 'Editor'), value: 'editor' }, { label: text('Yönetici', 'Administrator'), value: 'admin' }]" class="w-full" /></UFormField><UButton type="submit" :loading="busy" block>{{ text('Hesap oluştur', 'Create account') }}</UButton></form></template></UModal></div></template>
+<template>
+  <div>
+    <header class="admin-page-heading">
+      <div>
+        <p class="admin-eyebrow">{{ text('Birlikte, özenle', 'A considered collaboration') }}</p>
+        <h1>{{ text('Kullanıcılar', 'Users') }}</h1>
+        <p>
+          {{
+            text(
+              'Ekip üyeleri ve içerik yönetimi yetkileri.',
+              'Team members and their content permissions.',
+            )
+          }}
+        </p>
+      </div>
+      <UButton v-if="canPublish" icon="i-lucide-user-plus" size="lg" @click="open = true">{{
+        text('Kullanıcı ekle', 'Add user')
+      }}</UButton>
+    </header>
+    <UAlert
+      v-if="error"
+      color="error"
+      :title="
+        text(
+          'Kullanıcı yönetimi yalnızca yöneticilere açıktır.',
+          'User management is restricted to administrators.',
+        )
+      "
+    />
+    <section v-else class="admin-panel">
+      <div class="admin-table-scroll">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>{{ text('Ekip üyesi', 'Team member') }}</th>
+              <th>{{ text('E-posta', 'Email') }}</th>
+              <th>{{ text('Rol', 'Role') }}</th>
+              <th>{{ text('Katılım', 'Joined') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="member in result?.users" :key="member.id">
+              <td>
+                <div class="flex items-center gap-3">
+                  <UAvatar :alt="member.name" size="sm" /><strong>{{ member.name }}</strong>
+                </div>
+              </td>
+              <td>{{ member.email }}</td>
+              <td>
+                <UBadge :color="member.role === 'admin' ? 'primary' : 'neutral'" variant="soft">{{
+                  member.role === 'admin'
+                    ? text('Yönetici', 'Administrator')
+                    : text('Editör', 'Editor')
+                }}</UBadge>
+              </td>
+              <td>{{ date(String(member.createdAt)) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <div class="role-explainer">
+      <p>
+        <UIcon name="i-lucide-shield-check" /><strong>{{
+          text('Yönetici', 'Administrator')
+        }}</strong
+        >{{
+          text(
+            'Tüm içerikleri yayınlar, siler ve kullanıcı ekler.',
+            'Publishes, deletes content and creates team accounts.',
+          )
+        }}
+      </p>
+      <p>
+        <UIcon name="i-lucide-square-pen" /><strong>{{ text('Editör', 'Editor') }}</strong
+        >{{
+          text(
+            'Taslak oluşturur ve düzenler; yayındaki makaleleri değiştiremez.',
+            'Creates and edits drafts; cannot modify published articles.',
+          )
+        }}
+      </p>
+    </div>
+    <UModal
+      v-model:open="open"
+      :title="text('Yeni ekip üyesi', 'New team member')"
+      :description="
+        text(
+          'Hesap bilgilerini oluşturun ve bir rol seçin.',
+          'Create account credentials and choose a role.',
+        )
+      "
+      ><template #body
+        ><form class="space-y-4" @submit.prevent="create">
+          <UAlert v-if="notice" color="error" :title="notice" /><UFormField
+            :label="text('Ad soyad', 'Full name')"
+            required
+            ><UInput v-model="form.name" required autocomplete="name" class="w-full" /></UFormField
+          ><UFormField :label="text('E-posta', 'Email address')" required
+            ><UInput
+              v-model="form.email"
+              type="email"
+              required
+              autocomplete="email"
+              class="w-full" /></UFormField
+          ><UFormField
+            :label="text('Başlangıç şifresi', 'Initial password')"
+            :hint="text('En az 12 karakter', 'At least 12 characters')"
+            required
+            ><UInput
+              v-model="form.password"
+              type="password"
+              required
+              :minlength="12"
+              autocomplete="new-password"
+              class="w-full" /></UFormField
+          ><UFormField :label="text('Rol', 'Role')"
+            ><USelect
+              v-model="form.role"
+              :items="[
+                { label: text('Editör', 'Editor'), value: 'editor' },
+                { label: text('Yönetici', 'Administrator'), value: 'admin' },
+              ]"
+              class="w-full" /></UFormField
+          ><UButton type="submit" :loading="busy" block>{{
+            text('Hesap oluştur', 'Create account')
+          }}</UButton>
+        </form></template
+      ></UModal
+    >
+  </div>
+</template>

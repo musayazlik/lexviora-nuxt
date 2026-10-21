@@ -1,0 +1,422 @@
+$ nuxt build
+Building Nuxt for production...
+ÔùÅ Loading Nuxt config
+ÔùÅ Nuxt 4.6.2 (with Nitro 2.13.5, Vite 8.3.4 and Vue 3.5.44)
+ÔùÅ Setting up modules
+ÔùÅ Setting up modules (5.15s ┬À 6.85s)
+ÔùÅ Preparing app
+
+[nuxt-site-config]  WARN  [Nuxt Site Config] Invalid config provided, please correct:
+
+[90m[[90mnuxt-site-config[90m][39m   - url "http://localhost:3000" from @nuxtjs/i18n should not be localhost
+[90m[[90mnuxt-site-config[90m][39m 
+
+[@nuxt/robots]  WARN  You have disallowed robots accessing /api/**, this may prevent your site from being indexed correctly.
+
+[36mÔä╣[39m Nuxt Icon server bundle mode is set to [36mlocal[39m
+[90m[[90mnuxt:icon[90m][39m [32mÔ£ö[39m Nuxt Icon discovered local-installed 1 collections: lucide
+ÔùÅ Preparing app (5.21s ┬À 14.8s)
+ÔùÅ Nitro preset: node-server
+ÔùÅ Generating types
+[90m[[90mnuxt[90m][39m [36mÔä╣[39m Compiled [36m#build/types/nitro-nuxt.d.ts[39m in 552.25ms
+[90m[[90mnuxt[90m][39m [36mÔä╣[39m Compiled [36m#build/server-routes.d.ts[39m in 645.17ms
+[90m[[90mnuxt[90m][39m [36mÔä╣[39m Compiled [36m#build/types/runtime-config.d.ts[39m in 723.9ms
+[90m[[90mnuxt[90m][39m [36mÔä╣[39m Compiled [36m#build/types/shared-imports.d.ts[39m in 653.94ms
+[90m[[90mnuxt[90m][39m [36mÔä╣[39m Compiled [36m#build/module/nuxt-seo-utils.assets.d.ts[39m in 663.4ms
+[90m[[90mnuxt[90m][39m [36mÔä╣[39m Compiled [36m#build/types/imports.d.ts[39m in 677.37ms
+[36mÔä╣[39m Nuxt Icon client bundle consist of [36m43[39m icons with [36m10.40KB[39m(uncompressed) in size
+[90m[[90mnuxt[90m][39m [36mÔä╣[39m Compiled [36m#build/nuxt-icon-client-bundle.mjs[39m in 701.23ms
+[90m[[90mnuxt[90m][39m [36mÔä╣[39m Compiled [36m#build/router.options.mjs[39m in 731.05ms
+[90m[[90mnuxt[90m][39m [36mÔä╣[39m Compiled [36m#build/nuxt.config.mjs[39m in 888.16ms
+ÔùÅ Bundling client
+[36mÔä╣[39m Building client...
+[36mÔä╣[39m [36mvite v8.3.4 [32mbuilding client environment for production...[36m[39m
+transforming...
+ÔùÅ Bundling client (5.08s ┬À 23.9s)
+ÔùÅ Bundling client (10.1s ┬À 28.9s)
+ÔùÅ Bundling client (15.1s ┬À 34.0s)
+Ô£ô 1321 modules transformed.
+rendering chunks...
+computing gzip size...
+[36mÔä╣[39m .nuxt/dist/client/_nuxt/manrope-latin-ext.Ch3YOpNY.woff2     15.12 kB
+.nuxt/dist/client/_nuxt/manrope-latin.DHIcAJRg.woff2         24.83 kB
+.nuxt/dist/client/_nuxt/cormorant-latin-ext.ltf1AbuM.woff2   33.73 kB
+.nuxt/dist/client/_nuxt/cormorant-latin.CUoBjw-S.woff2       37.64 kB
+.nuxt/dist/client/manifest.json                              56.39 kB Ôöé gzip:   4.98 kB
+.nuxt/dist/client/_nuxt/entry.BG6z3HMo.css                  224.52 kB Ôöé gzip:  32.48 kB
+.nuxt/dist/client/_nuxt/DHihWhf5.js                           0.04 kB Ôöé gzip:   0.06 kB
+.nuxt/dist/client/_nuxt/ZxAqVlRW.js                           0.04 kB Ôöé gzip:   0.06 kB
+.nuxt/dist/client/_nuxt/CS_k9ySc.js                           0.12 kB Ôöé gzip:   0.11 kB
+.nuxt/dist/client/_nuxt/LBnVtH4l.js                           0.12 kB Ôöé gzip:   0.11 kB
+.nuxt/dist/client/_nuxt/6fRXvJNY.js                           0.12 kB Ôöé gzip:   0.11 kB
+.nuxt/dist/client/_nuxt/SyxuIb1d.js                           0.12 kB Ôöé gzip:   0.11 kB
+.nuxt/dist/client/_nuxt/CmfgkpUe.js                           0.12 kB Ôöé gzip:   0.11 kB
+.nuxt/dist/client/_nuxt/Dd3oTY7z.js                           0.12 kB Ôöé gzip:   0.11 kB
+.nuxt/dist/client/_nuxt/CoaKBDty.js                           0.14 kB Ôöé gzip:   0.12 kB
+.nuxt/dist/client/_nuxt/DK3Fl9T5.js                           0.15 kB Ôöé gzip:   0.15 kB
+.nuxt/dist/client/_nuxt/XERLm_WW.js                           0.15 kB Ôöé gzip:   0.15 kB
+.nuxt/dist/client/_nuxt/DcYMedda.js                           0.17 kB Ôöé gzip:   0.15 kB
+.nuxt/dist/client/_nuxt/BEuM-UXc.js                           0.20 kB Ôöé gzip:   0.16 kB
+.nuxt/dist/client/_nuxt/Bvi71IDs.js                           0.20 kB Ôöé gzip:   0.16 kB
+.nuxt/dist/client/_nuxt/CbAkNre4.js                           0.20 kB Ôöé gzip:   0.16 kB
+.nuxt/dist/client/_nuxt/b3f-Ce3L.js                           0.20 kB Ôöé gzip:   0.16 kB
+.nuxt/dist/client/_nuxt/BQhL3LkD.js                           0.21 kB Ôöé gzip:   0.17 kB
+.nuxt/dist/client/_nuxt/CBuF9RAK.js                           0.34 kB Ôöé gzip:   0.24 kB
+.nuxt/dist/client/_nuxt/64cNCiRF.js                           0.35 kB Ôöé gzip:   0.25 kB
+.nuxt/dist/client/_nuxt/B0pk6QIa.js                           0.37 kB Ôöé gzip:   0.27 kB
+.nuxt/dist/client/_nuxt/BtiGZ4Tb.js                           0.48 kB Ôöé gzip:   0.33 kB
+.nuxt/dist/client/_nuxt/CujtnHbB.js                           0.52 kB Ôöé gzip:   0.37 kB
+.nuxt/dist/client/_nuxt/ChUEmR5C.js                           0.54 kB Ôöé gzip:   0.35 kB
+.nuxt/dist/client/_nuxt/EABQHCVb.js                           0.66 kB Ôöé gzip:   0.33 kB
+.nuxt/dist/client/_nuxt/CJgtIgMZ.js                           0.66 kB Ôöé gzip:   0.44 kB
+.nuxt/dist/client/_nuxt/C9Rz-BqD.js                           0.74 kB Ôöé gzip:   0.48 kB
+.nuxt/dist/client/_nuxt/DhEIggTp.js                           0.98 kB Ôöé gzip:   0.58 kB
+.nuxt/dist/client/_nuxt/Bo8Ziev2.js                           1.01 kB Ôöé gzip:   0.56 kB
+.nuxt/dist/client/_nuxt/CK3KRusG.js                           1.08 kB Ôöé gzip:   0.65 kB
+.nuxt/dist/client/_nuxt/Vy70RQyK.js                           1.19 kB Ôöé gzip:   0.69 kB
+.nuxt/dist/client/_nuxt/DSKFbRH5.js                           1.28 kB Ôöé gzip:   0.74 kB
+.nuxt/dist/client/_nuxt/DOJQcJI9.js                           1.62 kB Ôöé gzip:   0.91 kB
+.nuxt/dist/client/_nuxt/D7C0uvXU.js                           1.67 kB Ôöé gzip:   0.99 kB
+.nuxt/dist/client/_nuxt/Df6n6gVQ.js                           1.71 kB Ôöé gzip:   0.95 kB
+.nuxt/dist/client/_nuxt/CRiMgJqi.js                           1.93 kB Ôöé gzip:   1.03 kB
+.nuxt/dist/client/_nuxt/DtgeBFDi.js                           1.93 kB Ôöé gzip:   0.98 kB
+.nuxt/dist/client/_nuxt/DiEdsQpd.js                           1.94 kB Ôöé gzip:   0.84 kB
+.nuxt/dist/client/_nuxt/BmZ8fO1V.js                           1.94 kB Ôöé gzip:   0.87 kB
+.nuxt/dist/client/_nuxt/3r4rDK6G.js                           2.00 kB Ôöé gzip:   0.92 kB
+.nuxt/dist/client/_nuxt/CDDda8IP.js                           2.01 kB Ôöé gzip:   0.96 kB
+.nuxt/dist/client/_nuxt/BGM7yDMe.js                           2.38 kB Ôöé gzip:   0.98 kB
+.nuxt/dist/client/_nuxt/p6HXYYDS.js                           2.40 kB Ôöé gzip:   1.07 kB
+.nuxt/dist/client/_nuxt/DZvIEIGB.js                           2.41 kB Ôöé gzip:   1.12 kB
+.nuxt/dist/client/_nuxt/B-Vqh3J9.js                           2.44 kB Ôöé gzip:   1.03 kB
+.nuxt/dist/client/_nuxt/CibOBL_K.js                           2.47 kB Ôöé gzip:   1.16 kB
+.nuxt/dist/client/_nuxt/CHQuRnJl.js                           2.48 kB Ôöé gzip:   1.13 kB
+.nuxt/dist/client/_nuxt/D4tMQLbv.js                           2.59 kB Ôöé gzip:   1.36 kB
+.nuxt/dist/client/_nuxt/CkC4BIOx.js                           2.61 kB Ôöé gzip:   1.16 kB
+.nuxt/dist/client/_nuxt/CMJnwaI7.js                           2.63 kB Ôöé gzip:   1.25 kB
+.nuxt/dist/client/_nuxt/DmZmmbaG.js                           2.64 kB Ôöé gzip:   1.23 kB
+.nuxt/dist/client/_nuxt/Dur5Regb.js                           2.76 kB Ôöé gzip:   1.41 kB
+.nuxt/dist/client/_nuxt/Ct8rmV6Y.js                           2.78 kB Ôöé gzip:   1.41 kB
+.nuxt/dist/client/_nuxt/BrrjTKTh.js                           2.90 kB Ôöé gzip:   1.44 kB
+.nuxt/dist/client/_nuxt/CTnb5Ubi.js                           3.14 kB Ôöé gzip:   1.29 kB
+.nuxt/dist/client/_nuxt/bW6NxFOP.js                           3.15 kB Ôöé gzip:   1.36 kB
+.nuxt/dist/client/_nuxt/BEQKPFeE.js                           3.16 kB Ôöé gzip:   1.30 kB
+.nuxt/dist/client/_nuxt/CwwoMEus.js                           3.17 kB Ôöé gzip:   1.51 kB
+.nuxt/dist/client/_nuxt/Z7uVreOw.js                           3.18 kB Ôöé gzip:   1.31 kB
+.nuxt/dist/client/_nuxt/DpNCK2ml.js                           3.19 kB Ôöé gzip:   1.66 kB
+.nuxt/dist/client/_nuxt/CP66EsM4.js                           3.20 kB Ôöé gzip:   1.31 kB
+.nuxt/dist/client/_nuxt/BKdVzoJ5.js                           3.26 kB Ôöé gzip:   1.41 kB
+.nuxt/dist/client/_nuxt/Bzey5DjU.js                           3.27 kB Ôöé gzip:   1.42 kB
+.nuxt/dist/client/_nuxt/CiWw9sSW.js                           3.27 kB Ôöé gzip:   1.41 kB
+.nuxt/dist/client/_nuxt/eU_P_Oe6.js                           3.29 kB Ôöé gzip:   1.42 kB
+.nuxt/dist/client/_nuxt/DfOBhfRL.js                           3.35 kB Ôöé gzip:   1.63 kB
+.nuxt/dist/client/_nuxt/C9eZ4gQb.js                           3.36 kB Ôöé gzip:   1.50 kB
+.nuxt/dist/client/_nuxt/ZcV1WoxQ.js                           3.44 kB Ôöé gzip:   1.45 kB
+.nuxt/dist/client/_nuxt/B4i3hY9d.js                           3.49 kB Ôöé gzip:   1.66 kB
+.nuxt/dist/client/_nuxt/CHcau811.js                           3.49 kB Ôöé gzip:   1.52 kB
+.nuxt/dist/client/_nuxt/BNG8tPXj.js                           3.54 kB Ôöé gzip:   1.49 kB
+.nuxt/dist/client/_nuxt/X6vmAtC5.js                           3.60 kB Ôöé gzip:   1.58 kB
+.nuxt/dist/client/_nuxt/BtDnv3Ef.js                           3.91 kB Ôöé gzip:   1.60 kB
+.nuxt/dist/client/_nuxt/CL1PWrvb.js                           3.91 kB Ôöé gzip:   1.46 kB
+.nuxt/dist/client/_nuxt/BdHaBGoq.js                           3.95 kB Ôöé gzip:   1.47 kB
+.nuxt/dist/client/_nuxt/C8-gOZZN.js                           3.95 kB Ôöé gzip:   1.50 kB
+.nuxt/dist/client/_nuxt/Cn1LJQUp.js                           4.17 kB Ôöé gzip:   2.06 kB
+.nuxt/dist/client/_nuxt/BWM_3PWo.js                           4.34 kB Ôöé gzip:   2.02 kB
+.nuxt/dist/client/_nuxt/DydAVVml.js                           4.85 kB Ôöé gzip:   1.96 kB
+.nuxt/dist/client/_nuxt/C9nOrbSj.js                           4.92 kB Ôöé gzip:   2.22 kB
+.nuxt/dist/client/_nuxt/CgySurrr.js                           5.07 kB Ôöé gzip:   2.16 kB
+.nuxt/dist/client/_nuxt/DlbFe4Un.js                           5.08 kB Ôöé gzip:   2.17 kB
+.nuxt/dist/client/_nuxt/B5VXArfH.js                           5.08 kB Ôöé gzip:   2.16 kB
+.nuxt/dist/client/_nuxt/COMc4Ya6.js                           5.08 kB Ôöé gzip:   2.16 kB
+.nuxt/dist/client/_nuxt/DH8Ahw-L.js                           5.09 kB Ôöé gzip:   2.16 kB
+.nuxt/dist/client/_nuxt/BVcHCtf4.js                           5.09 kB Ôöé gzip:   2.16 kB
+.nuxt/dist/client/_nuxt/BO0p1Mo2.js                           5.09 kB Ôöé gzip:   2.17 kB
+.nuxt/dist/client/_nuxt/C-jhOJjh.js                           5.10 kB Ôöé gzip:   2.17 kB
+.nuxt/dist/client/_nuxt/CdrcT4sz.js                           5.12 kB Ôöé gzip:   2.19 kB
+.nuxt/dist/client/_nuxt/BgSvYJhB.js                           5.14 kB Ôöé gzip:   2.20 kB
+.nuxt/dist/client/_nuxt/Cc0p7Wco.js                           5.30 kB Ôöé gzip:   2.33 kB
+.nuxt/dist/client/_nuxt/Bu6-JWBR.js                           5.31 kB Ôöé gzip:   2.33 kB
+.nuxt/dist/client/_nuxt/Dire3m8l.js                           5.31 kB Ôöé gzip:   2.34 kB
+.nuxt/dist/client/_nuxt/Bwn58c0Q.js                           5.31 kB Ôöé gzip:   2.33 kB
+.nuxt/dist/client/_nuxt/C0SV_sY9.js                           5.32 kB Ôöé gzip:   2.33 kB
+.nuxt/dist/client/_nuxt/DooWr-n0.js                           5.33 kB Ôöé gzip:   2.35 kB
+.nuxt/dist/client/_nuxt/D8RnmBPN.js                           5.34 kB Ôöé gzip:   1.64 kB
+.nuxt/dist/client/_nuxt/DfyicOFS.js                           5.36 kB Ôöé gzip:   2.34 kB
+.nuxt/dist/client/_nuxt/DGbJRlcY.js                           5.37 kB Ôöé gzip:   1.71 kB
+.nuxt/dist/client/_nuxt/BoAMiIcv.js                           5.37 kB Ôöé gzip:   2.36 kB
+.nuxt/dist/client/_nuxt/DbgZbuSs.js                           5.39 kB Ôöé gzip:   2.14 kB
+.nuxt/dist/client/_nuxt/Dz8nv2jo.js                           5.43 kB Ôöé gzip:   2.19 kB
+.nuxt/dist/client/_nuxt/Akah-ywr.js                           5.57 kB Ôöé gzip:   2.29 kB
+.nuxt/dist/client/_nuxt/2xepBitG.js                           5.67 kB Ôöé gzip:   2.29 kB
+.nuxt/dist/client/_nuxt/CzTqAryF.js                           5.72 kB Ôöé gzip:   1.59 kB
+.nuxt/dist/client/_nuxt/CibLloSt.js                           6.03 kB Ôöé gzip:   1.79 kB
+.nuxt/dist/client/_nuxt/BJZRRko1.js                           6.07 kB Ôöé gzip:   1.82 kB
+.nuxt/dist/client/_nuxt/YkcEasBP.js                           6.09 kB Ôöé gzip:   1.82 kB
+.nuxt/dist/client/_nuxt/ChgPHYe3.js                           6.11 kB Ôöé gzip:   1.84 kB
+.nuxt/dist/client/_nuxt/IOj9_M9b.js                           6.15 kB Ôöé gzip:   1.87 kB
+.nuxt/dist/client/_nuxt/7_NQ6peo.js                           6.17 kB Ôöé gzip:   1.84 kB
+.nuxt/dist/client/_nuxt/DaqRVdIG.js                           6.26 kB Ôöé gzip:   1.96 kB
+.nuxt/dist/client/_nuxt/CcMMNTzO.js                           6.26 kB Ôöé gzip:   1.93 kB
+.nuxt/dist/client/_nuxt/lqOnFRxS.js                           6.30 kB Ôöé gzip:   1.95 kB
+.nuxt/dist/client/_nuxt/sCl7r3mc.js                           6.30 kB Ôöé gzip:   1.76 kB
+.nuxt/dist/client/_nuxt/DE7TasHO.js                           6.31 kB Ôöé gzip:   1.95 kB
+.nuxt/dist/client/_nuxt/BxQDD1yl.js                           6.33 kB Ôöé gzip:   1.99 kB
+.nuxt/dist/client/_nuxt/C9mjEjjq.js                           6.36 kB Ôöé gzip:   1.96 kB
+.nuxt/dist/client/_nuxt/DFI4lspq.js                           6.58 kB Ôöé gzip:   2.22 kB
+.nuxt/dist/client/_nuxt/CyayVHXw.js                           6.60 kB Ôöé gzip:   2.86 kB
+.nuxt/dist/client/_nuxt/BSU6A2tm.js                           6.63 kB Ôöé gzip:   2.32 kB
+.nuxt/dist/client/_nuxt/DQVA-fC9.js                           6.92 kB Ôöé gzip:   2.77 kB
+.nuxt/dist/client/_nuxt/BkeHpMlS.js                           7.14 kB Ôöé gzip:   3.01 kB
+.nuxt/dist/client/_nuxt/BSDqbALy.js                           7.29 kB Ôöé gzip:   2.92 kB
+.nuxt/dist/client/_nuxt/BWxMDz6Q.js                           8.81 kB Ôöé gzip:   3.20 kB
+.nuxt/dist/client/_nuxt/b0P8KB_u.js                           9.31 kB Ôöé gzip:   2.08 kB
+.nuxt/dist/client/_nuxt/BWeDd2O5.js                           9.35 kB Ôöé gzip:   3.69 kB
+.nuxt/dist/client/_nuxt/BNliFUuF.js                           9.38 kB Ôöé gzip:   2.69 kB
+.nuxt/dist/client/_nuxt/DxzjQ4VC.js                           9.41 kB Ôöé gzip:   2.17 kB
+.nuxt/dist/client/_nuxt/DVwIGdkn.js                          10.45 kB Ôöé gzip:   2.65 kB
+.nuxt/dist/client/_nuxt/BOZc-l5-.js                          10.74 kB Ôöé gzip:   2.80 kB
+.nuxt/dist/client/_nuxt/BB4g4SHb.js                          14.28 kB Ôöé gzip:   5.49 kB
+.nuxt/dist/client/_nuxt/DBftUO7Q.js                          16.04 kB Ôöé gzip:   4.20 kB
+.nuxt/dist/client/_nuxt/B46QDGtz.js                          16.26 kB Ôöé gzip:   4.34 kB
+.nuxt/dist/client/_nuxt/C1PSYl0W.js                          16.99 kB Ôöé gzip:   5.52 kB
+.nuxt/dist/client/_nuxt/Df_Y54Aw.js                          23.19 kB Ôöé gzip:   6.68 kB
+.nuxt/dist/client/_nuxt/Cwff8wLp.js                          26.19 kB Ôöé gzip:   7.76 kB
+.nuxt/dist/client/_nuxt/TADjHTjo.js                          26.87 kB Ôöé gzip:   8.01 kB
+.nuxt/dist/client/_nuxt/BZhRb7lg.js                          30.95 kB Ôöé gzip:   4.30 kB
+.nuxt/dist/client/_nuxt/BqpfKK0z.js                          32.79 kB Ôöé gzip:  12.81 kB
+.nuxt/dist/client/_nuxt/m5R20LsC.js                          35.02 kB Ôöé gzip:  13.02 kB
+.nuxt/dist/client/_nuxt/CNaxY9L9.js                          45.10 kB Ôöé gzip:  14.60 kB
+.nuxt/dist/client/_nuxt/BXMfnPHW.js                          74.38 kB Ôöé gzip:  22.71 kB
+.nuxt/dist/client/_nuxt/X_iOEcdU.js                          88.53 kB Ôöé gzip:  26.41 kB
+.nuxt/dist/client/_nuxt/B3xGl-eM.js                         106.27 kB Ôöé gzip:  41.16 kB
+.nuxt/dist/client/_nuxt/D_PWNqWk.js                         192.68 kB Ôöé gzip:  67.59 kB
+.nuxt/dist/client/_nuxt/tyvuAIGA.js                         626.53 kB Ôöé gzip: 187.99 kB
+
+[36mÔä╣[39m [32mÔ£ô built in 14.48s[39m
+
+ WARN  [plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+
+[32mÔ£ö[39m Client built in 14613ms
+ÔùÅ Bundling server
+[36mÔä╣[39m Building server...
+[36mÔä╣[39m [36mvite v8.3.4 [32mbuilding ssr environment for production...[36m[39m
+transforming...
+ÔùÅ Bundling server (5.02s ┬À 42.6s)
+ÔùÅ Bundling server (10.1s ┬À 47.7s)
+ÔùÅ Bundling server (15.4s ┬À 53.0s)
+Ô£ô 1172 modules transformed.
+rendering chunks...
+ÔùÅ Bundling server (20.4s ┬À 58.0s)
+[36mÔä╣[39m .nuxt/dist/server/styles.mjs                                  0.06 kB
+.nuxt/dist/server/_nuxt/ready-__ZeCV7t.js                     0.04 kB
+.nuxt/dist/server/_nuxt/nullish-D1TkUmlK.js                   0.27 kB Ôöé map:     0.48 kB
+.nuxt/dist/server/_nuxt/pages-DPXbOUw1.js                     0.29 kB Ôöé map:     1.83 kB
+.nuxt/dist/server/_nuxt/use-content-CuV0y3g4.js               0.37 kB Ôöé map:     0.55 kB
+.nuxt/dist/server/_nuxt/state-Cq5hKOUn.js                     0.49 kB Ôöé map:     3.27 kB
+.nuxt/dist/server/_nuxt/_virtual_public-BTn97beT.js           0.52 kB
+.nuxt/dist/server/_nuxt/_virtual_public-C66DdIPy.js           0.52 kB
+.nuxt/dist/server/_nuxt/_virtual_public-Cu6Pm2Uj.js           0.53 kB
+.nuxt/dist/server/_nuxt/_virtual_public-CzumQHEc.js           0.53 kB
+.nuxt/dist/server/_nuxt/_virtual_public-CLv9X9Dm.js           0.54 kB
+.nuxt/dist/server/_nuxt/_virtual_public-7VFyFTTk.js           0.54 kB
+.nuxt/dist/server/_nuxt/_virtual_public-Bx9CrDPn.js           0.62 kB
+.nuxt/dist/server/_nuxt/FieldRoot-DWPQ2TTf.js                 0.81 kB Ôöé map:    11.63 kB
+.nuxt/dist/server/_nuxt/blog-BFjxFg9h.js                      0.90 kB Ôöé map:     0.23 kB
+.nuxt/dist/server/_nuxt/search-CDw0uDM2.js                    0.96 kB Ôöé map:     0.24 kB
+.nuxt/dist/server/_nuxt/blog-O-7fIaN7.js                      0.96 kB Ôöé map:     0.25 kB
+.nuxt/dist/server/_nuxt/blog-list-C0aZcZQQ.js                 0.98 kB Ôöé map:     0.25 kB
+.nuxt/dist/server/_nuxt/blog-category-K2zWz2vt.js             1.00 kB Ôöé map:     0.26 kB
+.nuxt/dist/server/_nuxt/pages-DArP47Eb.js                     1.00 kB Ôöé map:     0.39 kB
+.nuxt/dist/server/_nuxt/Label-L5cT99af.js                     1.16 kB Ôöé map:     2.24 kB
+.nuxt/dist/server/_nuxt/state-B6AUXrDY.js                     1.20 kB Ôöé map:     2.83 kB
+.nuxt/dist/server/_nuxt/useId-DQSgh0Au.js                     1.23 kB Ôöé map:     1.65 kB
+.nuxt/dist/server/_nuxt/auth-DhCr7HDz.js                      1.43 kB Ôöé map:     1.97 kB
+.nuxt/dist/server/_nuxt/ConfigProvider-Bx2_fdC-.js            1.44 kB Ôöé map:     2.70 kB
+.nuxt/dist/server/_nuxt/use-admin-DowRlC0m.js                 1.88 kB Ôöé map:     2.76 kB
+.nuxt/dist/server/_nuxt/_...slug_-3uOqnZW_.js                 1.93 kB Ôöé map:     1.89 kB
+.nuxt/dist/server/_nuxt/Faqs-DK-TEy7d.js                      2.08 kB Ôöé map:     1.57 kB
+.nuxt/dist/server/_nuxt/VisuallyHidden-CWK3TYZk.js            2.09 kB Ôöé map:     3.88 kB
+.nuxt/dist/server/_nuxt/Glossary-BgNUWSzP.js                  2.80 kB Ôöé map:     3.02 kB
+.nuxt/dist/server/_nuxt/glossary-BSQ3LsVG.js                  2.96 kB Ôöé map:     2.08 kB
+.nuxt/dist/server/_nuxt/glossary-MBpsqDMm.js                  2.96 kB Ôöé map:     2.07 kB
+.nuxt/dist/server/_nuxt/PageHeading-Daow4UDn.js               3.07 kB Ôöé map:     2.63 kB
+.nuxt/dist/server/_nuxt/search-C9kIA30c.js                    3.64 kB Ôöé map:     2.80 kB
+.nuxt/dist/server/_nuxt/faq-BB5AvmhG.js                       3.66 kB Ôöé map:     2.52 kB
+.nuxt/dist/server/_nuxt/faq-BCKCoX5b.js                       3.68 kB Ôöé map:     2.53 kB
+.nuxt/dist/server/_nuxt/search-DjhJfV2m.js                    3.73 kB Ôöé map:     2.88 kB
+.nuxt/dist/server/_nuxt/404-D0o8bWXK.js                       3.88 kB Ôöé map:     2.68 kB
+.nuxt/dist/server/_nuxt/Practices-RwpDza7A.js                 3.89 kB Ôöé map:     3.31 kB
+.nuxt/dist/server/_nuxt/404-CLjvnn8Z.js                       3.89 kB Ôöé map:     2.69 kB
+.nuxt/dist/server/_nuxt/cookies-B4JBH2TB.js                   3.93 kB Ôöé map:     2.92 kB
+.nuxt/dist/server/_nuxt/blog-C-KrrqYs.js                      4.04 kB Ôöé map:     3.09 kB
+.nuxt/dist/server/_nuxt/blog-C-_pJ9-i.js                      4.07 kB Ôöé map:     3.13 kB
+.nuxt/dist/server/_nuxt/cookies-DPnb6Tsr.js                   4.09 kB Ôöé map:     3.08 kB
+.nuxt/dist/server/_nuxt/Team-Dm0-Jdsn.js                      4.14 kB Ôöé map:     3.68 kB
+.nuxt/dist/server/_nuxt/_slug_-CwndCtcp.js                    4.21 kB Ôöé map:     4.73 kB
+.nuxt/dist/server/_nuxt/_id_-Do4bBfoC.js                      4.41 kB Ôöé map:     4.75 kB
+.nuxt/dist/server/_nuxt/privacy-JIsuuu7b.js                   4.71 kB Ôöé map:     3.72 kB
+.nuxt/dist/server/_nuxt/_slug_-SaeZbQsA.js                    4.80 kB Ôöé map:     4.83 kB
+.nuxt/dist/server/_nuxt/privacy-DgpzCzQp.js                   4.89 kB Ôöé map:     3.89 kB
+.nuxt/dist/server/_nuxt/BlogPage-BOT8GxHQ.js                  4.96 kB Ôöé map:     6.69 kB
+.nuxt/dist/server/_nuxt/blog-category-54xDqwq1.js             5.06 kB Ôöé map:     3.55 kB
+.nuxt/dist/server/_nuxt/attorney-selin-BGRTchl0.js            5.07 kB Ôöé map:     3.84 kB
+.nuxt/dist/server/_nuxt/attorney-emre-BbrLbafC.js             5.08 kB Ôöé map:     3.85 kB
+.nuxt/dist/server/_nuxt/practice-areas-BwnS8GIi.js            5.10 kB Ôöé map:     4.08 kB
+.nuxt/dist/server/_nuxt/attorney-detail-CfociAfo.js           5.12 kB Ôöé map:     3.88 kB
+.nuxt/dist/server/_nuxt/attorneys-B5qIV2eS.js                 5.13 kB Ôöé map:     4.14 kB
+.nuxt/dist/server/_nuxt/blog-category-Ce_hjFih.js             5.13 kB Ôöé map:     3.61 kB
+.nuxt/dist/server/_nuxt/practice-areas-BBWjhJB9.js            5.17 kB Ôöé map:     4.13 kB
+.nuxt/dist/server/_nuxt/attorneys-2wtft-_B.js                 5.20 kB Ôöé map:     4.20 kB
+.nuxt/dist/server/_nuxt/attorney-selin-C4alg545.js            5.20 kB Ôöé map:     3.96 kB
+.nuxt/dist/server/_nuxt/attorney-emre-BGfwpJXv.js             5.21 kB Ôöé map:     3.97 kB
+.nuxt/dist/server/_nuxt/attorney-detail-BbKN2xjq.js           5.22 kB Ôöé map:     3.97 kB
+.nuxt/dist/server/_nuxt/default-Zn9DzPF5.js                   5.54 kB Ôöé map:     7.80 kB
+.nuxt/dist/server/_nuxt/media-BUY6CCF4.js                     5.83 kB Ôöé map:     8.00 kB
+.nuxt/dist/server/_nuxt/VisuallyHiddenInput-CoGhGbXW.js       5.85 kB Ôöé map:    10.77 kB
+.nuxt/dist/server/_nuxt/multipart-parser-D3CChiWc.js          6.29 kB Ôöé map:    10.59 kB
+.nuxt/dist/server/_nuxt/_slug_-N-bYbPsh.js                    6.34 kB Ôöé map:     8.43 kB
+.nuxt/dist/server/_nuxt/Journal-B-NJFEkM.js                   6.86 kB Ôöé map:     9.31 kB
+.nuxt/dist/server/_nuxt/Presence-BErQsXqJ.js                  7.07 kB Ôöé map:    12.97 kB
+.nuxt/dist/server/_nuxt/is-equal-CUx7VsKz.js                  7.09 kB Ôöé map:    13.42 kB
+.nuxt/dist/server/_nuxt/contact-R4EuhFw5.js                   7.18 kB Ôöé map:     6.98 kB
+.nuxt/dist/server/_nuxt/contact-mA0VYleK.js                   7.24 kB Ôöé map:     7.03 kB
+.nuxt/dist/server/_nuxt/article-kira-CCtNYAkt.js              7.53 kB Ôöé map:     6.19 kB
+.nuxt/dist/server/_nuxt/article-dijital-BF6vMuNm.js           7.53 kB Ôöé map:     6.18 kB
+.nuxt/dist/server/_nuxt/article-is-B5P7rgVT.js                7.53 kB Ôöé map:     6.20 kB
+.nuxt/dist/server/_nuxt/blog-detail-BgenDPHR.js               7.53 kB Ôöé map:     6.20 kB
+.nuxt/dist/server/_nuxt/article-aile-CjLd4SHA.js              7.54 kB Ôöé map:     6.21 kB
+.nuxt/dist/server/_nuxt/article-miras-DSlb2MHH.js             7.55 kB Ôöé map:     6.21 kB
+.nuxt/dist/server/_nuxt/article-ceza-DP_-M20t.js              7.55 kB Ôöé map:     6.21 kB
+.nuxt/dist/server/_nuxt/article-arabuluculuk-CkXP7e8w.js      7.58 kB Ôöé map:     6.21 kB
+.nuxt/dist/server/_nuxt/about-BzuIqI6B.js                     7.67 kB Ôöé map:     6.47 kB
+.nuxt/dist/server/_nuxt/article-is-CO8re2NQ.js                7.75 kB Ôöé map:     6.41 kB
+.nuxt/dist/server/_nuxt/article-ceza-DAjMWH-L.js              7.77 kB Ôöé map:     6.42 kB
+.nuxt/dist/server/_nuxt/article-miras-ylvtHAyE.js             7.77 kB Ôöé map:     6.43 kB
+.nuxt/dist/server/_nuxt/article-dijital-DWu8RYUa.js           7.78 kB Ôöé map:     6.42 kB
+.nuxt/dist/server/_nuxt/blog-detail-BYql5nen.js               7.79 kB Ôöé map:     6.45 kB
+.nuxt/dist/server/_nuxt/use-page-seo-DANv2uAz.js              7.80 kB Ôöé map:    11.79 kB
+.nuxt/dist/server/_nuxt/article-aile-B0noV1Bq.js              7.82 kB Ôöé map:     6.47 kB
+.nuxt/dist/server/_nuxt/about-BJWB2Gnm.js                     7.82 kB Ôöé map:     6.60 kB
+.nuxt/dist/server/_nuxt/article-arabuluculuk-Cb4Cl68G.js      7.83 kB Ôöé map:     6.44 kB
+.nuxt/dist/server/_nuxt/article-kira-Bv-GsuJC.js              7.83 kB Ôöé map:     6.49 kB
+.nuxt/dist/server/_nuxt/FeaturedJournal-wcK7YAf6.js           8.01 kB Ôöé map:     8.56 kB
+.nuxt/dist/server/_nuxt/Template-CHHYjflE.js                  8.19 kB Ôöé map:     4.25 kB
+.nuxt/dist/server/_nuxt/shared-C_mjh1_6.js                    8.30 kB Ôöé map:    20.82 kB
+.nuxt/dist/server/_nuxt/settings-C0XFVqiR.js                  9.29 kB Ôöé map:    10.58 kB
+.nuxt/dist/server/_nuxt/footer-BSRqvG6N.js                    9.42 kB Ôöé map:     8.49 kB
+.nuxt/dist/server/_nuxt/footer-DkeQvjs5.js                    9.54 kB Ôöé map:     8.69 kB
+.nuxt/dist/server/_nuxt/header-CCC9d9ON.js                    9.59 kB Ôöé map:    10.15 kB
+.nuxt/dist/server/_nuxt/header-UMIeO3Vb.js                    9.65 kB Ôöé map:    10.23 kB
+.nuxt/dist/server/_nuxt/documentation-sgM3YdxU.js            10.40 kB Ôöé map:     7.86 kB
+.nuxt/dist/server/_nuxt/documentation-x7w085Ph.js            10.68 kB Ôöé map:     8.14 kB
+.nuxt/dist/server/_nuxt/login-BN_0fmiV.js                    11.11 kB Ôöé map:    11.60 kB
+.nuxt/dist/server/_nuxt/useForwardExpose-BvKvtsZ2.js         11.80 kB Ôöé map:   313.85 kB
+.nuxt/dist/server/_nuxt/practice-is-CGkbDuWA.js              12.28 kB Ôöé map:     9.39 kB
+.nuxt/dist/server/_nuxt/practice-gayrimenkul-B-dIUAEW.js     12.29 kB Ôöé map:     9.36 kB
+.nuxt/dist/server/_nuxt/Badge-xbBm5xTE.js                    12.30 kB Ôöé map:    17.29 kB
+.nuxt/dist/server/_nuxt/practice-ceza-BQbf2Fg7.js            12.31 kB Ôöé map:     9.41 kB
+.nuxt/dist/server/_nuxt/home-editorial-1IcJHlPz.js           12.33 kB Ôöé map:     8.68 kB
+.nuxt/dist/server/_nuxt/practice-ticaret-BruLjj78.js         12.35 kB Ôöé map:     9.44 kB
+.nuxt/dist/server/_nuxt/practice-detail-DnIiZNqG.js          12.38 kB Ôöé map:     9.48 kB
+.nuxt/dist/server/_nuxt/home-editorial-BDpseR0N.js           12.40 kB Ôöé map:     8.71 kB
+.nuxt/dist/server/_nuxt/practice-miras-BKjQ1tcZ.js           12.40 kB Ôöé map:     9.52 kB
+.nuxt/dist/server/_nuxt/practice-ceza-BPgsLshV.js            12.49 kB Ôöé map:     9.59 kB
+.nuxt/dist/server/_nuxt/practice-is-BsZXArQ5.js              12.52 kB Ôöé map:     9.62 kB
+.nuxt/dist/server/_nuxt/practice-gayrimenkul-CiSA1N_A.js     12.52 kB Ôöé map:     9.59 kB
+.nuxt/dist/server/_nuxt/practice-ticaret-U9qDoiID.js         12.54 kB Ôöé map:     9.64 kB
+.nuxt/dist/server/_nuxt/practice-detail-C_sgE-4O.js          12.56 kB Ôöé map:     9.66 kB
+.nuxt/dist/server/_nuxt/practice-miras-DHNYr0xR.js           12.59 kB Ôöé map:     9.71 kB
+.nuxt/dist/server/_nuxt/ssr-BgHOFyvf.js                      13.13 kB Ôöé map:    28.48 kB
+.nuxt/dist/server/_nuxt/Icon-BeL-WNd2.js                     13.30 kB Ôöé map:    76.67 kB
+.nuxt/dist/server/_nuxt/FormField-_nuXpkAm.js                13.40 kB Ôöé map:    14.25 kB
+.nuxt/dist/server/_nuxt/head-DOsqRW06.js                     14.22 kB Ôöé map:    52.06 kB
+.nuxt/dist/server/_nuxt/nuxt-link-Dfx2a9JC.js                15.36 kB Ôöé map:    33.24 kB
+.nuxt/dist/server/_nuxt/addons-wBt0KF2W.js                   16.02 kB Ôöé map:    45.89 kB
+.nuxt/dist/server/_nuxt/admin-CGstLab4.js                    16.98 kB Ôöé map:    21.32 kB
+.nuxt/dist/server/_nuxt/admin-CeTzeMaM.js                    17.01 kB Ôöé map:    20.01 kB
+.nuxt/dist/server/_nuxt/Alert-DS0dVUFb.js                    17.45 kB Ôöé map:    21.56 kB
+.nuxt/dist/server/_nuxt/users-B6LmYY-s.js                    17.70 kB Ôöé map:    15.75 kB
+.nuxt/dist/server/_nuxt/Input-DfLXFoHA.js                    19.42 kB Ôöé map:    27.30 kB
+.nuxt/dist/server/_nuxt/legal-guides-dK7xjqUh.js             20.05 kB Ôöé map:    14.98 kB
+.nuxt/dist/server/_nuxt/legal-guides-BnS1zLeA.js             20.22 kB Ôöé map:    15.09 kB
+.nuxt/dist/server/_nuxt/blog-list-D3PXGsVr.js                22.18 kB Ôöé map:    16.21 kB
+.nuxt/dist/server/_nuxt/blog-list-CzgnT0fK.js                22.54 kB Ôöé map:    16.51 kB
+.nuxt/dist/server/_nuxt/utils-DbtYqRYi.js                    25.38 kB Ôöé map:    84.22 kB
+.nuxt/dist/server/_nuxt/dist-DgO54NH6.js                     28.55 kB Ôöé map:    51.88 kB
+.nuxt/dist/server/_nuxt/en-CI71ji5C.js                       29.14 kB Ôöé map:    22.64 kB
+.nuxt/dist/server/_nuxt/tr-CmUOXL7r.js                       29.39 kB Ôöé map:    22.85 kB
+.nuxt/dist/server/_nuxt/messages-DrXawXaH.js                 54.53 kB Ôöé map:    91.54 kB
+.nuxt/dist/server/_nuxt/server-renderer-7wZhEBjS.js          56.75 kB Ôöé map:   111.63 kB
+.nuxt/dist/server/_nuxt/_resource_-CkbA_FZ3.js               61.96 kB Ôöé map:    79.54 kB
+.nuxt/dist/server/_nuxt/Toast-CdY8eX5L.js                    70.63 kB Ôöé map:   109.87 kB
+.nuxt/dist/server/_nuxt/components-BKCdZANl.js               81.18 kB Ôöé map:   151.09 kB
+.nuxt/dist/server/_nuxt/Modal-CWu0fgC9.js                    87.20 kB Ôöé map:   134.20 kB
+.nuxt/dist/server/_nuxt/ContentEditor-DkpsLlxe.js            94.00 kB Ôöé map:   123.81 kB
+.nuxt/dist/server/_nuxt/node-DBUA4u8q.js                    144.67 kB Ôöé map:   230.39 kB
+.nuxt/dist/server/_nuxt/Button-DgRHFyet.js                  227.64 kB Ôöé map:   362.72 kB
+.nuxt/dist/server/_nuxt/Select-B0QggdDM.js                  239.59 kB Ôöé map:   363.16 kB
+.nuxt/dist/server/server.mjs                                346.04 kB Ôöé map:   835.90 kB
+.nuxt/dist/server/_nuxt/error-q1Fns_Zx.js                 1,159.65 kB Ôöé map: 2,170.01 kB
+
+[36mÔä╣[39m [32mÔ£ô built in 20.40s[39m
+
+ WARN  [PLUGIN_TIMINGS] JavaScript callbacks ran for 18.8s of this 20.4s build (92%).
+The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits is included):
+  - plugin vite:vue transform (12%, 2.4s, 175 calls)
+  - plugin nuxt:sourcemap-export writeBundle (10%, 2.1s, 1 call)
+  - plugin nuxt:imports-transform transform (9%, 1.9s, 1172 calls)
+  - plugin @tailwindcss/vite:generate:build transform (8%, 1.7s, 2 calls)
+  - plugin nuxt:tree-shake-composables:transform transform (6%, 1.2s, 128 calls)
+  - plugin nuxt:virtual resolveId (5%, 1.0s, 3224 calls)
+  - plugin vite:css transform (5%, 1.0s, 2 calls)
+Additional callback time came from the callbacks below and from callbacks under 1s.
+3 callbacks are listed without a time. Their calls overlapped, so the time inside one call includes work from other calls. To find their cost, profile the build with node --cpu-prof:
+  - plugin nuxt:resolve-externals:external resolveId (1566 calls)
+  - plugin nuxt:resolve-bare-imports resolveId (271 calls)
+  - plugin nuxt:ssr-styles:ssr resolveId (271 calls)
+See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+
+
+[32mÔ£ö[39m Server built in 20559ms
+ÔùÅ Building Nitro server
+[90m[[90mnitro[90m][39m [32mÔ£ö[39m Generated public [36m.output/public[39m
+[90m[[90mnitro[90m][39m [36mÔä╣[39m Building Nuxt Nitro server (preset: [36mnode-server[39m, compatibility date: [36m2025-07-15[39m)
+ÔùÅ Bundling Nitro server (5.00s ┬À 1m 03s)
+ÔùÅ Bundling Nitro server (10.0s ┬À 1m 08s)
+ÔùÅ Bundling Nitro server (15.0s ┬À 1m 13s)
+ÔùÅ Bundling Nitro server (20.1s ┬À 1m 18s)
+ÔùÅ Bundling Nitro server (25.1s ┬À 1m 23s)
+ÔùÅ Bundling Nitro server (30.1s ┬À 1m 28s)
+ÔùÅ Bundling Nitro server (35.3s ┬À 1m 33s)
+ÔùÅ Bundling Nitro server (40.8s ┬À 1m 38s)
+
+[nitro]  ERROR  RollupError: There was an error during the build:
+  Could not load C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/nuxt-site-config@3.2.21_@nu_2925d09893a8c3c47733bcf8859fa1f4/node_modules/nuxt-site-config/dist/runtime/server (imported by server/middleware/site-config.ts): EISDIR: illegal operation on a directory, read 'C:\Users\musay\Projects\lexviora\lexviora-nuxt\node_modules\.pnpm\nuxt-site-config@3.2.21_@nu_2925d09893a8c3c47733bcf8859fa1f4\node_modules\nuxt-site-config\dist\runtime\server'
+Additionally, handling the error in the 'buildEnd' hook caused the following error:
+  ENOENT: no such file or directory, realpath 'C:\Users\musay\Projects\lexviora\lexviora-nuxt\node_modules\.cache\vite\client\deps\package.json'
+
+
+undefined
+
+
+ ERROR  There was an error during the build:
+  Could not load C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/nuxt-site-config@3.2.21_@nu_2925d09893a8c3c47733bcf8859fa1f4/node_modules/nuxt-site-config/dist/runtime/server (imported by server/middleware/site-config.ts): EISDIR: illegal operation on a directory, read 'C:\Users\musay\Projects\lexviora\lexviora-nuxt\node_modules\.pnpm\nuxt-site-config@3.2.21_@nu_2925d09893a8c3c47733bcf8859fa1f4\node_modules\nuxt-site-config\dist\runtime\server'
+Additionally, handling the error in the 'buildEnd' hook caused the following error:
+  ENOENT: no such file or directory, realpath 'C:\Users\musay\Projects\lexviora\lexviora-nuxt\node_modules\.cache\vite\client\deps\package.json'
+
+    at getRollupError (/C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/rollup@4.64.12/node_modules/rollup/dist/es/shared/parseAst.js:337:41)
+    at /C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/rollup@4.64.12/node_modules/rollup/dist/es/shared/node-entry.js:24591:39
+    at async catchUnfinishedHookActions (/C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/rollup@4.64.12/node_modules/rollup/dist/es/shared/node-entry.js:24046:16)
+    at async rollupInternal (/C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/rollup@4.64.12/node_modules/rollup/dist/es/shared/node-entry.js:24574:5)
+    at async buildProduction (/C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/nitropack@2.13.5_drizzle-or_d9d91c59b778204b52f2cc588a9279bd/node_modules/nitropack/dist/core/index.mjs:1645:19)
+    at async Array.<anonymous> (/C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/@nuxt+nitro-server@4.6.2_76ce3da4f97656ce3feef9f03b9c7bc1/node_modules/@nuxt/nitro-server/dist/index.mjs:1604:5)
+    at async build (/C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/nuxt@4.6.2_@babel+plugin-sy_a9755fb6efb1774cce5d6ce246559703/node_modules/nuxt/dist/index.mjs:10066:2)
+    at async run (/C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/@nuxt+cli@4.0.1_@nuxt+schem_639fee42740aed79f94ca0a17e8959a9/node_modules/@nuxt/cli/dist/build-BToGXWIU.mjs:242:4)
+    at async Object.run (/C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/@nuxt+cli@4.0.1_@nuxt+schem_639fee42740aed79f94ca0a17e8959a9/node_modules/@nuxt/cli/dist/index.mjs:42:12)
+    at async runCommand (/C:/Users/musay/Projects/lexviora/lexviora-nuxt/node_modules/.pnpm/@nuxt+cli@4.0.1_@nuxt+schem_639fee42740aed79f94ca0a17e8959a9/node_modules/@nuxt/cli/dist/_shared-YyGADOl7.mjs:313:47) 
+
+
+[ELIFECYCLE] Command failed with exit code 1.

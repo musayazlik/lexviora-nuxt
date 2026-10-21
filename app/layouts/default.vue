@@ -4,7 +4,7 @@ import TrHeader from '~/components/reference/tr/header.vue';
 import EnFooter from '~/components/reference/en/footer.vue';
 import TrFooter from '~/components/reference/tr/footer.vue';
 const { locale } = useI18n();
-useHead({ link: [{ rel: 'stylesheet', href: '/css/site.css' }], htmlAttrs: { lang: locale } });
+useHead({ link: [{ rel: 'stylesheet', href: '/css/site.css' }] });
 usePublicInteractions();
 </script>
 <template>

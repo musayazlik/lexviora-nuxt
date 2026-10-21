@@ -1,0 +1,14 @@
+# Build artifacts & tooling caches
+.nuxt
+.nuxt-seo
+.output
+.data
+node_modules
+
+# Lockfiles & logs
+pnpm-lock.yaml
+build-log.txt
+
+# Environment files
+.env
+.env.example

@@ -5,6 +5,7 @@ import { ac, roles } from '#shared/permissions';
 export const authClient = createAuthClient({
   plugins: [adminClient({ ac, roles })],
 });
+export type SessionUser = typeof authClient.$Infer.Session.user;
 
 /**
  * Reactive session for components. The first call in a setup context is
@@ -12,8 +13,9 @@ export const authClient = createAuthClient({
  */
 export function useAuthSession() {
   const session = authClient.useSession();
+  const serverUser = useState<SessionUser | null>('staff-user', () => null);
   return {
-    user: computed(() => session.value?.data?.user ?? null),
+    user: computed(() => session.value?.data?.user ?? serverUser.value),
     isPending: computed(() => session.value?.isPending ?? true),
   };
 }
